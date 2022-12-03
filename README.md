@@ -94,9 +94,9 @@ If the activator closes unexpectedly during the activation process (after you co
 
 ## Ongoing development
 
-- A more comprehensive AIO to correctly embed the patch file into the script. I encountered some issues with AveYo's [`Compressed2Text`](https://github.com/AveYo/Compressed2TXT) script.
+- A more comprehensive AIO to correctly embed the patch file into the script. I encountered some issues with AveYo's [Compressed2Text](https://github.com/AveYo/Compressed2TXT) script.
 - Better automated error handling for any misses in the file restoration process
 
 ## Credits
 
-Thanks to Beast_iND's (the original author), microbolt and dechronic for their work in previous versions of this activation script up to `v0.15`.
+Thanks to Beast_iND (the original author), microbolt and dechronic for their work in previous versions of this activation script up to `v0.15`.
