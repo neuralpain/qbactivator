@@ -2,7 +2,7 @@
 
 Activation script for QuickBooks Point Of Sale Software (and more) on Windows. Originally created for Point of Sale 2013/v11 and Point of Sale 2013/v11 Multistore but has proven to work on other versions of the QuickBooks software.
 
-Only [`qbactivator.cmd`](./qbactivator.cmd) and [`qbpatch.dat`](./qbpatch.dat) are required for activation. The script will provide you with the instructions you need.
+Only `qbactivator.cmd` and `qbpatch.dat` are required for activation. The script will provide you with the instructions you need.
 
 - Software **MUST** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
 - To upgrade to Multistore if you have already activated it, jump to step 24.
@@ -90,7 +90,14 @@ Available QuickBooks Desktop Software from Intuit
 
 ## Error Handling
 
-If the activator closes unexpectedly during the activation process (after you continue Step 2), go to the `%systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5` folder, delete `Intuit.Spc.Map.EntitlementClient.Common.dll` and remove the `.bak` extension from `Intuit.Spc.Map.EntitlementClient.Common.dll.bak` **before** restarting the activator.
+If the activator closes unexpectedly during the activation process (after you continue Step 2):
+1. Go to the folder below
+   ```
+   %systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5
+   ```
+2. Delete `Intuit.Spc.Map.EntitlementClient.Common.dll`
+3. Remove the `.bak` extension from `Intuit.Spc.Map.EntitlementClient.Common.dll.bak`
+4. Restart the activator
 
 ## Ongoing development
 
