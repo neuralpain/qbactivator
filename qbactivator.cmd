@@ -48,7 +48,7 @@ echo (and more) on Windows. Originally created for Point of Sale
 echo 2013/v11 and Point of Sale 2013/v11 Multistore but has proven
 echo to work on later versions of the QuickBooks software.
 echo.
-echo Credits to Beast_iND's (the original author), microbolt
+echo Credits to Beast_iND (the original author), microbolt
 echo and dechronic for their work in previous versions of this
 echo activation script up to v0.15.
 echo.
