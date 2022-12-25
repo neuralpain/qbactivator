@@ -107,3 +107,7 @@ If the activator closes unexpectedly during the activation process (after you co
 ## Credits
 
 Thanks to Beast_iND (the original author), microbolt and dechronic for their work in previous versions of this activation script up to `v0.15`.
+
+## License
+
+Licensed under [MIT](./LICENSE).
