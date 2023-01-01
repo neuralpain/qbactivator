@@ -2,14 +2,14 @@
 
 Activation script for QuickBooks Point Of Sale Software (and more) on Windows. Originally created for Point of Sale 2013/v11 and Point of Sale 2013/v11 Multistore but has proven to work on other versions of the QuickBooks software.
 
+### A few things before you start
+- QuickBooks software **must** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
+- To upgrade to Multistore if you have already activated it, jump to step 24.
+- Normally, it's recommended to avoid installing updates because Intuit will probably block this in the future, but I've never had any issues with updates when testing.
+- If installing QuickBooks for the first time, do not launch QuickBooks after installation. Uncheck the "Launch QuickBooks" box and click Finish.
+
 > **Note**  
 > `qbactivator.cmd` and `qbpatch.dat` are both required for proper activation. You should have these files extracted to the same location and run the activation script. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the patch will not continue.
-
-- Software **MUST** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
-- To upgrade to Multistore if you have already activated it, jump to step 24.
-- Don't launch QuickBooks yet.
-- Avoid installing updates, Intuit will probably block this in the future.
-- If installing QuickBooks for the first time, do not launch QuickBooks after installation. Uncheck the "Launch QuickBooks" box and click Finish.
 
 ## Downloads & Updates
 
