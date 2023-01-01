@@ -2,18 +2,18 @@
 
 Activation script for QuickBooks Point Of Sale Software (and more) on Windows. Originally created for Point of Sale 2013/v11 and Point of Sale 2013/v11 Multistore but has proven to work on other versions of the QuickBooks software.
 
-`qbactivator.cmd` and `qbpatch.dat` are both required for proper activation. Extract these files to the same location and run `qbactivator.cmd`. When the patcher is started it will look in the current location for `qbpatch.dat`. If it is not found, the patch will not continue.
+> **Note**  
+> `qbactivator.cmd` and `qbpatch.dat` are both required for proper activation. You should have these files extracted to the same location and run the activation script. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the patch will not continue.
 
 - Software **MUST** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
 - To upgrade to Multistore if you have already activated it, jump to step 24.
 - Don't launch QuickBooks yet.
 - Avoid installing updates, Intuit will probably block this in the future.
+- If installing QuickBooks for the first time, do not launch QuickBooks after installation. Uncheck the "Launch QuickBooks" box and click Finish.
 
 ## Downloads & Updates
 
-If installing QuickBooks for the first time, do not launch QuickBooks after installation. Uncheck the "Launch QuickBooks" box and click Finish.
-
-Check out the [QuickBooks product download form](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included in this document.
+Look at the [QuickBooks product download form](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included in this document.
 
 Available QuickBooks POS Software from Intuit
 
@@ -45,7 +45,8 @@ Available QuickBooks Desktop Software from Intuit
 8. Click Next
 9. Click OK
 
-> NOTE: **DO NOT** click "Register now" or press the [ENTER] key at this point.
+> **Warning**  
+> **DO NOT** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
 
 10. Click "Remind me later"
 11. Click "Help" in the menu bar
@@ -55,14 +56,16 @@ Available QuickBooks Desktop Software from Intuit
 15. Click Next
 16. Click Finish
 
-> NOTE: The following steps (17-23 is optional)
+> **Note**  
+> The following steps (17-23 is optional)
 
 17. To add more users, click "Help"
 18. Click "Manage My License"
 19. Click "Buy Additional User License"
 20. Enter the code for the number of users you want
 
-> NOTE: For 5 users use `9999995`; For 30 users use `99999930`, etc.
+> **Note**  
+> For 5 users use `9999995`; For 30 users use `99999930`, etc.
 
 21. Click Next
 22. Click Finish
@@ -86,7 +89,8 @@ Available QuickBooks Desktop Software from Intuit
 37. Click Finish
 38. Exit the software
 
-> NOTE: To add users to Multistore, repeat steps 17-22.
+> **Note**  
+> To add users to Multistore, repeat steps 17-22.
 
 ## Error Handling
 
