@@ -71,7 +71,7 @@ Available QuickBooks Desktop Software from Intuit
 22. Click Finish
 23. Follow the remaining instructions in the activator (if any) to finish the activation.
 
-**To upgrade to Multistore - Optional but recommended**
+### To upgrade to Multistore - Optional but recommended
 
 24. With the activator still running, Click Help
 25. Click "Try Point of Sale Multistore FREE"
