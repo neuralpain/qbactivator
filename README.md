@@ -2,7 +2,7 @@
 
 Activation script for QuickBooks Point Of Sale Software (and more) on Windows. Originally created for Point of Sale 2013/v11 and Point of Sale 2013/v11 Multistore but has proven to work on other versions of the QuickBooks software.
 
-Only `qbactivator.cmd` and `qbpatch.dat` are required for activation. The script will provide you with the instructions you need.
+`qbactivator.cmd` and `qbpatch.dat` are both required for proper activation. Extract these files to the same location and run `qbactivator.cmd`. When the patcher is started it will look in the current location for `qbpatch.dat`. If it is not found, the patch will not continue.
 
 - Software **MUST** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
 - To upgrade to Multistore if you have already activated it, jump to step 24.
@@ -101,7 +101,7 @@ If the activator closes unexpectedly during the activation process (after you co
 
 ## Ongoing development
 
-- A more comprehensive AIO to correctly embed the patch file into the script. I encountered some issues with AveYo's [Compressed2Text](https://github.com/AveYo/Compressed2TXT) script.
+- A more comprehensive AIO to correctly embed the patch file into the script. I encountered some issues with AveYo's [Compressed2Text](https://github.com/AveYo/Compressed2TXT) script that I am currently trying to work around.
 - Better automated error handling for any misses in the file restoration process
 
 ## Credits
