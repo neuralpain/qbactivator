@@ -7,7 +7,7 @@ set "wdir=%~dp0"
 set "pwsh=powershell -nop -c"
 set "PATCHFOLDER=%systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
 set "DATASTORE=%programdata%\Intuit\Entitlement Client\v8"
-
+"
 :: PowerShell config
 :# Disabling argument expansion avoids issues with ! in arguments.
 setlocal EnableExtensions DisableDelayedExpansion
@@ -25,10 +25,10 @@ echo Please wait . . .
 fsutil dirty query %systemdrive% >nul
 :: if error, we do not have admin.
 if %ERRORLEVEL% NEQ 0 (
-cls & echo.
-echo This patcher requires administrative priviledges.
-echo Attempting to elevate...
-goto UAC_Prompt
+  cls & echo.
+  echo This patcher requires administrative priviledges.
+  echo Attempting to elevate...
+  goto UAC_Prompt
 ) else ( goto :startQBA )
 
 :UAC_Prompt
@@ -61,25 +61,14 @@ pushd "%wdir%"
 :: export and open files
 %pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qblicense\:.*'; [IO.File]::WriteAllText('qblicense.key',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
 %pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.md',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
-%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbpartdata\:.*'; [IO.File]::WriteAllText('PartitionData.xml',$f[1].Trim(),[System.Text.Encoding]::Unicode)"
-%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbeccfg\:.*'; [IO.File]::WriteAllText('EntitlementClient.config',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
-%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbrscfg\:.*'; [IO.File]::WriteAllText('RemotingServer.config',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
 popd
-@REM start notepad.exe "qbreadme.md"
-@REM start notepad.exe "qblicense.key"
+start notepad.exe "qbreadme.md"
+start notepad.exe "qblicense.key"
 
-
-@REM echo.
-@REM echo Please ensure that a QuickBooks product is installed before
-@REM echo you continue with the patch. Continue when ready.
-@REM echo. & pause
-
-if not exist "%DATASTORE%" ( mkdir "%DATASTORE%" )
-if exist "%DATASTORE%\EntitlementDataStore.ecml" ( ren "%DATASTORE%\EntitlementDataStore.ecml" "EntitlementDataStore.ecml.old" )
-copy /v /y /z "%~dp0qbeds.dat" "%DATASTORE%\EntitlementDataStore.ecml" >nul
-copy /v /y /z "%~dp0PartitionData.xml" "%DATASTORE%\PartitionData.xml" >nul
-copy /v /y /z "%~dp0EntitlementClient.config" "%DATASTORE%\EntitlementClient.config" >nul
-copy /v /y /z "%~dp0RemotingServer.config" "%DATASTORE%\RemotingServer.config" >nul
+echo.
+echo Please ensure that a QuickBooks product is installed before
+echo you continue with the patch. Continue when ready.
+echo. & pause
 
 :: end QuickBooks background processes
 cls & echo.
@@ -100,88 +89,84 @@ taskkill /f /im QBDBMgrN.exe >nul 2>&1
 taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
 taskkill /f /fi "imagename eq qb*" /f /t >nul 2>&1
 taskkill /f /fi "imagename eq intuit*" /f /t >nul 2>&1
+if exist "%DATASTORE%\EntitlementDataStore.ecml" ( ren "%DATASTORE%\EntitlementDataStore.ecml" "EntitlementDataStore.ecml.old" )
 echo. & echo Done.
-pause & goto exitQBA
 
 :: prepare for activation
-@REM if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
-@REM cls & echo.
-@REM echo The Entitlement Client was not found.
-@REM echo The patch cannot be completed.
-@REM echo.
-@REM echo Please ensure that a QuickBooks product is installed.
-@REM echo The patcher will now close.
-@REM echo.
-@REM pause
-@REM goto :exitQBA
-@REM ) else ( 
-@REM ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul
-@REM )
+if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
+  cls & echo.
+  echo The Entitlement Client was not found.
+  echo The patch cannot be completed.
+  echo.
+  echo Please ensure that a QuickBooks product is installed.
+  echo The patcher will now close.
+  echo.
+  pause
+  goto :exitQBA
+) else ( ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul )
+copy /v /y /z "%~dp0qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
+cls & echo.
+net start "Intuit Entitlement Service v8"
+net start "QBPOSDBServiceV11"
+cls & echo.
+echo Follow the steps below to activate QuickBooks software.
+echo.
+echo 1. Open QuickBooks
+echo 2. Click "Help" then "Registration"
+echo 3. Click "Register by phone now"
+echo 4. Enter the code 99999930
+echo 5. Click Next
+echo 6. Click Finish
+echo.
+echo --- Continue when finished.
+echo.
+echo For Point of Sale Multistore, do not press any key, refer to 
+echo Step 21 in "qbreadme.md". Once completed 21 - 35, then continue.
+echo. & pause
 
-@REM copy /v /y /z "%~dp0qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
+:: end activation and end all QuickBooks processes
+taskkill /f /im qbw.exe >nul 2>&1
+taskkill /f /im qbw32.exe >nul 2>&1
+taskkill /f /im qbupdate.exe >nul 2>&1
+taskkill /f /im qbhelp.exe >nul 2>&1
+taskkill /f /im QBCFMonitorService.exe >nul 2>&1
+taskkill /f /im QBUpdateService.exe >nul 2>&1
+taskkill /f /im IBuEngHost.exe >nul 2>&1
+taskkill /f /im msiexec.exe >nul 2>&1
+taskkill /f /im mscorsvw.exe >nul 2>&1
+taskkill /f /im QBWebConnector.exe >nul 2>&1
+taskkill /f /im QBDBMgr9.exe >nul 2>&1
+taskkill /f /im QBDBMgr.exe >nul 2>&1
+taskkill /f /im QBDBMgrN.exe >nul 2>&1
+taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
+taskkill /f /fi "imagename eq qb*" /f /t >nul 2>&1
+taskkill /f /fi "imagename eq intuit*" /f /t >nul 2>&1
 
-@REM cls & echo.
-@REM net start "Intuit Entitlement Service v8"
-@REM net start "QBPOSDBServiceV11"
-@REM cls & echo.
-@REM echo Follow the steps below to activate QuickBooks software.
-@REM echo.
-@REM echo 1. Open QuickBooks
-@REM echo 2. Click "Help" then "Registration"
-@REM echo 3. Click "Register by phone now"
-@REM echo 4. Enter the code 99999930
-@REM echo 5. Click Next
-@REM echo 6. Click Finish
-@REM echo.
-@REM echo --- Continue when finished.
-@REM echo.
-@REM echo For Point of Sale Multistore, do not press any key, refer to 
-@REM echo Step 21 in "qbreadme.md". Once completed 21 - 35, then continue.
-@REM echo. & pause
+:: restore files to original state
+copy /v /y /z "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
+fc "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak" > nul
 
-@REM :: end activation and end all QuickBooks processes
-@REM taskkill /f /im qbw.exe >nul 2>&1
-@REM taskkill /f /im qbw32.exe >nul 2>&1
-@REM taskkill /f /im qbupdate.exe >nul 2>&1
-@REM taskkill /f /im qbhelp.exe >nul 2>&1
-@REM taskkill /f /im QBCFMonitorService.exe >nul 2>&1
-@REM taskkill /f /im QBUpdateService.exe >nul 2>&1
-@REM taskkill /f /im IBuEngHost.exe >nul 2>&1
-@REM taskkill /f /im msiexec.exe >nul 2>&1
-@REM taskkill /f /im mscorsvw.exe >nul 2>&1
-@REM taskkill /f /im QBWebConnector.exe >nul 2>&1
-@REM taskkill /f /im QBDBMgr9.exe >nul 2>&1
-@REM taskkill /f /im QBDBMgr.exe >nul 2>&1
-@REM taskkill /f /im QBDBMgrN.exe >nul 2>&1
-@REM taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
-@REM taskkill /f /fi "imagename eq qb*" /f /t >nul 2>&1
-@REM taskkill /f /fi "imagename eq intuit*" /f /t >nul 2>&1
-
-@REM :: restore files to original state
-@REM copy /v /y /z "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
-@REM fc "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak" > nul
-
-@REM :: error handling if files have not been restored
-@REM if %ERRORLEVEL% EQU 1 (
-@REM cls & echo.
-@REM echo The patcher ran into a problem while attempting to restore the files.
-@REM echo. & echo Attempting to restore files . . .
-@REM echo Unable to restore files & pause
-@REM start explorer.exe %PATCHFOLDER%
-@REM cls & echo. & echo Do the following to resolve the error:
-@REM echo 1. Delete Intuit.Spc.Map.EntitlementClient.Common.dll
-@REM echo 2. Remove the .bak extension from Intuit.Spc.Map.EntitlementClient.Common.dll.bak
-@REM pause
-@REM echo Patcher will now close.
-@REM ping -n 3 127.0.0.1 >nul
-@REM goto exitQBA
-@REM ) else (
-@REM cls & echo.
-@REM del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
-@REM echo Patch completed without errors. Patcher will now close.
-@REM ping -n 3 127.0.0.1 >nul
-@REM goto exitQBA
-@REM )
+:: error handling if files have not been restored
+if %ERRORLEVEL% EQU 1 (
+  cls & echo.
+  echo The patcher ran into a problem while attempting to restore the files.
+  echo. & echo Attempting to restore files . . .
+  echo Unable to restore files & pause
+  start explorer.exe %PATCHFOLDER%
+  cls & echo. & echo Do the following to resolve the error:
+  echo 1. Delete Intuit.Spc.Map.EntitlementClient.Common.dll
+  echo 2. Remove the .bak extension from Intuit.Spc.Map.EntitlementClient.Common.dll.bak
+  pause
+  echo Patcher will now close.
+  ping -n 3 127.0.0.1 >nul
+  goto exitQBA
+) else (
+  cls & echo.
+  del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
+  echo Patch completed without errors. Patcher will now close.
+  ping -n 3 127.0.0.1 >nul
+  goto exitQBA
+)
 
 :exitQBA
 :: clean up files and exit script
@@ -345,51 +330,6 @@ additional QuickBooks Desktop software that isn't included in this document:
 
 - neuralpain // 'cause why not? -
 :qbreadme:
-
-:qbpartdata:
-<?xml version="1.0" encoding="utf-16"?>
-<PartitionDataSetList>
-  <PartitionDataSet>
-    <OfferingCode>595828</OfferingCode>
-    <LicenseNumber>010639034389908</LicenseNumber>
-    <PartitionData>
-      <KeysAssigned>1</KeysAssigned>
-      <PartitionName>default</PartitionName>
-    </PartitionData>
-  </PartitionDataSet>
-</PartitionDataSetList>
-:qbpartdata:
-
-:qbeccfg:
-<?xml version="1.0" encoding="utf-8"?>
-<ConfigurationSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <IntuitEntitlementServiceDiscoveryUdpPort>8039</IntuitEntitlementServiceDiscoveryUdpPort>
-  <RemotingTimeoutInSeconds>40</RemotingTimeoutInSeconds>
-  <IntuitEntitlementServiceTcpPort>8039</IntuitEntitlementServiceTcpPort>
-  <IntuitEntitlementClientTcpPort>8040</IntuitEntitlementClientTcpPort>
-</ConfigurationSettings>
-:qbeccfg:
-
-:qbrscfg:
-<?xml version="1.0" encoding="utf-8"?>
-<configuration>
-  <system.runtime.remoting>
-    <application>
-      <service>
-        <wellknown mode="SingleCall" type="Intuit.Spc.Map.Features.EntitlementClient.Server.Core.EntitlementServer,Intuit.Spc.Map.EntitlementClient.Server.Core" objectUri="Primary" />
-      </service>
-      <channels>
-        <channel ref="tcp server" port="8039">
-          <serverProviders>
-            <formatter ref="binary" typeFilterLevel="Full" />
-          </serverProviders>
-        </channel>
-      </channels>
-    </application>
-    <customErrors mode="off" />
-  </system.runtime.remoting>
-</configuration>
-:qbrscfg:
 
 # ------------------------------------ #
 end Batch Script; begin PowerShell Script #>
