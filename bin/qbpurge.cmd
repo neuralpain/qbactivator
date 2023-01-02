@@ -24,6 +24,6 @@ del "%tmp%\cmdUAC.vbs"
 goto :eof
 
 :DeleteIntuitFiles
-del /f /q %programdata%\Intuit
-del /f /q %programfiles(x86)%\Intuit
-del /f /q %programfiles(x86)%\Common Files\Intuit
+rd /s /q %programdata%\Intuit
+rd /s /q %programfiles(x86)%\Intuit
+rd /s /q %programfiles(x86)%\Common Files\Intuit
