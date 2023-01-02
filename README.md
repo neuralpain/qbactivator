@@ -1,6 +1,6 @@
 # qbactivator
 
-Activation script for QuickBooks Point Of Sale Software (and more) on Windows. Originally created for Point of Sale 2013/v11 and Point of Sale 2013/v11 Multistore but has proven to work on other versions of the QuickBooks software.
+Activation script for QuickBooks Point Of Sale Software on Windows.
 
 ### A few things before you start
 - QuickBooks software **must** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
@@ -27,12 +27,6 @@ Available QuickBooks POS Software from Intuit
 - [Update for QuickBooks Point Of Sale V18 (2018)](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
 - [Update for QuickBooks Point Of Sale V12 (2015)](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
 
-Available QuickBooks Desktop Software from Intuit
-
-- [QuickBooks Desktop Pro (2023)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2023/Latest/QuickBooksProSub2023.exe)
-- [QuickBooks Desktop Pro (2022)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2022/Latest/QuickBooksProSub2022.exe)
-- [QuickBooks Desktop Pro (2021)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2021/Latest/QuickBooksProSub2021.exe)
-
 ## Instructions for activation
 
 1. Run `qbactivator.cmd` and ensure that a QuickBooks software is installed before you continue
@@ -46,7 +40,7 @@ Available QuickBooks Desktop Software from Intuit
 9. Click OK
 
 > **Warning**  
-> **DO NOT** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
+> **Do not** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
 
 10. Click "Remind me later"
 11. Click "Help" in the menu bar
