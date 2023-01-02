@@ -69,7 +69,7 @@ popd
 @REM start notepad.exe "qblicense.key"
 
 
-if not exist "%DATASTORE%" ( mkdir %DATASTORE% )
+if not exist "%DATASTORE%" ( mkdir "%DATASTORE%" )
 if exist "%DATASTORE%\EntitlementDataStore.ecml" ( ren "%DATASTORE%\EntitlementDataStore.ecml" "EntitlementDataStore.ecml.old" )
 copy /v /y /z "%~dp0qbeds.dat" "%DATASTORE%\EntitlementDataStore.ecml" >nul
 copy /v /y /z "%~dp0PartitionData.xml" "%DATASTORE%\PartitionData.xml" >nul
