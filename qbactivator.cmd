@@ -69,20 +69,17 @@ popd
 @REM start notepad.exe "qblicense.key"
 
 
+@REM echo.
+@REM echo Please ensure that a QuickBooks product is installed before
+@REM echo you continue with the patch. Continue when ready.
+@REM echo. & pause
+
 if not exist "%DATASTORE%" ( mkdir "%DATASTORE%" )
 if exist "%DATASTORE%\EntitlementDataStore.ecml" ( ren "%DATASTORE%\EntitlementDataStore.ecml" "EntitlementDataStore.ecml.old" )
 copy /v /y /z "%~dp0qbeds.dat" "%DATASTORE%\EntitlementDataStore.ecml" >nul
 copy /v /y /z "%~dp0PartitionData.xml" "%DATASTORE%\PartitionData.xml" >nul
 copy /v /y /z "%~dp0EntitlementClient.config" "%DATASTORE%\EntitlementClient.config" >nul
 copy /v /y /z "%~dp0RemotingServer.config" "%DATASTORE%\RemotingServer.config" >nul
-pause & goto exitQBA
-
-
-
-echo.
-echo Please ensure that a QuickBooks product is installed before
-echo you continue with the patch. Continue when ready.
-echo. & pause
 
 :: end QuickBooks background processes
 cls & echo.
@@ -104,6 +101,7 @@ taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
 taskkill /f /fi "imagename eq qb*" /f /t >nul 2>&1
 taskkill /f /fi "imagename eq intuit*" /f /t >nul 2>&1
 echo. & echo Done.
+pause & goto exitQBA
 
 :: prepare for activation
 @REM if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
