@@ -6,7 +6,8 @@ set uivr=0.16
 set "wdir=%~dp0"
 set "pwsh=powershell -nop -c"
 set "PATCHFOLDER=%systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
-
+set "DATASTORE=%programdata%\Intuit\Entitlement Client\v8"
+"
 :: PowerShell config
 :# Disabling argument expansion avoids issues with ! in arguments.
 setlocal EnableExtensions DisableDelayedExpansion
@@ -69,11 +70,26 @@ echo Please ensure that a QuickBooks product is installed before
 echo you continue with the patch. Continue when ready.
 echo. & pause
 
-:: end all QuickBooks processes
+:: end QuickBooks background processes
 cls & echo.
 echo Attempting to close any running QuickBooks processes...
-"%systemroot%\system32\taskkill.exe" /fi "imagename eq qb*" /f /t >nul
-"%systemroot%\system32\taskkill.exe" /fi "imagename eq intuit*" /f /t >nul
+taskkill /f /im qbw.exe >nul 2>&1
+taskkill /f /im qbw32.exe >nul 2>&1
+taskkill /f /im qbupdate.exe >nul 2>&1
+taskkill /f /im qbhelp.exe >nul 2>&1
+taskkill /f /im QBCFMonitorService.exe >nul 2>&1
+taskkill /f /im QBUpdateService.exe >nul 2>&1
+taskkill /f /im IBuEngHost.exe >nul 2>&1
+taskkill /f /im msiexec.exe >nul 2>&1
+taskkill /f /im mscorsvw.exe >nul 2>&1
+taskkill /f /im QBWebConnector.exe >nul 2>&1
+taskkill /f /im QBDBMgr9.exe >nul 2>&1
+taskkill /f /im QBDBMgr.exe >nul 2>&1
+taskkill /f /im QBDBMgrN.exe >nul 2>&1
+taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
+taskkill /f /fi "imagename eq qb*" /f /t >nul 2>&1
+taskkill /f /fi "imagename eq intuit*" /f /t >nul 2>&1
+if exist "%DATASTORE%\EntitlementDataStore.ecml" ( ren "%DATASTORE%\EntitlementDataStore.ecml" "EntitlementDataStore.ecml.old" )
 echo. & echo Done.
 
 :: prepare for activation
@@ -138,8 +154,8 @@ if %ERRORLEVEL% EQU 1 (
 
 :exitQBA
 :: clean up files and exit script
-taskkill /F /FI "WindowTitle eq qblicense*" >nul
-taskkill /F /FI "WindowTitle eq qbreadme*" >nul
+taskkill /f /fi "WindowTitle eq qblicense*" >nul
+taskkill /f /fi "WindowTitle eq qbreadme*" >nul
 del "%wdir%qblicense.key" >nul
 del "%wdir%qbreadme.md" >nul
 goto :eof
@@ -169,6 +185,12 @@ PRODUCT NUMBER (MULTI): 818-769
 LICENSE NUMBER 1: 0106-3903-4389-908
 LICENSE NUMBER 2: 2421-4122-2213-596
 PRODUCT NUMBER (MULTI): 595-828
+
+*
+
+*
+
+*
 
 --- Other QuickBooks installation keys ---
 
@@ -204,44 +226,6 @@ the help menu, select "Buy QuickBooks" and enter:
 LICENSE NUMBER: 1063-0575-1585-222 (payroll and 30 user licenses)
 PRODUCT NUMBER: 346-856
 --------------------------------------------------
-
---- Other License Numbers ---
-
-2060-3140-2137-757
-4313-3083-4404-680
-7288-6213-0008-368
-3065-6411-0050-601
-5412-4172-2117-785
-3539-4034-6268-323
-1063-0575-1585-222
-5723-8023-1742-127
-3514-8257-2451-340
-8084-0146-5102-389
-2871-6668-0234-740
-8125-0740-6632-044
-5603-1063-2219-399
-1677-1051-7358-766
-6085-1651-5843-639
-8334-3508-1503-607
-3786-3463-4323-932
-1018-0261-5280-366
-1085-7173-8518-953
-5845-4664-6404-787
-2680-8280-0226-715
-6467-4834-0352-604
-6050-7526-8385-286
-3223-7706-6704-588
-5887-3854-6143-045
-2600-8546-3187-971
-2432-8350-0765-232
-3671-4811-7368-433
-2615-2667-8462-033
-1155-0644-7120-676
-4028-1687-5054-653
-3226-1853-4637-229
-5412-4172-2117-785
-2476-4075-0259-061
-7782-7368-3420-980
 
 - neuralpain // 'cause why not? -
 :qblicense:
