@@ -7,7 +7,7 @@ set "wdir=%~dp0"
 set "pwsh=powershell -nop -c"
 set "PATCHFOLDER=%systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
 set "DATASTORE=%programdata%\Intuit\Entitlement Client\v8"
-"
+
 :: PowerShell config
 :# Disabling argument expansion avoids issues with ! in arguments.
 setlocal EnableExtensions DisableDelayedExpansion
