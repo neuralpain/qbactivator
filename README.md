@@ -27,12 +27,6 @@ Available QuickBooks POS Software from Intuit
 - [Update for QuickBooks Point Of Sale V18 (2018)](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
 - [Update for QuickBooks Point Of Sale V12 (2015)](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
 
-Available QuickBooks Desktop Software from Intuit
-
-- [QuickBooks Desktop Pro (2023)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2023/Latest/QuickBooksProSub2023.exe)
-- [QuickBooks Desktop Pro (2022)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2022/Latest/QuickBooksProSub2022.exe)
-- [QuickBooks Desktop Pro (2021)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2021/Latest/QuickBooksProSub2021.exe)
-
 ## Instructions for activation
 
 1. Run `qbactivator.cmd` and ensure that a QuickBooks software is installed before you continue
