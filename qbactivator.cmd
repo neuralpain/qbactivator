@@ -2,7 +2,7 @@
 @echo off
 mode 75,25
 title qbactivator
-set uivr=0.16
+set uivr=0.16.1
 set "wdir=%~dp0"
 set "pwsh=powershell -nop -c"
 set "PATCHFOLDER=%systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
@@ -41,7 +41,7 @@ goto :eof
 
 :startQBA
 cls & echo.
-echo qbactivator v0.16
+echo qbactivator v0.16.1
 echo.
 echo Activation script for QuickBooks Point Of Sale Software
 echo (and more) on Windows. Originally created for Point of Sale
@@ -69,11 +69,25 @@ echo Please ensure that a QuickBooks product is installed before
 echo you continue with the patch. Continue when ready.
 echo. & pause
 
-:: end all QuickBooks processes
+:: end QuickBooks background processes
 cls & echo.
 echo Attempting to close any running QuickBooks processes...
-"%systemroot%\system32\taskkill.exe" /fi "imagename eq qb*" /f /t >nul
-"%systemroot%\system32\taskkill.exe" /fi "imagename eq intuit*" /f /t >nul
+taskkill /fi "imagename eq qb*" /f /t >nul 2>&1
+taskkill /fi "imagename eq intuit*" /f /t >nul 2>&1
+taskkill /f /im qbw.exe >nul 2>&1
+taskkill /f /im qbw32.exe >nul 2>&1
+taskkill /f /im qbupdate.exe >nul 2>&1
+taskkill /f /im qbhelp.exe >nul 2>&1
+taskkill /f /im QBCFMonitorService.exe >nul 2>&1
+taskkill /f /im QBUpdateService.exe >nul 2>&1
+taskkill /f /im IBuEngHost.exe >nul 2>&1
+taskkill /f /im msiexec.exe >nul 2>&1
+taskkill /f /im mscorsvw.exe >nul 2>&1
+taskkill /f /im QBWebConnector.exe >nul 2>&1
+taskkill /f /im QBDBMgr9.exe >nul 2>&1
+taskkill /f /im QBDBMgr.exe >nul 2>&1
+taskkill /f /im QBDBMgrN.exe >nul 2>&1
+taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
 echo. & echo Done.
 
 :: prepare for activation
@@ -88,7 +102,7 @@ if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
   pause
   goto :exitQBA
 ) else ( ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul )
-copy /v /y /z "%~dp0qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
+copy /v /y /z "%wdir%qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
 cls & echo.
 net start "Intuit Entitlement Service v8"
 net start "QBPOSDBServiceV11"
@@ -109,8 +123,22 @@ echo Step 21 in "qbreadme.md". Once completed 21 - 35, then continue.
 echo. & pause
 
 :: end activation and end all QuickBooks processes
-"%systemroot%\system32\taskkill.exe" /fi "imagename eq qb*" /f /t >nul
-"%systemroot%\system32\taskkill.exe" /fi "imagename eq intuit*" /f /t >nul
+taskkill /fi "imagename eq qb*" /f /t >nul 2>&1
+taskkill /fi "imagename eq intuit*" /f /t >nul 2>&1
+taskkill /f /im qbw.exe >nul 2>&1
+taskkill /f /im qbw32.exe >nul 2>&1
+taskkill /f /im qbupdate.exe >nul 2>&1
+taskkill /f /im qbhelp.exe >nul 2>&1
+taskkill /f /im QBCFMonitorService.exe >nul 2>&1
+taskkill /f /im QBUpdateService.exe >nul 2>&1
+taskkill /f /im IBuEngHost.exe >nul 2>&1
+taskkill /f /im msiexec.exe >nul 2>&1
+taskkill /f /im mscorsvw.exe >nul 2>&1
+taskkill /f /im QBWebConnector.exe >nul 2>&1
+taskkill /f /im QBDBMgr9.exe >nul 2>&1
+taskkill /f /im QBDBMgr.exe >nul 2>&1
+taskkill /f /im QBDBMgrN.exe >nul 2>&1
+taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
 
 :: restore files to original state
 copy /v /y /z "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
@@ -119,27 +147,30 @@ fc "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "%PATCHFOLDER%\In
 :: error handling if files have not been restored
 if %ERRORLEVEL% EQU 1 (
   cls & echo.
-  echo The patcher ran into a problem while attempting to restore the files.
-  echo. & echo Attempting to restore files . . .
-  echo Unable to restore files
-  
+  echo The script ran into a problem while attempting to restore the files.
   explorer.exe %PATCHFOLDER%
-
-  echo Patcher will now close. & pause
-  echo. & pause
+  echo. & echo A window should be opened to the path
+  echo "%PATCHFOLDER%"
+  echo. & echo Do the following to resolve the error:
+  echo 1. Delete "Intuit.Spc.Map.EntitlementClient.Common.dll"
+  echo 2. Remove the ".bak" extension from "Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
+  pause
+  cls & echo.
+  echo Patcher will now close.
+  ping -n 3 127.0.0.1 >nul
   goto exitQBA
 ) else (
   cls & echo.
   del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
   echo Patch completed without errors. Patcher will now close.
-  echo. & pause
+  ping -n 3 127.0.0.1 >nul
   goto exitQBA
 )
 
-:exitQBA
 :: clean up files and exit script
-taskkill /F /FI "WindowTitle eq qblicense*" >nul
-taskkill /F /FI "WindowTitle eq qbreadme*" >nul
+:exitQBA
+taskkill /f /fi "WindowTitle eq qblicense*" >nul
+taskkill /f /fi "WindowTitle eq qbreadme*" >nul
 del "%wdir%qblicense.key" >nul
 del "%wdir%qbreadme.md" >nul
 goto :eof
@@ -205,70 +236,25 @@ LICENSE NUMBER: 1063-0575-1585-222 (payroll and 30 user licenses)
 PRODUCT NUMBER: 346-856
 --------------------------------------------------
 
---- Other License Numbers ---
-
-2060-3140-2137-757
-4313-3083-4404-680
-7288-6213-0008-368
-3065-6411-0050-601
-5412-4172-2117-785
-3539-4034-6268-323
-1063-0575-1585-222
-5723-8023-1742-127
-3514-8257-2451-340
-8084-0146-5102-389
-2871-6668-0234-740
-8125-0740-6632-044
-5603-1063-2219-399
-1677-1051-7358-766
-6085-1651-5843-639
-8334-3508-1503-607
-3786-3463-4323-932
-1018-0261-5280-366
-1085-7173-8518-953
-5845-4664-6404-787
-2680-8280-0226-715
-6467-4834-0352-604
-6050-7526-8385-286
-3223-7706-6704-588
-5887-3854-6143-045
-2600-8546-3187-971
-2432-8350-0765-232
-3671-4811-7368-433
-2615-2667-8462-033
-1155-0644-7120-676
-4028-1687-5054-653
-3226-1853-4637-229
-5412-4172-2117-785
-2476-4075-0259-061
-7782-7368-3420-980
-
-- neuralpain // 'cause why not? -
+@neuralpain // 'cause why not?
 :qblicense:
 
 :: export instructions to text file
 :qbreadme:
-# [qbactivator](https://github.com/neuralpain/qbactivator) - Minified README
+# [qbactivator](https://github.com/neuralpain/qbactivator) - Minified README v1.3
 
-Only qbactivator.cmd and qbpatch.dat are required for activation. The script
-will provide you with the instructions you need.
+### A few things before you start
 
-- Software **MUST** be opened as administrator, which is done by right-clicking
-  the shortcut and click "Run as administrator". To make that action permanent,
-  right click the shortcut, click the "Compatibility" tab, check the box that
-  says "Run this program as an administrator" and click OK.
+- QuickBooks software **must** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
+
 - To upgrade to Multistore if you have already activated it, jump to step 24.
-- Don't launch QuickBooks yet.
-- Avoid installing updates, Intuit will probably block this in the future.
 
-## Downloads & Updates
+- Normally, it's recommended to avoid installing updates because Intuit will probably block this in the future, but I've never had any issues with updates when testing.
 
-If installing QuickBooks for the first time, do not launch QuickBooks after
-installation. Uncheck the "Launch QuickBooks" box and click Finish.
+- If installing QuickBooks for the first time, do not launch QuickBooks after installation. Uncheck the "Launch QuickBooks" box and click Finish.
 
-Check out the QuickBooks product download form for earlier downloads or
-additional QuickBooks Desktop software that isn't included in this document: 
-<https://downloads.quickbooks.com/app/qbdt/products>
+> **Note**  
+> `qbactivator.cmd` and `qbpatch.dat` are both required for proper activation. You should have these files extracted to the same location and run the activation script. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the patch will not continue.
 
 ## Instructions for activation
 
@@ -283,31 +269,34 @@ additional QuickBooks Desktop software that isn't included in this document:
 8. Click Next
 9. Click OK
 
-> NOTE: **DO NOT** click "Register now" or press the [ENTER] key at this point.
+> **Warning**  
+> **Do not** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
 
 10. Click "Remind me later"
 11. Click "Help" in the menu bar
 12. Click "Registration"
 13. Click "Register by phone now"
-14. Enter the code 99999930
+14. Enter the code `99999930`
 15. Click Next
 16. Click Finish
 
-> NOTE: The following steps (17-23 is optional)
+> **Note**  
+> The following steps (17-23 is optional)
 
 17. To add more users, click "Help"
 18. Click "Manage My License"
 19. Click "Buy Additional User License"
 20. Enter the code for the number of users you want
 
-> NOTE: For 5 users use 9999995; For 30 users use 99999930, etc.
+> **Note**  
+> For 5 users use `9999995`; For 30 users use `99999930`, etc.
 
 21. Click Next
 22. Click Finish
 23. Follow the remaining instructions in the activator (if any) to finish
     the activation.
 
-**To upgrade to Multistore - Optional but recommended**
+### To upgrade to Multistore - Optional but recommended
 
 24. With the activator still running, Click Help
 25. Click "Try Point of Sale Multistore FREE"
@@ -326,9 +315,10 @@ additional QuickBooks Desktop software that isn't included in this document:
 37. Click Finish
 38. Exit the software
 
-> NOTE: To add users to Multistore, repeat steps 17-22.
+> **Note**  
+> To add users to Multistore, repeat steps 17-22.
 
-- neuralpain // 'cause why not? -
+@neuralpain // 'cause why not?
 :qbreadme:
 
 # ------------------------------------ #
