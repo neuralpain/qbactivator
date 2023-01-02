@@ -7,7 +7,7 @@ set "wdir=%~dp0"
 set "pwsh=powershell -nop -c"
 set "PATCHFOLDER=%systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
 set "DATASTORE=%programdata%\Intuit\Entitlement Client\v8"
-"
+
 :: PowerShell config
 :# Disabling argument expansion avoids issues with ! in arguments.
 setlocal EnableExtensions DisableDelayedExpansion
@@ -25,10 +25,10 @@ echo Please wait . . .
 fsutil dirty query %systemdrive% >nul
 :: if error, we do not have admin.
 if %ERRORLEVEL% NEQ 0 (
-  cls & echo.
-  echo This patcher requires administrative priviledges.
-  echo Attempting to elevate...
-  goto UAC_Prompt
+cls & echo.
+echo This patcher requires administrative priviledges.
+echo Attempting to elevate...
+goto UAC_Prompt
 ) else ( goto :startQBA )
 
 :UAC_Prompt
@@ -105,16 +105,18 @@ pause & goto exitQBA
 
 :: prepare for activation
 @REM if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
-@REM   cls & echo.
-@REM   echo The Entitlement Client was not found.
-@REM   echo The patch cannot be completed.
-@REM   echo.
-@REM   echo Please ensure that a QuickBooks product is installed.
-@REM   echo The patcher will now close.
-@REM   echo.
-@REM   pause
-@REM   goto :exitQBA
-@REM ) else ( ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul )
+@REM cls & echo.
+@REM echo The Entitlement Client was not found.
+@REM echo The patch cannot be completed.
+@REM echo.
+@REM echo Please ensure that a QuickBooks product is installed.
+@REM echo The patcher will now close.
+@REM echo.
+@REM pause
+@REM goto :exitQBA
+@REM ) else ( 
+@REM ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul
+@REM )
 
 @REM copy /v /y /z "%~dp0qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
 
@@ -161,24 +163,24 @@ pause & goto exitQBA
 
 @REM :: error handling if files have not been restored
 @REM if %ERRORLEVEL% EQU 1 (
-@REM   cls & echo.
-@REM   echo The patcher ran into a problem while attempting to restore the files.
-@REM   echo. & echo Attempting to restore files . . .
-@REM   echo Unable to restore files & pause
-@REM   start explorer.exe %PATCHFOLDER%
-@REM   cls & echo. & echo Do the following to resolve the error:
-@REM   echo 1. Delete Intuit.Spc.Map.EntitlementClient.Common.dll
-@REM   echo 2. Remove the .bak extension from Intuit.Spc.Map.EntitlementClient.Common.dll.bak
-@REM   pause
-@REM   echo Patcher will now close.
-@REM   ping -n 3 127.0.0.1 >nul
-@REM   goto exitQBA
+@REM cls & echo.
+@REM echo The patcher ran into a problem while attempting to restore the files.
+@REM echo. & echo Attempting to restore files . . .
+@REM echo Unable to restore files & pause
+@REM start explorer.exe %PATCHFOLDER%
+@REM cls & echo. & echo Do the following to resolve the error:
+@REM echo 1. Delete Intuit.Spc.Map.EntitlementClient.Common.dll
+@REM echo 2. Remove the .bak extension from Intuit.Spc.Map.EntitlementClient.Common.dll.bak
+@REM pause
+@REM echo Patcher will now close.
+@REM ping -n 3 127.0.0.1 >nul
+@REM goto exitQBA
 @REM ) else (
-@REM   cls & echo.
-@REM   del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
-@REM   echo Patch completed without errors. Patcher will now close.
-@REM   ping -n 3 127.0.0.1 >nul
-@REM   goto exitQBA
+@REM cls & echo.
+@REM del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
+@REM echo Patch completed without errors. Patcher will now close.
+@REM ping -n 3 127.0.0.1 >nul
+@REM goto exitQBA
 @REM )
 
 :exitQBA
