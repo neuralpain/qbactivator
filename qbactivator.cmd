@@ -3,9 +3,28 @@
 mode 75,25
 title qbactivator
 set uivr=0.17
+
+:: working directory
 set "wdir=%~dp0"
+
+:: PowerShell
 set "pwsh=PowerShell -NoP -C"
+
+:: Entitlememt client folder
 set "PATCHFOLDER=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
+
+:: QuickBooks POS v19
+set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0"
+
+:: QuickBooks POS v18
+set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0"
+
+:: QuickBooks POS v12
+set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 12.0"
+
+:: QuickBooks POS v11
+set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 11.0"
+
 
 :: PowerShell config
 :# Disabling argument expansion avoids issues with ! in arguments.
@@ -14,17 +33,14 @@ setlocal EnableExtensions DisableDelayedExpansion
 set ARGS=%*
 if defined ARGS set ARGS=%ARGS:"=\"%
 if defined ARGS set ARGS=%ARGS:'=''%
-:: perform simple hashcheck for patch file integrity
-%pwsh% ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '} %ARGS%')"
-if %ERRORLEVEL% NEQ 0 ( exit )
 
 :: check admin permissions
 cls & echo.
 echo Please wait . . .
 fsutil dirty query %systemdrive% >nul
 :: if error, we do not have admin.
+cls & echo.
 if %ERRORLEVEL% NEQ 0 (
-  cls & echo.
   echo This patcher requires administrative priviledges.
   echo Attempting to elevate...
   goto UAC_Prompt
@@ -40,6 +56,12 @@ del "%tmp%\cmdUAC.vbs"
 goto :eof
 
 :startQBA
+:: perform simple hashcheck for patch file integrity
+:: create folders for patch and start installer
+%pwsh% ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '} %ARGS%')"
+if %ERRORLEVEL% NEQ 0 ( exit )
+
+:: preface
 cls & echo.
 echo qbactivator v0.17
 echo.
@@ -99,6 +121,17 @@ copy /v /y /z "%wdir%qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClien
 cls & echo.
 net start "Intuit Entitlement Service v8"
 net start "QBPOSDBServiceV11"
+
+:: start quickbooks
+if exist "%QBPOSDIR19%" ( 
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%\QBPOSShell.exe'"
+) else if exist "%QBPOSDIR18%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%\QBPOSShell.exe'"
+) else if exist "%QBPOSDIR12%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%\QBPOSShell.exe'"
+) else if exist "%QBPOSDIR11%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%\QBPOSShell.exe'"
+)
 
 cls & echo.
 echo Follow the steps below to activate QuickBooks software.
@@ -290,21 +323,21 @@ if (Test-Path -Path C:\ProgramData\Intuit -PathType Leaf) { rmdir C:\ProgramData
 
 if (Test-Path -Path .\$EXE_QBPOSV19 -PathType Leaf) {
   if (-not(Test-Path -Path $QBDATA19 -PathType Leaf)) { mkdir $QBDATA19 >$null 2>&1 }
-  Out-File -FilePath $QBDATA19\qbregistration.dat -InputObject $QBPOSV19 -NoNewline
+  Out-File -FilePath $QBDATA19\qbregistration.dat -InputObject $QBPOSV19 -Encoding UTF8 -NoNewline
   Start-Process -FilePath .\$EXE_QBPOSV19
 } elseif (Test-Path -Path .\$EXE_QBPOSV18 -PathType Leaf) {
   if (-not(Test-Path -Path $QBDATA18 -PathType Leaf)) { mkdir $QBDATA18 >$null 2>&1 }
-  Out-File -FilePath $QBDATA18\qbregistration.dat -InputObject $QBPOSV18 -NoNewline
+  Out-File -FilePath $QBDATA18\qbregistration.dat -InputObject $QBPOSV18 -Encoding UTF8 -NoNewline
   Start-Process -FilePath .\$EXE_QBPOSV18
 } elseif (Test-Path -Path .\$EXE_QBPOSV12 -PathType Leaf) {
   if (-not(Test-Path -Path $QBDATA12 -PathType Leaf)) { mkdir $QBDATA12 >$null 2>&1 }
-  Out-File -FilePath $QBDATA12\qbregistration.dat -InputObject $QBPOSV12 -NoNewline
+  Out-File -FilePath $QBDATA12\qbregistration.dat -InputObject $QBPOSV12 -Encoding UTF8 -NoNewline
   Start-Process -FilePath .\$EXE_QBPOSV12
 } elseif (Test-Path -Path .\$EXE_QBPOSV11 -PathType Leaf) {
   if (-not(Test-Path -Path $QBDATA11 -PathType Leaf)) { mkdir $QBDATA11 >$null 2>&1 }
-  Out-File -FilePath $QBDATA11\qbregistration.dat -InputObject $QBPOSV11 -NoNewline
+  Out-File -FilePath $QBDATA11\qbregistration.dat -InputObject $QBPOSV11 -Encoding UTF8 -NoNewline
   Start-Process -FilePath .\$EXE_QBPOSV11
 } else {
-  Write-Host "QuickBooks installer was not found. Patcher will now close."
-  Start-Sleep -Seconds 1000; exit 1
+  Write-Host "QuickBooks installer was not found. Assuming activation-only request."
+  Start-Sleep -Seconds 5; exit 0
 }
