@@ -40,7 +40,7 @@ Available QuickBooks POS Software from Intuit
 9. Click OK
 
 > **Warning**  
-> **DO NOT** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
+> **Do not** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
 
 10. Click "Remind me later"
 11. Click "Help" in the menu bar
