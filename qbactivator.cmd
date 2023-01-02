@@ -61,7 +61,7 @@ pushd "%wdir%"
 :: export and open files
 %pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qblicense\:.*'; [IO.File]::WriteAllText('qblicense.key',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
 %pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.md',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
-%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbpartdata\:.*'; [IO.File]::WriteAllText('PartitionData.xml',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
+%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbpartdata\:.*'; [IO.File]::WriteAllText('PartitionData.xml',$f[1].Trim(),[System.Text.Encoding]::Unicode)"
 %pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbeccfg\:.*'; [IO.File]::WriteAllText('EntitlementClient.config',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
 %pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbrscfg\:.*'; [IO.File]::WriteAllText('RemotingServer.config',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
 popd
@@ -69,7 +69,7 @@ popd
 @REM start notepad.exe "qblicense.key"
 
 
-
+if not exist "%DATASTORE%" ( mkdir %DATASTORE% )
 if exist "%DATASTORE%\EntitlementDataStore.ecml" ( ren "%DATASTORE%\EntitlementDataStore.ecml" "EntitlementDataStore.ecml.old" )
 copy /v /y /z "%~dp0qbeds.dat" "%DATASTORE%\EntitlementDataStore.ecml" >nul
 copy /v /y /z "%~dp0PartitionData.xml" "%DATASTORE%\PartitionData.xml" >nul
