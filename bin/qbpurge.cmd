@@ -12,7 +12,7 @@ if %ERRORLEVEL% NEQ 0 (
   echo Requesting administrative priviledges.
   echo Attempting to elevate...
   goto UAC_Prompt
-) else ( goto :startQBA )
+) else ( goto :DeleteIntuitFiles )
 
 :UAC_Prompt
 set n=%0 %*
@@ -27,3 +27,6 @@ goto :eof
 rd /s /q %programdata%\Intuit
 rd /s /q %programfiles(x86)%\Intuit
 rd /s /q %programfiles(x86)%\Common Files\Intuit
+
+cls & echo. & echo Intuit purge complete.
+ping -n 3 127.0.0.1 >nul
