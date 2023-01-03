@@ -3,34 +3,28 @@
 Activation script for QuickBooks Point Of Sale Software on Windows.
 
 ### A few things before you start
-- QuickBooks software **must** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
-- To upgrade to Multistore if you have already activated it, jump to step 24.
-- Normally, it's recommended to avoid installing updates because Intuit will probably block this in the future, but I've never had any issues with updates when testing.
+
+- There is no need for you to run the insatller manually or enter any keys into the installer. The script will take care of that part for you. All you need to do is click "Next" and "Finish".
+
 - If installing QuickBooks for the first time, do not launch QuickBooks after installation. Uncheck the "Launch QuickBooks" box and click Finish.
+
+- Normally, it's recommended to avoid installing updates through the application because it will probably be blocked in the future; but I've never had any issues when testing with **MANUAL** updates downloaded from Intuit.
+
+- To upgrade to Multistore if you have already activated it, jump to step 24.
 
 > **Warning**  
 > This activator was designed to work with only one version of QuickBooks installed. If there are multiple versions, it will use the most recent version of the software.
 
+## The Setup
+
+Extract `qbactivator.cmd` and `qbpatch.dat` to the **same folder** containing the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
+
+Ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe`, `QuickBooksPOSV12.exe` etc. If the name has changed, the installer will not be recognized by the activator.
+
 > **Note**  
-> `qbactivator.cmd` and `qbpatch.dat` are both required for proper activation. You should have these files extracted to the same location and run the activation script. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the patch will not continue.
+> By default, the activator will also search for the installer executable and assumes that you will be installing and activating QuickBooks all at once, however it is not a requirement for the script to continue. Without an executable present, the script assumes an `activation-only` request and ignores installation.
 
-## Downloads & Updates
-
-Look at the [QuickBooks product download form](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included in this document.
-
-Available QuickBooks POS Software from Intuit
-
-- [QuickBooks Point Of Sale V19 (2019)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2019/Latest/QuickBooksPOSV19.exe)
-- [QuickBooks Point Of Sale V18 (2018)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2018/Latest/QuickBooksPOSV18.exe)
-- [QuickBooks Point Of Sale V12 (2015)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2015/Latest/QuickBooksPOSV12.exe)
-
-*Optional updates* for QuickBooks POS Software from Intuit
-
-- [Update for QuickBooks Point Of Sale V19 (2019)](https://qbpos.intuit.com/POS19.0/WebQBPOSPatch_V19R5.exe)
-- [Update for QuickBooks Point Of Sale V18 (2018)](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
-- [Update for QuickBooks Point Of Sale V12 (2015)](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
-
-## Instructions for activation
+## Instructions for Activation
 
 1. Run `qbactivator.cmd` and ensure that a QuickBooks software is installed before you continue
 2. Open the installed QuickBooks software. You will be prompted about the need for Administrator access
@@ -100,14 +94,26 @@ If the activator closes unexpectedly during the activation process (after you co
 3. Remove the `.bak` extension from `Intuit.Spc.Map.EntitlementClient.Common.dll.bak`
 4. Restart the activator
 
+## Downloads & Updates
+
+Browse the [QuickBooks product download form](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included here.
+
+### Available QuickBooks POS Software from Intuit
+
+- [QuickBooks Point Of Sale V19 (2019)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2019/Latest/QuickBooksPOSV19.exe)
+- [QuickBooks Point Of Sale V18 (2018)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2018/Latest/QuickBooksPOSV18.exe)
+- [QuickBooks Point Of Sale V12 (2015)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2015/Latest/QuickBooksPOSV12.exe)
+
+### *Optional updates* for QuickBooks POS Software from Intuit
+
+- [Update for QuickBooks Point Of Sale V19 (2019)](https://qbpos.intuit.com/POS19.0/WebQBPOSPatch_V19R5.exe)
+- [Update for QuickBooks Point Of Sale V18 (2018)](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
+- [Update for QuickBooks Point Of Sale V12 (2015)](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
+
 ## Ongoing development
 
-- A more comprehensive AIO to correctly embed the patch file into the script. I encountered some issues with AveYo's [Compressed2Text](https://github.com/AveYo/Compressed2TXT) script that I am currently trying to work around.
+- A more comprehensive AIO to correctly embed the patch file into the script.
 - Better automated error handling for any misses in the file restoration process
-
-## Credits
-
-Thanks to Beast_iND (the original author), microbolt and dechronic for their work in previous versions of this activation script up to `v0.15`.
 
 ## License
 
