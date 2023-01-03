@@ -91,11 +91,11 @@ taskkill /f /im QBDBMgrN.exe >nul 2>&1
 taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
 echo. & echo Done.
 
-@REM pushd "%wdir%"
-@REM @set "0=%~f0"
-@REM :: export and open files
-@REM %pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.md',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
-@REM popd & start notepad.exe "qbreadme.md"
+:: export and open minified readme
+pushd "%wdir%"
+@set "0=%~f0"
+%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.md',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
+popd & start notepad.exe "qbreadme.md"
 
 :: prepare for activation
 if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
@@ -136,12 +136,14 @@ ping -n 3 127.0.0.1 >nul
 cls & echo.
 echo Follow the steps below to activate QuickBooks software.
 echo.
-echo 1. Open QuickBooks
-echo 2. Click "Help" then "Registration"
-echo 3. Click "Register by phone now"
-echo 4. Enter the code 99999930
-echo 5. Click Next
-echo 6. Click Finish
+echo 1. QuickBooks should open automatically
+echo -- if not, open it
+echo 2. Click "Remind me later"
+echo 3. Click "Help" then "Registration"
+echo 4. Click "Register by phone now"
+echo 5. Enter the code 99999930
+echo 6. Click Next
+echo 7. Click Finish
 echo.
 echo --- Continue when finished.
 echo.
@@ -179,7 +181,7 @@ if %ERRORLEVEL% EQU 1 (
   echo The patcher ran into a problem while attempting to restore the files.
   echo. & echo Attempting to restore files . . .
   echo Unable to restore files & pause
-  start explorer.exe %PATCHFOLDER%
+  explorer.exe %PATCHFOLDER%
   cls & echo. & echo Do the following to resolve the error:
   echo 1. Delete "Intuit.Spc.Map.EntitlementClient.Common.dll"
   echo 2. Remove the ".bak" extension from "Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
@@ -197,9 +199,7 @@ if %ERRORLEVEL% EQU 1 (
 
 :exitQBA
 :: clean up files and exit script
-taskkill /f /fi "WindowTitle eq qblicense*" >nul
 taskkill /f /fi "WindowTitle eq qbreadme*" >nul
-del "%wdir%qblicense.key" >nul
 del "%wdir%qbreadme.md" >nul
 goto :eof
 
@@ -319,8 +319,6 @@ $QBPOSV11 = '<Registration InstallDate="2023-01-01" LicenseNumber="1063-0575-158
 $QBPOSV12 = '<Registration InstallDate="2023-01-01" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
 $QBPOSV18 = '<Registration InstallDate="2023-01-01" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
 $QBPOSV19 = '<Registration InstallDate="2023-01-01" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
-
-if (Test-Path -Path C:\ProgramData\Intuit -PathType Leaf) { Remove-Item -Path C:\ProgramData\Intuit\* }
 
 if (Test-Path -Path .\$EXE_QBPOSV19 -PathType Leaf) {
   if (-not(Test-Path -Path $QBDATA19 -PathType Leaf)) { mkdir $QBDATA19 >$null 2>&1 }
