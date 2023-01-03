@@ -1,6 +1,6 @@
 <# :# begin Batch Script
 @set uivr=0.17
-@mode 75,25
+@mode 75,20
 @echo off
 @title qbactivator
 
@@ -14,16 +14,16 @@ set "pwsh=PowerShell -NoP -C"
 set "PATCHFOLDER=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
 
 :: QuickBooks POS v11
-set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 11.0"
+set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe"
 
 :: QuickBooks POS v12
-set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 12.0"
+set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 12.0\QBPOSShell.exe"
 
 :: QuickBooks POS v18
-set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0"
+set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0\QBPOSShell.exe"
 
 :: QuickBooks POS v19
-set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0"
+set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0\QBPOSShell.exe"
 
 :: PowerShell config
 :# Disabling argument expansion avoids issues with ! in arguments.
@@ -66,7 +66,7 @@ echo qbactivator v0.17
 echo.
 echo Activation script for QuickBooks POS.
 echo.
-echo Please ensure that a QuickBooks software is Completely
+echo Please ensure that a QuickBooks software is completely
 echo installed before you continue. Continue when ready.
 echo. & pause
 
@@ -123,14 +123,15 @@ net start "QBPOSDBServiceV11" >nul 2>&1
 cls & echo.
 echo Starting QuickBooks...
 if exist "%QBPOSDIR19%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%\QBPOSShell.exe'"
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%'"
 ) else if exist "%QBPOSDIR18%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%\QBPOSShell.exe'"
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%'"
 ) else if exist "%QBPOSDIR12%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%\QBPOSShell.exe'"
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%'"
 ) else if exist "%QBPOSDIR11%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%\QBPOSShell.exe'"
-) & ping -n 3 127.0.0.1 >nul
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%'"
+)
+ping -n 3 127.0.0.1 >nul
 
 cls & echo.
 echo Follow the steps below to activate QuickBooks software.
@@ -309,13 +310,13 @@ $EXE_QBPOSV12 = "QuickBooksPOSV12.exe"
 $EXE_QBPOSV18 = "QuickBooksPOSV18.exe"
 $EXE_QBPOSV19 = "QuickBooksPOSV19.exe"
 
-$QBDATA11 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 11.0"
-$QBDATA12 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 12.0"
+$QBDATA11 = "C:\ProgramData\Intuit\QuickBooks Point of Sale 11.0"
+$QBDATA12 = "C:\ProgramData\Intuit\QuickBooks Point of Sale 12.0"
 $QBDATA18 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 18.0"
 $QBDATA19 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 19.0"
 
 $QBPOSV11 = '<Registration InstallDate="2023-01-01" LicenseNumber="1063-0575-1585-222" ProductNumber="810-968"/>'
-$QBPOSV12 = '<Registration InstallDate="2023-01-01" LicenseNumber="6740-7656-8840-594" ProductNumber="015-985"/>'
+$QBPOSV12 = '<Registration InstallDate="2023-01-01" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
 $QBPOSV18 = '<Registration InstallDate="2023-01-01" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
 $QBPOSV19 = '<Registration InstallDate="2023-01-01" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
 
