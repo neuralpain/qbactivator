@@ -1,13 +1,9 @@
 <# :# begin Batch Script
-@set uivr=0.17
+@set uivr=0.17.0
 @mode 75,20
-@echo off
 @title qbactivator
-
-:: working directory
+@echo off
 set "wdir=%~dp0"
-
-:: PowerShell
 set "pwsh=PowerShell -NoP -C"
 
 :: Entitlememt client folder
@@ -62,13 +58,14 @@ if %ERRORLEVEL% NEQ 0 ( exit )
 
 :: preface
 cls & echo.
-echo qbactivator v0.17
+echo qbactivator v0.17.0
 echo.
 echo Activation script for QuickBooks POS.
 echo.
 echo Please ensure that a QuickBooks software is completely
 echo installed before you continue. Continue when ready.
-echo. & pause
+echo.
+pause
 
 :: end QuickBooks background processes
 cls & echo.
@@ -137,7 +134,7 @@ cls & echo.
 echo Follow the steps below to activate QuickBooks software.
 echo.
 echo 1. QuickBooks should open automatically
-echo -- if not, open it
+echo -- DO NOT check for updates
 echo 2. Click "Remind me later"
 echo 3. Click "Help" then "Registration"
 echo 4. Click "Register by phone now"
@@ -170,6 +167,7 @@ taskkill /f /im QBDBMgr9.exe >nul 2>&1
 taskkill /f /im QBDBMgr.exe >nul 2>&1
 taskkill /f /im QBDBMgrN.exe >nul 2>&1
 taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
+echo. & echo Done.
 
 :: restore files to original state
 copy /v /y /z "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
