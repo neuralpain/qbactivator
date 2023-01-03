@@ -1,8 +1,8 @@
 <# :# begin Batch Script
+@set uivr=0.17
+@mode 75,25
 @echo off
-mode 75,25
-title qbactivator
-set uivr=0.17
+@title qbactivator
 
 :: working directory
 set "wdir=%~dp0"
@@ -13,18 +13,17 @@ set "pwsh=PowerShell -NoP -C"
 :: Entitlememt client folder
 set "PATCHFOLDER=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
 
-:: QuickBooks POS v19
-set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0"
-
-:: QuickBooks POS v18
-set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0"
+:: QuickBooks POS v11
+set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 11.0"
 
 :: QuickBooks POS v12
 set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 12.0"
 
-:: QuickBooks POS v11
-set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 11.0"
+:: QuickBooks POS v18
+set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0"
 
+:: QuickBooks POS v19
+set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0"
 
 :: PowerShell config
 :# Disabling argument expansion avoids issues with ! in arguments.
@@ -64,19 +63,16 @@ if %ERRORLEVEL% NEQ 0 ( exit )
 :: preface
 cls & echo.
 echo qbactivator v0.17
-echo.
-echo Activation script for QuickBooks Point Of Sale
-echo Software on Windows.
-echo.
-echo -- neuralpain
+echo -----------------
+echo Activation script for QuickBooks POS.
 echo. & echo.
-echo Please ensure that a QuickBooks software is installed
-echo before you continue. Continue when ready.
+echo Please ensure that a QuickBooks software is Completely
+echo installed before you continue. Continue when ready.
 echo. & pause
 
 :: end QuickBooks background processes
 cls & echo.
-echo Terminating QB background processes...
+echo Terminating QB processes...
 taskkill /fi "imagename eq qb*" /f /t >nul 2>&1
 taskkill /fi "imagename eq intuit*" /f /t >nul 2>&1
 taskkill /f /im qbw.exe >nul 2>&1
@@ -108,30 +104,25 @@ if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
   echo The patch cannot be completed.
   echo.
   echo Please ensure that a QuickBooks product is installed.
-  echo The patcher will now close.
-  echo.
-  pause
-  goto :exitQBA
+  ping -n 3 127.0.0.1 >nul
+  cls & echo.
+  echo The activator will now terminate.
+  ping -n 3 127.0.0.1 >nul
+  goto exitQBA
 ) else ( 
   ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul
+  copy /v /y /z "%wdir%qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
 )
-
-copy /v /y /z "%wdir%qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
 
 cls & echo.
 net start "Intuit Entitlement Service v8"
 net start "QBPOSDBServiceV11"
 
 :: start quickbooks
-if exist "%QBPOSDIR19%" ( 
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%\QBPOSShell.exe'"
-) else if exist "%QBPOSDIR18%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%\QBPOSShell.exe'"
-) else if exist "%QBPOSDIR12%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%\QBPOSShell.exe'"
-) else if exist "%QBPOSDIR11%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%\QBPOSShell.exe'"
-)
+if exist "%QBPOSDIR19%" %pwsh% "Start-Process -FilePath '%QBPOSDIR19%\QBPOSShell.exe'"
+else if exist "%QBPOSDIR18%" %pwsh% "Start-Process -FilePath '%QBPOSDIR18%\QBPOSShell.exe'"
+else if exist "%QBPOSDIR12%" %pwsh% "Start-Process -FilePath '%QBPOSDIR12%\QBPOSShell.exe'"
+else if exist "%QBPOSDIR11%" %pwsh% "Start-Process -FilePath '%QBPOSDIR11%\QBPOSShell.exe'"
 
 cls & echo.
 echo Follow the steps below to activate QuickBooks software.
@@ -151,7 +142,7 @@ echo. & pause
 
 :: end activation and end all QuickBooks processes
 cls & echo.
-echo Terminating QB background processes...
+echo Terminating QB processes...
 taskkill /fi "imagename eq qb*" /f /t >nul 2>&1
 taskkill /fi "imagename eq intuit*" /f /t >nul 2>&1
 taskkill /f /im qbw.exe >nul 2>&1
@@ -181,8 +172,8 @@ if %ERRORLEVEL% EQU 1 (
   echo Unable to restore files & pause
   start explorer.exe %PATCHFOLDER%
   cls & echo. & echo Do the following to resolve the error:
-  echo 1. Delete Intuit.Spc.Map.EntitlementClient.Common.dll
-  echo 2. Remove the .bak extension from Intuit.Spc.Map.EntitlementClient.Common.dll.bak
+  echo 1. Delete "Intuit.Spc.Map.EntitlementClient.Common.dll"
+  echo 2. Remove the ".bak" extension from "Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
   pause
   echo Patcher will now close.
   ping -n 3 127.0.0.1 >nul
@@ -292,32 +283,33 @@ additional QuickBooks Desktop software that isn't included in this document:
 
 $qbhash = "1682036591228F5AAB241D17AC8727AEA122D74F"
 if (-not(Test-Path -Path .\qbpatch.dat -PathType Leaf)) {
-  Write-Host "Patch file not found. Patcher will now close."
+  Write-Host "0x033: Patch file not found."
+  Write-Host "Activator will now close."
   Start-Sleep -Seconds 2; exit 1
 } else {
   $_hash = Get-FileHash qbpatch.dat -Algorithm SHA1 | Select-Object Hash
   $_hash = $_hash -split " "
   $_hash = $_hash.Trim("@{Hash=}")
   if ($_hash -ne $qbhash) {
-    Write-Host "Patch file is corrupted. Patcher will now close."
+    Write-Host "Patch file is corrupted. Activator will now close."
     Start-Sleep -Seconds 2; exit 1
   }
 }
 
-$EXE_QBPOSV19 = "QuickBooksPOSV19.exe"
-$EXE_QBPOSV18 = "QuickBooksPOSV18.exe"
-$EXE_QBPOSV12 = "QuickBooksPOSV12.exe"
 $EXE_QBPOSV11 = "QuickBooksPOSV11.exe"
+$EXE_QBPOSV12 = "QuickBooksPOSV12.exe"
+$EXE_QBPOSV18 = "QuickBooksPOSV18.exe"
+$EXE_QBPOSV19 = "QuickBooksPOSV19.exe"
 
-$QBDATA19 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 19.0"
-$QBDATA18 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 18.0"
-$QBDATA12 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 12.0"
 $QBDATA11 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 11.0"
+$QBDATA12 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 12.0"
+$QBDATA18 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 18.0"
+$QBDATA19 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 19.0"
 
-$QBPOSV19 = '<Registration InstallDate="2023-01-01" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
-$QBPOSV18 = '<Registration InstallDate="2023-01-01" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
-$QBPOSV12 = '<Registration InstallDate="2023-01-01" LicenseNumber="6740-7656-8840-594" ProductNumber="015-985"/>'
 $QBPOSV11 = '<Registration InstallDate="2023-01-01" LicenseNumber="1063-0575-1585-222" ProductNumber="810-968"/>'
+$QBPOSV12 = '<Registration InstallDate="2023-01-01" LicenseNumber="6740-7656-8840-594" ProductNumber="015-985"/>'
+$QBPOSV18 = '<Registration InstallDate="2023-01-01" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
+$QBPOSV19 = '<Registration InstallDate="2023-01-01" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
 
 if (Test-Path -Path C:\ProgramData\Intuit -PathType Leaf) { rmdir C:\ProgramData\Intuit\* }
 
