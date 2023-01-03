@@ -323,19 +323,19 @@ $QBPOSV19 = '<Registration InstallDate="2023-01-01" LicenseNumber="0106-3903-438
 if (Test-Path -Path C:\ProgramData\Intuit -PathType Leaf) { Remove-Item -Path C:\ProgramData\Intuit\* }
 
 if (Test-Path -Path .\$EXE_QBPOSV19 -PathType Leaf) {
-  if (-not(Test-Path -Path $QBDATA19 -PathType Leaf)) { New-Item -Path $QBDATA19 >$null 2>&1 }
+  if (-not(Test-Path -Path $QBDATA19 -PathType Leaf)) { mkdir $QBDATA19 >$null 2>&1 }
   Out-File -FilePath $QBDATA19\qbregistration.dat -InputObject $QBPOSV19 -Encoding UTF8 -NoNewline
   Start-Process -FilePath .\$EXE_QBPOSV19
 } elseif (Test-Path -Path .\$EXE_QBPOSV18 -PathType Leaf) {
-  if (-not(Test-Path -Path $QBDATA18 -PathType Leaf)) { New-Item -Path $QBDATA18 >$null 2>&1 }
+  if (-not(Test-Path -Path $QBDATA18 -PathType Leaf)) { mkdir $QBDATA18 >$null 2>&1 }
   Out-File -FilePath $QBDATA18\qbregistration.dat -InputObject $QBPOSV18 -Encoding UTF8 -NoNewline
   Start-Process -FilePath .\$EXE_QBPOSV18
 } elseif (Test-Path -Path .\$EXE_QBPOSV12 -PathType Leaf) {
-  if (-not(Test-Path -Path $QBDATA12 -PathType Leaf)) { New-Item -Path $QBDATA12 >$null 2>&1 }
+  if (-not(Test-Path -Path $QBDATA12 -PathType Leaf)) { mkdir $QBDATA12 >$null 2>&1 }
   Out-File -FilePath $QBDATA12\qbregistration.dat -InputObject $QBPOSV12 -Encoding UTF8 -NoNewline
   Start-Process -FilePath .\$EXE_QBPOSV12
 } elseif (Test-Path -Path .\$EXE_QBPOSV11 -PathType Leaf) {
-  if (-not(Test-Path -Path $QBDATA11 -PathType Leaf)) { New-Item -Path $QBDATA11 >$null 2>&1 }
+  if (-not(Test-Path -Path $QBDATA11 -PathType Leaf)) { mkdir $QBDATA11 >$null 2>&1 }
   Out-File -FilePath $QBDATA11\qbregistration.dat -InputObject $QBPOSV11 -Encoding UTF8 -NoNewline
   Start-Process -FilePath .\$EXE_QBPOSV11
 } else {
