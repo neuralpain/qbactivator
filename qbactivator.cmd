@@ -63,9 +63,9 @@ if %ERRORLEVEL% NEQ 0 ( exit )
 :: preface
 cls & echo.
 echo qbactivator v0.17
-echo -----------------
+echo.
 echo Activation script for QuickBooks POS.
-echo. & echo.
+echo.
 echo Please ensure that a QuickBooks software is Completely
 echo installed before you continue. Continue when ready.
 echo. & pause
@@ -122,11 +122,15 @@ net start "QBPOSDBServiceV11" >nul 2>&1
 :: start quickbooks
 cls & echo.
 echo Starting QuickBooks...
-if exist "%QBPOSDIR19%" %pwsh% "Start-Process -FilePath '%QBPOSDIR19%\QBPOSShell.exe'"
-else if exist "%QBPOSDIR18%" %pwsh% "Start-Process -FilePath '%QBPOSDIR18%\QBPOSShell.exe'"
-else if exist "%QBPOSDIR12%" %pwsh% "Start-Process -FilePath '%QBPOSDIR12%\QBPOSShell.exe'"
-else if exist "%QBPOSDIR11%" %pwsh% "Start-Process -FilePath '%QBPOSDIR11%\QBPOSShell.exe'"
-ping -n 2 127.0.0.1 >nul
+if exist "%QBPOSDIR19%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%\QBPOSShell.exe'"
+) else if exist "%QBPOSDIR18%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%\QBPOSShell.exe'"
+) else if exist "%QBPOSDIR12%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%\QBPOSShell.exe'"
+) else if exist "%QBPOSDIR11%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%\QBPOSShell.exe'"
+) & ping -n 3 127.0.0.1 >nul
 
 cls & echo.
 echo Follow the steps below to activate QuickBooks software.
