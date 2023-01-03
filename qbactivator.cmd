@@ -315,10 +315,10 @@ $QBDATA12 = "C:\ProgramData\Intuit\QuickBooks Point of Sale 12.0"
 $QBDATA18 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 18.0"
 $QBDATA19 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 19.0"
 
-$QBPOSV11 = '<Registration InstallDate="2013-06-01" LicenseNumber="1063-0575-1585-222" ProductNumber="810-968"/>'
-$QBPOSV12 = '<Registration InstallDate="2015-06-01" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
-$QBPOSV18 = '<Registration InstallDate="2018-06-01" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
-$QBPOSV19 = '<Registration InstallDate="2019-06-01" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
+$QBPOSV11 = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="810-968"/>'
+$QBPOSV12 = '<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
+$QBPOSV18 = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
+$QBPOSV19 = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
 
 if (Test-Path -Path .\$EXE_QBPOSV19 -PathType Leaf) {
   if (-not(Test-Path -Path $QBDATA19 -PathType Leaf)) { mkdir $QBDATA19 >$null 2>&1 }
