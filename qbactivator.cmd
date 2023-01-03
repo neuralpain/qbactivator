@@ -115,14 +115,18 @@ if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
 )
 
 cls & echo.
-net start "Intuit Entitlement Service v8"
-net start "QBPOSDBServiceV11"
+echo Starting services...
+net start "Intuit Entitlement Service v8" >nul 2>&1
+net start "QBPOSDBServiceV11" >nul 2>&1
 
 :: start quickbooks
+cls & echo.
+echo Starting QuickBooks...
 if exist "%QBPOSDIR19%" %pwsh% "Start-Process -FilePath '%QBPOSDIR19%\QBPOSShell.exe'"
 else if exist "%QBPOSDIR18%" %pwsh% "Start-Process -FilePath '%QBPOSDIR18%\QBPOSShell.exe'"
 else if exist "%QBPOSDIR12%" %pwsh% "Start-Process -FilePath '%QBPOSDIR12%\QBPOSShell.exe'"
 else if exist "%QBPOSDIR11%" %pwsh% "Start-Process -FilePath '%QBPOSDIR11%\QBPOSShell.exe'"
+ping -n 2 127.0.0.1 >nul
 
 cls & echo.
 echo Follow the steps below to activate QuickBooks software.
