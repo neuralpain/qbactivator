@@ -1,11 +1,25 @@
 <# :# begin Batch Script
+@set uivr=0.17.0
+@mode 60,16
+@title qbactivator
 @echo off
-mode 75,25
-title qbactivator
-set uivr=0.16.1
 set "wdir=%~dp0"
-set "pwsh=powershell -nop -c"
-set "PATCHFOLDER=%systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
+set "pwsh=PowerShell -NoP -C"
+
+:: Entitlememt client folder
+set "PATCHFOLDER=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
+
+:: QuickBooks POS v11
+set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe"
+
+:: QuickBooks POS v12
+set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 12.0\QBPOSShell.exe"
+
+:: QuickBooks POS v18
+set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0\QBPOSShell.exe"
+
+:: QuickBooks POS v19
+set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0\QBPOSShell.exe"
 
 :: PowerShell config
 :# Disabling argument expansion avoids issues with ! in arguments.
@@ -14,17 +28,14 @@ setlocal EnableExtensions DisableDelayedExpansion
 set ARGS=%*
 if defined ARGS set ARGS=%ARGS:"=\"%
 if defined ARGS set ARGS=%ARGS:'=''%
-:: perform simple hashcheck for patch file integrity
-%pwsh% ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '} %ARGS%')"
-if %ERRORLEVEL% NEQ 0 ( exit )
 
 :: check admin permissions
 cls & echo.
 echo Please wait . . .
 fsutil dirty query %systemdrive% >nul
 :: if error, we do not have admin.
+cls & echo.
 if %ERRORLEVEL% NEQ 0 (
-  cls & echo.
   echo This patcher requires administrative priviledges.
   echo Attempting to elevate...
   goto UAC_Prompt
@@ -40,38 +51,25 @@ del "%tmp%\cmdUAC.vbs"
 goto :eof
 
 :startQBA
+:: perform simple hashcheck for patch file integrity
+:: create folders for patch and start installer
+%pwsh% ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '} %ARGS%')"
+if %ERRORLEVEL% NEQ 0 ( exit )
+
+:: preface
 cls & echo.
-echo qbactivator v0.16.1
+echo qbactivator v0.17.0
 echo.
-echo Activation script for QuickBooks Point Of Sale Software
-echo (and more) on Windows. Originally created for Point of Sale
-echo 2013/v11 and Point of Sale 2013/v11 Multistore but has proven
-echo to work on later versions of the QuickBooks software.
+echo Activation script for QuickBooks POS.
 echo.
-echo Credits to Beast_iND (the original author), microbolt
-echo and dechronic for their work in previous versions of this
-echo activation script up to v0.15.
+echo Please ensure that a QuickBooks software is completely
+echo installed before you continue. Continue when ready.
 echo.
-echo -- neuralpain
-echo. & echo.
-
-pushd "%wdir%"
-@set "0=%~f0"
-:: export and open files
-%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qblicense\:.*'; [IO.File]::WriteAllText('qblicense.key',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
-%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.md',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
-popd
-start notepad.exe "qbreadme.md"
-start notepad.exe "qblicense.key"
-
-echo.
-echo Please ensure that a QuickBooks product is installed before
-echo you continue with the patch. Continue when ready.
-echo. & pause
+pause
 
 :: end QuickBooks background processes
 cls & echo.
-echo Attempting to close any running QuickBooks processes...
+echo Terminating QB processes...
 taskkill /fi "imagename eq qb*" /f /t >nul 2>&1
 taskkill /fi "imagename eq intuit*" /f /t >nul 2>&1
 taskkill /f /im qbw.exe >nul 2>&1
@@ -97,32 +95,59 @@ if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
   echo The patch cannot be completed.
   echo.
   echo Please ensure that a QuickBooks product is installed.
-  echo The patcher will now close.
-  echo.
-  pause
-  goto :exitQBA
-) else ( ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul )
-copy /v /y /z "%wdir%qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
+  ping -n 3 127.0.0.1 >nul
+  cls & echo.
+  echo The activator will now terminate.
+  ping -n 3 127.0.0.1 >nul
+  goto exitQBA
+) else ( 
+  ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul
+  copy /v /y /z "%wdir%qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
+)
+
+:: export and open minified readme
+pushd "%wdir%"
+@set "0=%~f0"
+%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.md',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
+popd & start notepad.exe "qbreadme.md"
+
 cls & echo.
-net start "Intuit Entitlement Service v8"
-net start "QBPOSDBServiceV11"
+echo Starting services...
+net start "Intuit Entitlement Service v8" >nul 2>&1
+net start "QBPOSDBServiceV11" >nul 2>&1
+
+:: start quickbooks
+cls & echo.
+echo Starting QuickBooks...
+if exist "%QBPOSDIR19%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%'"
+) else if exist "%QBPOSDIR18%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%'"
+) else if exist "%QBPOSDIR12%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%'"
+) else if exist "%QBPOSDIR11%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%'"
+)
+ping -n 3 127.0.0.1 >nul
+
 cls & echo.
 echo Follow the steps below to activate QuickBooks software.
 echo.
-echo 1. Open QuickBooks
-echo 2. Click "Help" then "Registration"
-echo 3. Click "Register by phone now"
-echo 4. Enter the code 99999930
-echo 5. Click Next
-echo 6. Click Finish
+echo 1. QuickBooks should open automatically
+echo -- DO NOT check for updates
+echo 2. Click "Remind me later"
+echo 3. Click "Help" then "Registration"
+echo 4. Click "Register by phone now"
+echo 5. Enter the code 99999930
+echo 6. Click Next
+echo 7. Click Finish
 echo.
-echo --- Continue when finished.
-echo.
-echo For Point of Sale Multistore, do not press any key, refer to 
-echo Step 21 in "qbreadme.md". Once completed 21 - 35, then continue.
+echo -- Continue when finished.
 echo. & pause
 
 :: end activation and end all QuickBooks processes
+cls & echo.
+echo Terminating QB processes...
 taskkill /fi "imagename eq qb*" /f /t >nul 2>&1
 taskkill /fi "imagename eq intuit*" /f /t >nul 2>&1
 taskkill /f /im qbw.exe >nul 2>&1
@@ -139,8 +164,11 @@ taskkill /f /im QBDBMgr9.exe >nul 2>&1
 taskkill /f /im QBDBMgr.exe >nul 2>&1
 taskkill /f /im QBDBMgrN.exe >nul 2>&1
 taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
+echo. & echo Done.
 
 :: restore files to original state
+cls & echo.
+echo Attempting to restore EC-C file...
 copy /v /y /z "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
 fc "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak" > nul
 
@@ -148,192 +176,170 @@ fc "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "%PATCHFOLDER%\In
 if %ERRORLEVEL% EQU 1 (
   cls & echo.
   echo The script ran into a problem while attempting to restore the files.
+  echo. & pause
   explorer.exe %PATCHFOLDER%
-  echo. & echo A window should be opened to the path
-  echo "%PATCHFOLDER%"
-  echo. & echo Do the following to resolve the error:
+  cls & echo.
+  echo Do the following to resolve the error:
   echo 1. Delete "Intuit.Spc.Map.EntitlementClient.Common.dll"
   echo 2. Remove the ".bak" extension from "Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
-  pause
+  echo. & pause
   cls & echo.
-  echo Patcher will now close.
+  echo Activator will now terminate.
   ping -n 3 127.0.0.1 >nul
   goto exitQBA
 ) else (
   cls & echo.
   del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
-  echo Patch completed without errors. Patcher will now close.
+  echo Patch completed without errors. Activator will now terminate.
   ping -n 3 127.0.0.1 >nul
   goto exitQBA
 )
 
 :: clean up files and exit script
-:exitQBA
-taskkill /f /fi "WindowTitle eq qblicense*" >nul
 taskkill /f /fi "WindowTitle eq qbreadme*" >nul
-del "%wdir%qblicense.key" >nul
 del "%wdir%qbreadme.md" >nul
 goto :eof
 
-:: export keys to text file
-:qblicense:
-[QB Point Of Sale]
-
-[POS v11 - 2013]
-LICENSE NUMBER: 1063-0575-1585-222
-PRODUCT NUMBER (BASIC): 810-968
-PRODUCT NUMBER (PRO): 023-147
-PRODUCT NUMBER (MULTI): 015-985
-
-[POS v12 - 2015]
-LICENSE NUMBER: 6740-7656-8840-594
-PRODUCT NUMBER (BASIC): 448-229
-PRODUCT NUMBER (MULTI): 015-985
-
-[POS v18 - 2018]
-LICENSE NUMBER 1: 0106-3903-4389-908
-LICENSE NUMBER 2: 2421-4122-2213-596
-PRODUCT NUMBER (PRO): 587-573
-PRODUCT NUMBER (MULTI): 818-769
-
-[POS v19 - 2019]
-LICENSE NUMBER 1: 0106-3903-4389-908
-LICENSE NUMBER 2: 2421-4122-2213-596
-PRODUCT NUMBER (MULTI): 595-828
-
---- Other QuickBooks installation keys ---
-
-[QuickBooks Accountant 2013]
-LICENSE NUMBER: 1063-0575-1585-222
-PRODUCT NUMBER: 463-240
-
-[QuickBooks Pro 2013]
-LICENSE NUMBER: 1063-0575-1585-222
-PRODUCT NUMBER: 833-891
-
-[QuickBooks Premier 2013 Industry editions]
-LICENSE NUMBER: 1063-0575-1585-222
-PRODUCT NUMBER: 187-636
-
-[QuickBooks Enterprise 13 US (5 users)]
-LICENSE NUMBER: 1063-0575-1585-222
-PRODUCT NUMBER: 875-560
-
-[QuickBooks Enterprise US 2013 with Advance Inventory]
-LICENSE NUMBER: 4978-4549-2489-983
-PRODUCT NUMBER: 344-801
-
---------------------------------------------------
-[QuickBooks Enterprise 2013 UK Key - 60 Day Trial]
-LICENSE NUMBER: 5108-5360-0832-409
-PRODUCT NUMBER: 114-886
-
-Once installed, run the QuickBooks activator (if not
-already running), then in your trial version, go to
-the help menu, select "Buy QuickBooks" and enter:
-
-LICENSE NUMBER: 1063-0575-1585-222 (payroll and 30 user licenses)
-PRODUCT NUMBER: 346-856
---------------------------------------------------
-
-@neuralpain // 'cause why not?
-:qblicense:
-
 :: export instructions to text file
 :qbreadme:
-# [qbactivator](https://github.com/neuralpain/qbactivator) - Minified README v1.3
+# [qbactivator](https://github.com/neuralpain/qbactivator) - Simplified README v1.4
 
-### A few things before you start
+Activation script for QuickBooks Point Of Sale Software on Windows.
 
-- QuickBooks software **must** be opened as administrator, which is done by right-clicking the shortcut and click "Run as administrator". To make that action permanent, right click the shortcut, click the "Compatibility" tab, check the box that says "Run this program as an administrator" and click OK.
-
-- To upgrade to Multistore if you have already activated it, jump to step 24.
-
-- Normally, it's recommended to avoid installing updates because Intuit will probably block this in the future, but I've never had any issues with updates when testing.
-
-- If installing QuickBooks for the first time, do not launch QuickBooks after installation. Uncheck the "Launch QuickBooks" box and click Finish.
+> **Warning**  
+> This activator was designed to work with only a single version of 
+> QuickBooks POS installed. If there are multiple versions, it will 
+> use the most recent version of the software, and that may cause 
+> unexpected results. Caution is advised. Uninstall all previous 
+> versions of QuickBooks POS.
 
 > **Note**  
-> `qbactivator.cmd` and `qbpatch.dat` are both required for proper activation. You should have these files extracted to the same location and run the activation script. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the patch will not continue.
+> By default, the activator will search for the installer executable 
+> and assumes that you will be installing and activating QuickBooks all 
+> at once, however, it is not a requirement for the script to continue. 
+> Without an executable present, the script assumes an `activation-only` 
+> request and ignores installation.
 
 ## Instructions for activation
 
-1. Ensure that a QuickBooks software is installed before you continue
-2. Open the installed QuickBooks software. You will be prompted about the
-   need for Administrator access
-3. Click Next
-4. Approve the prompt by clicking "Yes" or "Continue", if the prompt appears
-5. Click "Open Practice Mode"
+1. Run `qbactivator.cmd` and allow the QuickBooks software to install 
+   completely before you continue.
+2. Uncheck the "Launch QuickBooks" box. 
+3. Click Finish and continue with the script. QuickBooks will open 
+   automatically.
+4. You will be asked for Administrative privileges. Click Next.
+5. Select "Open Practice Mode"
 6. Click Next
-7. Use Sample Data
+7. Select "Use Sample Data..."
 8. Click Next
 9. Click OK
 
 > **Warning**  
-> **Do not** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
+> **DO NOT** click "Register now" or press the <kbd>Enter↵</kbd> key 
+> at this point.
 
-10. Click "Remind me later"
-11. Click "Help" in the menu bar
-12. Click "Registration"
-13. Click "Register by phone now"
-14. Enter the code `99999930`
-15. Click Next
-16. Click Finish
+10. Click "Remind me later".
 
 > **Note**  
-> The following steps (17-23 is optional)
+> At this point, the software might seem frozen but just allow the 
+> UI some time to load. It will greet you with a dialog informing you 
+> that "You are in Practice Mode" when it is ready for interaction 
+> along with a yellow indicator in the top-right.
 
-17. To add more users, click "Help"
-18. Click "Manage My License"
-19. Click "Buy Additional User License"
-20. Enter the code for the number of users you want
-
-> **Note**  
-> For 5 users use `9999995`; For 30 users use `99999930`, etc.
-
-21. Click Next
-22. Click Finish
-23. Follow the remaining instructions in the activator (if any) to finish
-    the activation.
-
-### To upgrade to Multistore - Optional but recommended
-
-24. With the activator still running, Click Help
-25. Click "Try Point of Sale Multistore FREE"
-26. Click Next
-27. Click Continue
-28. After a few moments, click Finish
-29. Click Help
-30. Click Buy Now
-31. Enter new product number for Multistore as provided in the <qblicense.key>
-    file for the relative software
-32. Enter the validation code as 99999930
-33. Click Next
-34. Click Next
-35. Click Continue
-36. A message "Welcome to Point of Sale ProMS Level" (or similar) will appear
-37. Click Finish
-38. Exit the software
+11. Click OK
+12. Click the "Help" option in the menu bar
+13. Select "Registration" from the drop-down
+14. Click "Register by phone now"
+15. Enter the code `99999930`
+16. Click Next
+17. Click Finish
 
 > **Note**  
-> To add users to Multistore, repeat steps 17-22.
+> You can end the activation here or continue on to add more users 
+> if that is something you need.
+
+### Steps 18-23 are for adding more users. This is optional.
+
+18. Click the "Help" option in the menu bar
+19. Click "Manage My License"
+20. Click "Buy Additional User License"
+21. Enter the code for the number of users you want
+
+> **Note**  
+> For 5 users use `9999995`. For 30 users use `99999930`, etc.
+
+22. Click Next
+23. Click Finish
+24. Exit the software
 
 @neuralpain // 'cause why not?
 :qbreadme:
 
-# ------------------------------------ #
-end Batch Script; begin PowerShell Script #>
+# ----------------------------------- #>
 
-$qbhash = "1682036591228F5AAB241D17AC8727AEA122D74F"
-if (-not(Test-Path -Path .\qbpatch.dat -PathType Leaf)) {
-  Write-Host "Patch file not found. Patcher will now close."
-  Start-Sleep -Seconds 2; exit 1
-} else {
-  $_hash = Get-FileHash qbpatch.dat -Algorithm SHA1 | Select-Object Hash
+$EXE_QBPOSV11 = "QuickBooksPOSV11.exe"
+$EXE_QBPOSV12 = "QuickBooksPOSV12.exe"
+$EXE_QBPOSV18 = "QuickBooksPOSV18.exe"
+$EXE_QBPOSV19 = "QuickBooksPOSV19.exe"
+
+$HASH_QBPOSV11 = "BD825846D2B9D2F80EE9CF65765EC14655878876"
+$HASH_QBPOSV12 = "80A48CE36CCB7DC89169CFFDD99BB87C3373C785"
+$HASH_QBPOSV18 = "91B606C6DFD803DDC5A2BDA971006FD6ED966FCF"
+$HASH_QBPOSV19 = "1FC5E318D8617BD03C7D92A9AD558C477F080578"
+
+$QBDATA11 = "C:\ProgramData\Intuit\QuickBooks Point of Sale 11.0"
+$QBDATA12 = "C:\ProgramData\Intuit\QuickBooks Point of Sale 12.0"
+$QBDATA18 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 18.0"
+$QBDATA19 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 19.0"
+
+$QBPOSV11 = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="810-968"/>'
+$QBPOSV12 = '<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
+$QBPOSV18 = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
+$QBPOSV19 = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
+
+function Compare-Hash {
+  param ( $Hash, $File, [string]$FileType )
+  $_hash = Get-FileHash $File -Algorithm SHA1 | Select-Object Hash
   $_hash = $_hash -split " "
   $_hash = $_hash.Trim("@{Hash=}")
-  if ($_hash -ne $qbhash) {
-    Write-Host "Patch file is corrupted. Patcher will now close."
+  if ($_hash -ne $Hash) {
+    Write-Host "$FileType is corrupted." -ForegroundColor Red
+    Write-Host "Activator will now terminate."
     Start-Sleep -Seconds 2; exit 1
   }
+}
+
+$PatchHash = "1682036591228F5AAB241D17AC8727AEA122D74F"
+if (-not(Test-Path -Path .\qbpatch.dat -PathType Leaf)) {
+  Write-Host "Patch file not found." -ForegroundColor Red
+  Write-Host "Activator will now terminate."
+  Start-Sleep -Seconds 2; exit 1
+} else { Compare-Hash -Hash $PatchHash -File .\qbpatch.dat -FileType "Patch file" }
+
+Remove-Item -Path C:\ProgramData\Intuit\* -Recurse -Force >$null 2>&1
+
+if (Test-Path -Path .\$EXE_QBPOSV19 -PathType Leaf) {
+  Compare-Hash -Hash $HASH_QBPOSV19 -File .\$EXE_QBPOSV19 -FileType "Installer"
+  if (-not(Test-Path -Path $QBDATA19 -PathType Leaf)) { mkdir $QBDATA19 >$null 2>&1 }
+  Out-File -FilePath $QBDATA19\qbregistration.dat -InputObject $QBPOSV19 -Encoding UTF8 -NoNewline
+  Start-Process -FilePath .\$EXE_QBPOSV19
+} elseif (Test-Path -Path .\$EXE_QBPOSV18 -PathType Leaf) {
+  Compare-Hash -Hash $HASH_QBPOSV18 -File .\$EXE_QBPOSV18 -FileType "Installer"
+  if (-not(Test-Path -Path $QBDATA18 -PathType Leaf)) { mkdir $QBDATA18 >$null 2>&1 }
+  Out-File -FilePath $QBDATA18\qbregistration.dat -InputObject $QBPOSV18 -Encoding UTF8 -NoNewline
+  Start-Process -FilePath .\$EXE_QBPOSV18
+} elseif (Test-Path -Path .\$EXE_QBPOSV12 -PathType Leaf) {
+  Compare-Hash -Hash $HASH_QBPOSV12 -File .\$EXE_QBPOSV12 -FileType "Installer"
+  if (-not(Test-Path -Path $QBDATA12 -PathType Leaf)) { mkdir $QBDATA12 >$null 2>&1 }
+  Out-File -FilePath $QBDATA12\qbregistration.dat -InputObject $QBPOSV12 -Encoding UTF8 -NoNewline
+  Start-Process -FilePath .\$EXE_QBPOSV12
+} elseif (Test-Path -Path .\$EXE_QBPOSV11 -PathType Leaf) {
+  Compare-Hash -Hash $HASH_QBPOSV11 -File .\$EXE_QBPOSV11 -FileType "Installer"
+  if (-not(Test-Path -Path $QBDATA11 -PathType Leaf)) { mkdir $QBDATA11 >$null 2>&1 }
+  Out-File -FilePath $QBDATA11\qbregistration.dat -InputObject $QBPOSV11 -Encoding UTF8 -NoNewline
+  Start-Process -FilePath .\$EXE_QBPOSV11
+} else {
+  Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
+  Write-Host "Assuming activation-only request."
+  Start-Sleep -Seconds 5; exit 0
 }
