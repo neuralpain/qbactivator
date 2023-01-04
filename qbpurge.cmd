@@ -1,14 +1,15 @@
 @echo off
 title qbpurge
 set uivr=0.1.0
+set "pwsh=PowerShell -NoP -C"
 
 :: check admin permissions
 cls & echo.
 echo Please wait . . .
 fsutil dirty query %systemdrive% >nul
 :: if error, we do not have admin.
+cls & echo.
 if %ERRORLEVEL% NEQ 0 (
-  cls & echo.
   echo Requesting administrative priviledges.
   echo Attempting to elevate...
   goto UAC_Prompt
@@ -24,9 +25,10 @@ del "%tmp%\cmdUAC.vbs"
 goto :eof
 
 :DeleteIntuitFiles
-rd /s /q %programdata%\Intuit
-rd /s /q %programfiles(x86)%\Intuit
-rd /s /q %programfiles(x86)%\Common Files\Intuit
+%pwsh% "Remove-Item -Path C:\ProgramData\Intuit -Recurse -Force >$null 2>&1"
+%pwsh% "Remove-Item -Path 'C:\Program Files (x86)\Intuit' -Recurse -Force >$null 2>&1"
+%pwsh% "Remove-Item -Path 'C:\Program Files (x86)\Common Files\Intuit' -Recurse -Force >$null 2>&1"
 
-cls & echo. & echo Intuit purge complete.
+cls & echo.
+echo Intuit purge complete.
 ping -n 3 127.0.0.1 >nul
