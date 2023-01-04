@@ -7,7 +7,7 @@ This activator **requires** PowerShell 4.0 or later to be installed on your Wind
 
 ### A few things before you start
 
-- There is no need for you to run the insatller manually or enter any keys into the installer. The script will take care of that part for you. All you need to do is move your mouse and click the "Next" and "Finish" buttons. Do not launch QuickBooks after installation. Uncheck the "Launch QuickBooks" box before you click Finish.
+- There is no need for you to run the insatller manually or enter any keys into the installer. The script will take care of that part for you. All you need to do is move your mouse and click the "Next" and "Finish" buttons. Do not launch QuickBooks after installation: uncheck the "Launch QuickBooks" box before you click Finish.
 
 - Normally, it's recommended to avoid installing updates through the application because there's a high chance that it will be blocked in the future; but I haven't had any issues when testing with **MANUAL** updates downloaded from Intuit.
 
@@ -43,8 +43,7 @@ Ensure that the QuickBooks installer executable has the original name from the d
 
 ## Instructions for activation
 
-1. Run `qbactivator.cmd` and allow the QuickBooks software to install completely before
-   you continue.
+1. Run `qbactivator.cmd` and allow the QuickBooks software to install completely before you continue.
 2. Uncheck the "Launch QuickBooks" box. 
 3. Click Finish and continue with the script. QuickBooks will open automatically.
 4. You will be asked for Administrative privileges. Click Next.
@@ -60,7 +59,7 @@ Ensure that the QuickBooks installer executable has the original name from the d
 10. Click "Remind me later".
 
 > **Note**  
-> At this point, the software might seem frozen but just allow the UI some time to load. It will greet you with a dialog informing you that "You are in Practice Mode" when it is ready for interaction along with a yellow indicator in the top-right.
+> The software may appear frozen while the UI is being loaded. It will greet you with a dialog informing you that "You are in Practice Mode" when it is ready for interaction along with a yellow indicator in the top-right.
 
 11. Click OK
 12. Click the "Help" option in the menu bar
@@ -87,22 +86,31 @@ Ensure that the QuickBooks installer executable has the original name from the d
 23. Click Finish
 24. Exit the software
 
-## Error Handling
+## FAQs
 
-If the activator closes unexpectedly or receives an error during the activation process, go to the folder below.
+### Is this activator safe?
 
-```
-%systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5
-```
+Yes, it is. 
 
-1. Delete `Intuit.Spc.Map.EntitlementClient.Common.dll`
-2. Remove the `.bak` extension from `Intuit.Spc.Map.EntitlementClient.Common.dll.bak`
-3. Restart the activator
+### Where are the license keys?
 
-## Ongoing development
+They are no longer provided. Entering the keys manually has sometimes proven to cause errors in the activation. As such, the script has been designed to add the keys for you during installation.
 
-- A more comprehensive AIO to correctly embed the patch file into the script.
-- Better automated error handling for any misses in the file restoration process
+### QuickBooks does not launch after installing
+
+This is most likely due to a background process of QuickBooks that was either not properly terminated or missed by the script. Perform a quick restart of your system or reinstall the QuickBooks POS software.
+
+### The activator closes unexpectedly or receives an error during the activation process (Technical)
+
+Go to the folder below
+
+   ```
+   %systemroot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5
+   ```
+
+   1. Delete `Intuit.Spc.Map.EntitlementClient.Common.dll`
+   2. Remove the `.bak` extension from `Intuit.Spc.Map.EntitlementClient.Common.dll.bak`
+   3. Restart the activator
 
 ## License
 
