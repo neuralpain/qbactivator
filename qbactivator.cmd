@@ -175,7 +175,7 @@ fc "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "%PATCHFOLDER%\In
 :: error handling if files have not been restored
 if %ERRORLEVEL% EQU 1 (
   cls & echo.
-  echo The patcher ran into a problem while attempting to restore the files.
+  echo The script ran into a problem while attempting to restore the files.
   echo. & pause
   explorer.exe %PATCHFOLDER%
   cls & echo.
@@ -195,7 +195,6 @@ if %ERRORLEVEL% EQU 1 (
   goto exitQBA
 )
 
-:exitQBA
 :: clean up files and exit script
 taskkill /f /fi "WindowTitle eq qbreadme*" >nul
 del "%wdir%qbreadme.md" >nul

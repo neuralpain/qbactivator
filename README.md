@@ -54,7 +54,7 @@ Ensure that the QuickBooks installer executable has the original name from the d
 9. Click OK
 
 > **Warning**  
-> **DO NOT** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
+> **Do not** click "Register now" or press the <kbd>Enter↵</kbd> key at this point.
 
 10. Click "Remind me later".
 
