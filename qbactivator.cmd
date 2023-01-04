@@ -30,8 +30,6 @@ if defined ARGS set ARGS=%ARGS:"=\"%
 if defined ARGS set ARGS=%ARGS:'=''%
 
 :: check admin permissions
-cls & echo.
-echo Please wait . . .
 fsutil dirty query %systemdrive% >nul
 :: if error, we do not have admin.
 cls & echo.
@@ -51,6 +49,8 @@ del "%tmp%\cmdUAC.vbs"
 goto :eof
 
 :startQBA
+cls & echo.
+echo Please wait...
 :: perform simple hashcheck for patch file integrity
 :: create folders for patch and start installer
 %pwsh% ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '} %ARGS%')"
@@ -188,9 +188,12 @@ if %ERRORLEVEL% EQU 1 (
   ping -n 3 127.0.0.1 >nul
   goto exitQBA
 ) else (
-  cls & echo.
   del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
-  echo Patch completed without errors. Activator will now terminate.
+  cls & echo.
+  echo Patch completed without errors.
+  ping -n 3 127.0.0.1 >nul
+  cls & echo.
+  echo Activator will now terminate.
   ping -n 3 127.0.0.1 >nul
   goto exitQBA
 )
