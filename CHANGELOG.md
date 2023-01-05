@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.17.0
+## v0.17.1
+
+- Update license keys for POS v11 and v12
+
+### v0.17.0
 - Implement a more robust method of activation ([#1](https://github.com/neuralpain/qbactivator/issues/1))
 - Add automatic run of qb installer
 - Minor bug fixes and improvements
