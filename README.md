@@ -39,7 +39,7 @@ Browse the [QuickBooks product download form](https://downloads.quickbooks.com/a
 
 ## The Setup (with installation)
 
-Download the [latest release](https://github.com/neuralpain/qbactivator/releases/download/v0.17.0/qbactivator-0.17.0.zip) of the activator and extract `qbactivator.cmd` and `qbpatch.dat` to the **same location** together with the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
+Download the [latest release](https://github.com/neuralpain/qbactivator/releases/download/v0.17.1/qbactivator-0.17.1.zip) of the activator and extract `qbactivator.cmd` and `qbpatch.dat` to the **same location** together with the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
 
 Ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe`, `QuickBooksPOSV12.exe` etc. If the name has changed, the installer will not be recognized by the activator.
 
