@@ -1,5 +1,5 @@
 <# :# begin Batch Script
-@set uivr=0.17.0
+@set uivr=0.17.1
 @mode 60,16
 @title qbactivator
 @echo off
@@ -56,9 +56,9 @@ echo Please wait...
 %pwsh% ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '} %ARGS%')"
 if %ERRORLEVEL% NEQ 0 ( exit )
 
-:: preface
+:: start screen
 cls & echo.
-echo qbactivator v0.17.0
+echo qbactivator v0.17.1
 echo.
 echo Activation script for QuickBooks POS.
 echo.
@@ -99,7 +99,7 @@ if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
   cls & echo.
   echo The activator will now terminate.
   ping -n 3 127.0.0.1 >nul
-  goto exitQBA
+  goto :exitQBA
 ) else ( 
   ren "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul
   copy /v /y /z "%wdir%qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
@@ -186,7 +186,7 @@ if %ERRORLEVEL% EQU 1 (
   cls & echo.
   echo Activator will now terminate.
   ping -n 3 127.0.0.1 >nul
-  goto exitQBA
+  goto :exitQBA
 ) else (
   del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
   cls & echo.
@@ -195,9 +195,10 @@ if %ERRORLEVEL% EQU 1 (
   cls & echo.
   echo Activator will now terminate.
   ping -n 3 127.0.0.1 >nul
-  goto exitQBA
+  goto :exitQBA
 )
 
+:exitQBA
 :: clean up files and exit script
 taskkill /f /fi "WindowTitle eq qbreadme*" >nul
 del "%wdir%qbreadme.md" >nul
@@ -295,7 +296,7 @@ $QBDATA12 = "C:\ProgramData\Intuit\QuickBooks Point of Sale 12.0"
 $QBDATA18 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 18.0"
 $QBDATA19 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 19.0"
 
-$QBPOSV11 = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="810-968"/>'
+$QBPOSV11 = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="023-147"/>'
 $QBPOSV12 = '<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
 $QBPOSV18 = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
 $QBPOSV19 = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
