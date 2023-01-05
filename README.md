@@ -7,11 +7,16 @@ This activator **requires** PowerShell 4.0 or later to be installed on your Wind
 
 ### A few things before you start
 
-- There is no need for you to run the insatller manually or enter any keys into the installer. The script will take care of that part for you. All you need to do is move your mouse and click the "Next" and "Finish" buttons. Do not launch QuickBooks after installation: uncheck the "Launch QuickBooks" box before you click Finish.
+- There is no need for you to manually run the insatller or enter any keys into the installer. The script will take care of that part for you. All you need to do is move your mouse and click the "Next" and "Finish" buttons. Do not launch QuickBooks after installation: uncheck the "Launch QuickBooks" box before you click "Finish".
 
 - Normally, it's recommended to avoid installing updates through the application because there's a high chance that it will be blocked in the future; but I haven't had any issues when testing with **MANUAL** updates downloaded from Intuit.
 
-- QuickBooks is installed as Pro Multistore only. There is no support for Basic (except on POSv11) or Pro level (because why would you even want that).
+- If you ever need to cancel the installation for whatever reason, you can close the activator afterwards and start it again. It has not started any additional processes during that time so it will be fine.
+
+### Highest level of activation for each version
+- v11 - Pro
+- v12 - Basic
+- v18 & v19 - Pro Multistore
 
 > **Warning**  
 > This activator was designed to work with only a single version of QuickBooks POS installed. If there are multiple versions, it will use the most recent version of the software, and that may cause unexpected results. Caution is advised. Uninstall all previous versions of QuickBooks POS.
@@ -34,7 +39,7 @@ Browse the [QuickBooks product download form](https://downloads.quickbooks.com/a
 
 ## The Setup (with installation)
 
-Extract `qbactivator.cmd` and `qbpatch.dat` to the **same folder** containing the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
+Download the [latest release](https://github.com/neuralpain/qbactivator/releases/download/v0.17.0/qbactivator-0.17.0.zip) of the activator and extract `qbactivator.cmd` and `qbpatch.dat` to the **same location** together with the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
 
 Ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe`, `QuickBooksPOSV12.exe` etc. If the name has changed, the installer will not be recognized by the activator.
 
@@ -94,11 +99,11 @@ Yes, it is.
 
 ### Where are the license keys?
 
-They are no longer provided. Entering the keys manually has sometimes proven to cause errors in the activation. As such, the script has been designed to add the keys for you during installation.
+License keys are no longer provided. Entering the keys manually have proven to cause errors in the activation. As such, the available keys have been sifted through and only the ones which work are being installed by the activation script.
 
 ### QuickBooks does not launch after installing
 
-This is most likely due to a background process of QuickBooks that was either not properly terminated or missed by the script. Perform a quick restart of your system or reinstall the QuickBooks POS software.
+This is most likely due to a background process of QuickBooks that was either not properly terminated or missed by the script. Perform a quick restart of your system and start the activator again (cancel installation) or reinstall the QuickBooks POS software.
 
 ### The activator closes unexpectedly or receives an error during the activation process (Technical)
 
