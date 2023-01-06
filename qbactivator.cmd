@@ -54,7 +54,8 @@ echo Please wait...
 :: perform simple hashcheck for patch file integrity
 :: create folders for patch and start installer
 %pwsh% ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '} %ARGS%')"
-if %ERRORLEVEL% NEQ 0 ( exit )
+pause
+if %ERRORLEVEL% NEQ 0 ( goto :exitQBA )
 
 :: start screen
 cls & echo.
@@ -95,9 +96,6 @@ if not exist "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
   echo The patch cannot be completed.
   echo.
   echo Please ensure that a QuickBooks product is installed.
-  ping -n 3 127.0.0.1 >nul
-  cls & echo.
-  echo The activator will now terminate.
   ping -n 3 127.0.0.1 >nul
   goto :exitQBA
 ) else ( 
@@ -183,22 +181,19 @@ if %ERRORLEVEL% EQU 1 (
   echo 1. Delete "Intuit.Spc.Map.EntitlementClient.Common.dll"
   echo 2. Remove the ".bak" extension from "Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
   echo. & pause
-  cls & echo.
-  echo Activator will now terminate.
-  ping -n 3 127.0.0.1 >nul
   goto :exitQBA
 ) else (
   del /q /f /a "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll.bak"
   cls & echo.
   echo Patch completed without errors.
   ping -n 3 127.0.0.1 >nul
-  cls & echo.
-  echo Activator will now terminate.
-  ping -n 3 127.0.0.1 >nul
   goto :exitQBA
 )
 
 :exitQBA
+cls & echo.
+echo Activator will now terminate.
+ping -n 3 127.0.0.1 >nul
 :: clean up files and exit script
 taskkill /f /fi "WindowTitle eq qbreadme*" >nul
 del "%wdir%qbreadme.md" >nul
@@ -281,69 +276,133 @@ Activation script for QuickBooks Point Of Sale Software on Windows.
 
 # ----------------------------------- #>
 
-$EXE_QBPOSV11 = "QuickBooksPOSV11.exe"
-$EXE_QBPOSV12 = "QuickBooksPOSV12.exe"
-$EXE_QBPOSV18 = "QuickBooksPOSV18.exe"
-$EXE_QBPOSV19 = "QuickBooksPOSV19.exe"
+$QBPOSV11 = "QuickBooksPOSV11.exe"
+$QBPOSV12 = "QuickBooksPOSV12.exe"
+$QBPOSV18 = "QuickBooksPOSV18.exe"
+$QBPOSV19 = "QuickBooksPOSV19.exe"
 
-$HASH_QBPOSV11 = "BD825846D2B9D2F80EE9CF65765EC14655878876"
-$HASH_QBPOSV12 = "80A48CE36CCB7DC89169CFFDD99BB87C3373C785"
-$HASH_QBPOSV18 = "91B606C6DFD803DDC5A2BDA971006FD6ED966FCF"
-$HASH_QBPOSV19 = "1FC5E318D8617BD03C7D92A9AD558C477F080578"
+$PatchHash = "1A1816C78925E734FCA16974BDBAA4AA"
+$QBHASH11 = "A1AF552A49ADFF40E6462A968DD552A4"
+$QBHASH12 = "30FB99C5E98DF6874D438C478314EF9D"
+$QBHASH18 = "DD45AA4EC0DF431243C9836816E2305A"
+$QBHASH19 = "BD83235F86D879D2D67D05B978A6A316"
 
-$QBDATA11 = "C:\ProgramData\Intuit\QuickBooks Point of Sale 11.0"
-$QBDATA12 = "C:\ProgramData\Intuit\QuickBooks Point of Sale 12.0"
-$QBDATA18 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 18.0"
-$QBDATA19 = "C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 19.0"
+$QBPATH11 = "Intuit\QuickBooks Point of Sale 11.0"
+$QBPATH12 = "Intuit\QuickBooks Point of Sale 12.0"
+$QBPATH18 = "Intuit\QuickBooks Desktop Point of Sale 18.0"
+$QBPATH19 = "Intuit\QuickBooks Desktop Point of Sale 19.0"
 
-$QBPOSV11 = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="023-147"/>'
-$QBPOSV12 = '<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
-$QBPOSV18 = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
-$QBPOSV19 = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
+$QBREGV11 = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="023-147"/>'
+$QBREGV12 = '<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
+$QBREGV18 = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
+$QBREGV19 = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
+
+$qbExeCheck = @( $QBPOSV11,$QBPOSV12,$QBPOSV18,$QBPOSV19 )
+$qbHashCheck = @( $QBHASH11,$QBHASH12,$QBHASH18,$QBHASH19 )
+$qbPathList = @( $QBPATH11,$QBPATH12,$QBPATH18,$QBPATH19 )
 
 function Compare-Hash {
   param ( $Hash, $File, [string]$FileType )
-  $_hash = Get-FileHash $File -Algorithm SHA1 | Select-Object Hash
+  $_hash = Get-FileHash $File -Algorithm MD5 | Select-Object Hash
   $_hash = $_hash -split " "
   $_hash = $_hash.Trim("@{Hash=}")
   if ($_hash -ne $Hash) {
     Write-Host "$FileType is corrupted." -ForegroundColor Red
-    Write-Host "Activator will now terminate."
     Start-Sleep -Seconds 2; exit 1
   }
 }
 
-$PatchHash = "1682036591228F5AAB241D17AC8727AEA122D74F"
+function Remove-IntuitData {
+  Remove-Item -Path $env:ProgramData\Intuit\* -Recurse -Force >$null 2>&1
+}
+
+function Add-IntuitLicense {
+  param( $Hash )
+
+  # -----------
+
+  Write-Host "Adding WITH license"
+  Start-Sleep -Seconds 1
+
+  # -----------
+
+  switch ($Hash) {
+    $QBHASH11 {
+      Remove-IntuitData
+      if (-not(Test-Path -Path $env:ProgramData\$QBPATH11 -PathType Leaf)) { 
+        mkdir $env:ProgramData\$QBPATH11 >$null 2>&1 }
+      Out-File -FilePath $env:ProgramData\$QBPATH11\qbregistration.dat -InputObject $QBREGV11 -Encoding UTF8 -NoNewline
+      return
+    }
+
+    $QBHASH12 {
+      Remove-IntuitData
+      if (-not(Test-Path -Path $env:ProgramData\$QBPATH12 -PathType Leaf)) { 
+        mkdir $env:ProgramData\$QBPATH12 >$null 2>&1 }
+      Out-File -FilePath $env:ProgramData\$QBPATH12\qbregistration.dat -InputObject $QBREGV12 -Encoding UTF8 -NoNewline
+      return
+    }
+
+    $QBHASH18 {
+      Remove-IntuitData
+      if (-not(Test-Path -Path $env:ProgramData\$QBPATH18 -PathType Leaf)) { 
+        mkdir $env:ProgramData\$QBPATH18 >$null 2>&1 }
+      Out-File -FilePath $env:ProgramData\$QBPATH18\qbregistration.dat -InputObject $QBREGV18 -Encoding UTF8 -NoNewline
+      return
+    }
+
+    $QBHASH19 {
+      Remove-IntuitData
+      if (-not(Test-Path -Path $env:ProgramData\$QBPATH19 -PathType Leaf)) { 
+        mkdir $env:ProgramData\$QBPATH19 >$null 2>&1 }
+      Out-File -FilePath $env:ProgramData\$QBPATH19\qbregistration.dat -InputObject $QBREGV19 -Encoding UTF8 -NoNewline
+      return
+    }
+  }
+
+  # -----------
+
+  Write-Host "checking paths for quickbooks install"
+  Start-Sleep -Seconds 1
+
+  # -----------
+
+  foreach ($path in $qbPathList) {
+    if (Test-Path -Path ${env:ProgramFiles(x86)}\$path\QBPOSShell.exe -PathType Leaf) { 
+      Write-Host "Found $path"
+      Start-Sleep -Seconds 2
+      return 
+    }
+  }
+  
+  Write-Host "There is no QuickBooks software installed." -ForegroundColor Red
+  Start-Sleep -Seconds 5; exit 1
+}
+
+
+# verify patch file
 if (-not(Test-Path -Path .\qbpatch.dat -PathType Leaf)) {
   Write-Host "Patch file not found." -ForegroundColor Red
-  Write-Host "Activator will now terminate."
   Start-Sleep -Seconds 2; exit 1
-} else { Compare-Hash -Hash $PatchHash -File .\qbpatch.dat -FileType "Patch file" }
-
-Remove-Item -Path C:\ProgramData\Intuit\* -Recurse -Force >$null 2>&1
-
-if (Test-Path -Path .\$EXE_QBPOSV19 -PathType Leaf) {
-  Compare-Hash -Hash $HASH_QBPOSV19 -File .\$EXE_QBPOSV19 -FileType "Installer"
-  if (-not(Test-Path -Path $QBDATA19 -PathType Leaf)) { mkdir $QBDATA19 >$null 2>&1 }
-  Out-File -FilePath $QBDATA19\qbregistration.dat -InputObject $QBPOSV19 -Encoding UTF8 -NoNewline
-  Start-Process -FilePath .\$EXE_QBPOSV19
-} elseif (Test-Path -Path .\$EXE_QBPOSV18 -PathType Leaf) {
-  Compare-Hash -Hash $HASH_QBPOSV18 -File .\$EXE_QBPOSV18 -FileType "Installer"
-  if (-not(Test-Path -Path $QBDATA18 -PathType Leaf)) { mkdir $QBDATA18 >$null 2>&1 }
-  Out-File -FilePath $QBDATA18\qbregistration.dat -InputObject $QBPOSV18 -Encoding UTF8 -NoNewline
-  Start-Process -FilePath .\$EXE_QBPOSV18
-} elseif (Test-Path -Path .\$EXE_QBPOSV12 -PathType Leaf) {
-  Compare-Hash -Hash $HASH_QBPOSV12 -File .\$EXE_QBPOSV12 -FileType "Installer"
-  if (-not(Test-Path -Path $QBDATA12 -PathType Leaf)) { mkdir $QBDATA12 >$null 2>&1 }
-  Out-File -FilePath $QBDATA12\qbregistration.dat -InputObject $QBPOSV12 -Encoding UTF8 -NoNewline
-  Start-Process -FilePath .\$EXE_QBPOSV12
-} elseif (Test-Path -Path .\$EXE_QBPOSV11 -PathType Leaf) {
-  Compare-Hash -Hash $HASH_QBPOSV11 -File .\$EXE_QBPOSV11 -FileType "Installer"
-  if (-not(Test-Path -Path $QBDATA11 -PathType Leaf)) { mkdir $QBDATA11 >$null 2>&1 }
-  Out-File -FilePath $QBDATA11\qbregistration.dat -InputObject $QBPOSV11 -Encoding UTF8 -NoNewline
-  Start-Process -FilePath .\$EXE_QBPOSV11
 } else {
-  Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
-  Write-Host "Assuming activation-only request."
-  Start-Sleep -Seconds 5; exit 0
+  Compare-Hash -Hash $PatchHash -File .\qbpatch.dat -FileType "Patch file"
 }
+
+# check if POS installer is available
+foreach ($exe in $qbExeCheck) {
+  if (Test-Path -Path .\$exe -PathType Leaf) {
+    foreach ($hash in $qbHashCheck) {
+      Compare-Hash -Hash $hash -File .\$exe -FileType "Installer"
+      Add-IntuitLicense -Hash $hash
+      Start-Process -FilePath .\$exe
+      Start-Sleep -Seconds 5; exit 0
+    }
+  }
+}
+
+# default result
+Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
+Write-Host "Assuming activation-only request."; Write-Host
+Start-Sleep -Seconds 2; exit 0
+Add-IntuitLicense
+Start-Sleep -Seconds 5; exit 0
