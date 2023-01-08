@@ -1,13 +1,15 @@
-# [qbactivator](https://github.com/neuralpain/qbactivator) - Simplified README v1.4
+# qbactivator - Simplified README v1.5
+
+For more information, visit <https://github.com/neuralpain/qbactivator>
 
 Activation script for QuickBooks Point Of Sale Software on Windows.
 
 > **Warning**  
-> This activator was designed to work with only a single version of 
-> QuickBooks POS installed. If there are multiple versions, it will 
-> use the most recent version of the software, and that may cause 
-> unexpected results. Caution is advised. Uninstall all previous 
-> versions of QuickBooks POS.
+> `qbactivator` was designed to work with only a single version of
+> QuickBooks POS installed. If there are multiple versions installed,
+> the activator will throw an error, otherwise, unexpected results
+> may occur. Uninstall all other versions of QuickBooks POS before
+> running this activator.
 
 > **Note**  
 > By default, the activator will search for the installer executable 
@@ -20,7 +22,7 @@ Activation script for QuickBooks Point Of Sale Software on Windows.
 
 1. Run `qbactivator.cmd` and allow the QuickBooks software to install 
    completely before you continue.
-2. Uncheck the "Launch QuickBooks" box. 
+2. Uncheck the "Launch QuickBooks" box.
 3. Click Finish and continue with the script. QuickBooks will open 
    automatically.
 4. You will be asked for Administrative privileges. Click Next.
@@ -51,8 +53,8 @@ Activation script for QuickBooks Point Of Sale Software on Windows.
 17. Click Finish
 
 > **Note**  
-> You can end the activation here or continue on to add more users 
-> if that is something you need.
+> You can end the activation here or continue to add more users if
+> that is something you need.
 
 ### Steps 18-23 are for adding more users. This is optional.
 
