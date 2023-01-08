@@ -32,3 +32,4 @@ goto :eof
 cls & echo.
 echo Intuit purge complete.
 ping -n 3 127.0.0.1 >nul
+goto :eof
