@@ -1,6 +1,5 @@
-@mode 60,16
-@set uivr=0.18.0-beta
 @title qbactivator %uivr%
+@mode 60,16
 @echo off
 
 :: PowerShell config
