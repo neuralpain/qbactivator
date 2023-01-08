@@ -59,7 +59,7 @@ if %ERRORLEVEL% EQU 3 (
   goto :exitQBA 
 ) else if %ERRORLEVEL% NEQ 0 (
   goto :exitQBA
-)
+) else ( goto :startQBA )
 
 :startQBA
 :: start screen
