@@ -56,7 +56,6 @@ function Clear-IntuitData {
     if (Test-Path -Path ${env:ProgramFiles(x86)}\$path\QBPOSShell.exe -PathType Leaf) { 
       Clear-Host
       Write-Host; Write-Host "ERROR: A version of QuickBooks is already installed." -ForegroundColor White -BackgroundColor DarkRed
-      Start-Sleep -Seconds 2
       Write-Host; Write-Host "All previous versions must be removed before installation." -ForegroundColor Yellow
       Write-Host; Write-Host "If you are requesting activation-only, remove the installer from this location and restart the activator. The activator immediately checks for a QuickBooks installation executable and runs it if one is available." -ForegroundColor White
       Write-HelpLink
@@ -102,11 +101,12 @@ function Find-ClientModule {
 
 function Install-IntuitLicense {
   param( $Hash )
-
+  
   # This switch statement compares the hash received against 
   # the known hashes of the current QB installers available.
   # If the hashes match any of these, the appropriate license
   # will be added for that version of QuickBooks
+  
   switch ($Hash) {
     $QBHASH11 {
       Clear-IntuitData
@@ -139,6 +139,7 @@ function Install-IntuitLicense {
     # If a hash was not provided for this function, it will 
     # assume an activation-only request and begin searching
     # for installed QuickBooks software on the current system
+    
     default {
       Clear-Host; Write-Host
       Write-Host "Checking for installed QuickBooks software..."
@@ -147,6 +148,7 @@ function Install-IntuitLicense {
       # Intuit leaves a lot of junk after you uninstall QuickBooks so to 
       # accurately determinne if an installation exists without the registry 
       # it was made to search for the main executable of QuickBooks
+      
       foreach ($path in $qbPathList) {
         if (Test-Path -Path ${env:ProgramFiles(x86)}\$path\QBPOSShell.exe -PathType Leaf) { 
           Write-Host "Found `"$path`""
@@ -166,25 +168,27 @@ function Install-IntuitLicense {
 }
 
 function Invoke-QuickBooksInstaller {
-  # this statement checks if the POS installer is available
-  # and performs a verification for file integrity
+  # Checks if the POS installer is available 
+  # and perform verification for file integrity
   Clear-Host; Write-Host
   Write-Host "Checking for QuickBooks installer..."
   Start-Sleep -Seconds 1
+  
+  # find which installer version is available and compare
+  # known hashes against the installer for verification
   foreach ($exe in $qbExeList) {
-    # find which installer version is available and
-    # check hashes against the installer for verification
     if (Test-Path -Path .\$exe -PathType Leaf) {
       Write-Host "Found `"$exe`""
       Start-Sleep -Seconds 1
       Clear-Host; Write-Host
       Write-Host "Verifying installer..."
       Start-Sleep -Seconds 1
+      
+      # compare known hashes against installer
+      # if the hash matches correctly, then add the appropriate 
+      # license for that version of the software
       foreach ($hash in $qbHashList) {
-        # compare known hashes against installer
         $result = (Compare-Hash -Hash $hash -File .\$exe)
-        # if the hash matches correctly, then add the appropriate 
-        # license for that version of the software
         if ($result -eq $OK) { 
           Write-Host "Installer is OK." -ForegroundColor Green
           Start-Sleep -Seconds 1
