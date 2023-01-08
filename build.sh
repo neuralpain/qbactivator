@@ -5,7 +5,8 @@ buildfile=./build/qbactivator.cmd
 
 case "$1" in
   -i) buildfile=./dist/qbactivator.cmd
-    [ ! -d "./dist" ] && mkdir dist || rm -r ./dist/*;;
+    [ ! -d "./dist" ] && mkdir dist || rm -r ./dist/*
+    cp ./src/qbpatch.dat ./dist;;
   *) build="$(date "+$version.%y%m%d.%H%M%S")"
     version="$version-beta [Build $build]"
     buildfile=./build/qbactivator-$build.cmd
@@ -40,4 +41,4 @@ echo "# ---------- powershell script ---------- #>" >> $buildfile
 echo >> $buildfile
 cat ./src/Invoke-LicenseInstallation.ps1 >> $buildfile
 
-printf "Created \"$buildfile.\"\n\n"
+printf "Created \"$buildfile\"\n\n"
