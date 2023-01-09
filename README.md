@@ -105,7 +105,7 @@ Refer to the first warning above.
 
 License keys are no longer provided. Entering the keys manually have proven to cause errors in the activation. As such, the available keys have been sifted through and only the ones which work are being installed by the activation script.
 
-### The activator closes while QuickBooks is open
+### The activator was closed while QuickBooks is open
 
 - For new installations, reinstall QuickBooks entirely (recommended).
 
