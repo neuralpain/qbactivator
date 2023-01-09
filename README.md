@@ -116,7 +116,7 @@ License keys are no longer provided. Entering the keys manually have proven to c
   ```
 
   1. Delete `Intuit.Spc.Map.EntitlementClient.Common.dll`
-  2. Remove the `.bak` extension from `Intuit.Spc.Map.EntitlementClient.Common.dll  bak`
+  2. Remove the `.bak` extension from `Intuit.Spc.Map.EntitlementClient.Common.dll.bak`
   3. Restart the activator
 
 ## License
