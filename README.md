@@ -17,19 +17,19 @@ Activation script for QuickBooks Point Of Sale Software on Windows ([jump to ins
 - v12 - Basic
 - v18 & v19 - Pro Multistore
 
-> **Note** Keys will be updated as soon as they are made available and will be published in the following release to keep up the functionality of this activator.
+> **Note** Keys are updated as soon as they are made available and will be published in the following release to keep up the functionality of this activator.
 
 > **Warning** `qbactivator` was designed to work with only a single version of QuickBooks POS installed. If there are multiple versions installed, the activator will throw an error at your face (if only literally); otherwise, unexpected results may occur. Uninstall all other versions of QuickBooks POS before running this activator.
 
 ## Building from source
 
-Download the repository, extract and open in your preferred WSL terminal. Run the command below.
+Download the repository, extract and open in your preferred WSL terminal and run the following one-liner below.
     
 ``` bash
 chmod +x ./build.sh && ./build.sh -i
 ```
 
-The build script requires the `zip` package to be installed for archivingthe compiled script. You should get this response if successful.
+The build script requires the `zip` package to be installed for archiving the compiled script. You should get this response if successful.
 
 ```
 Build complete.
@@ -38,11 +38,9 @@ Archived to "dist/qbactivator-x.x.x.zip"
 
 Otherwise, the build will complete but you will receive a "failed to archive files" message.
 
-> **Note** Run `./build.sh` without the `-i` flag to build tests. Files will be marked with a unique build number.
+> **Note** Run `./build.sh` without the `-i` flag to build unit tests. Files will be marked with a unique build number.
 
 ## Downloads & Updates
-
-Browse the [QuickBooks product download form](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included here.
 
 ### Available QuickBooks POS Software from Intuit
 
@@ -57,15 +55,19 @@ Browse the [QuickBooks product download form](https://downloads.quickbooks.com/a
 - [Update for QuickBooks Point Of Sale V18 (2018)](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
 - [Update for QuickBooks Point Of Sale V12 (2015)](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
 
+> **Note** Browse the [QuickBooks product download form](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included here.
+
 ## The Setup (with installation)
 
 Download the [latest release](https://github.com/neuralpain/qbactivator/releases/download/v0.18.1/qbactivator-0.18.1.zip) of the activator and extract `qbactivator.cmd` and `qbpatch.dat` to the **same location** together with the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
 
-Ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe` or `QuickBooksPOSV12.exe` etc. If the name has changed, the installer will not be recognized by the activator.
+If you plan to run the installation with the activator, ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe` or `QuickBooksPOSV12.exe` etc. If the name has changed, the installer will not be recognized by the activator.
 
 > **Note** By default, the activator will search for the installer executable and assumes that you will be installing and activating QuickBooks all at once, however, it is not a requirement for the script to continue. Without an executable present, the script assumes an `activation-only` request and ignores installation. 
 
 ## Instructions for activation
+
+The following instructions are included in the activator and will be provided to you when the script is ready for activation.
 
 1. Run `qbactivator.cmd` and allow the QuickBooks software to install completely before you continue.
 2. Uncheck the "Launch QuickBooks" box.
