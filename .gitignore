@@ -1,8 +1,7 @@
+# testing
 *.exe
 *.zip
 log.txt
-
-# testing
 qbactivator*/
 
 # build files

@@ -1,7 +1,7 @@
 <#
   Name: Invoke-LicenseInstallation.ps1
   Author: neuralpain
-  Version: 3.12
+  Version: 3.13
   Description: qbactivator powershell verification and execution script
 #>
 
@@ -78,7 +78,7 @@ function Find-PatchFile {
   # If the patch file is unavailable, the script will not throw an error
   if (-not(Test-Path -Path .\qbpatch.dat -PathType Leaf)) {
     Clear-Host
-    Write-Host; Write-Host "ERROR: Patch file not found." -ForegroundColor White -BackgroundColor DarkRed
+    Write-Host; Write-Host "WARNING: Patch file not found." -ForegroundColor White -BackgroundColor DarkRed
     Write-Host; Write-Host "Redownload activator ZIP and try again." -ForegroundColor Yellow
     Write-HelpLink
     exit $PAUSE
