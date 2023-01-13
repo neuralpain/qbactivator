@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.18.0
+## V0.18.1
+
+- Fix POS v19 installer being recognized as corrupted when downloaded from official server ([#6](https://github.com/neuralpain/qbactivator/issues/6))
+- Update build script with archive functionality (requires zip to be installed)
+
+#### v0.18.0
 
 - Fix non-verification of installed QuickBooks software for activation-only requests ([#4](https://github.com/neuralpain/qbactivator/issues/4))
 - Improved error screens to provide helpful information
