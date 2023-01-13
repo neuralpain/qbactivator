@@ -1,6 +1,6 @@
 # Changelog
 
-## V0.18.1
+## v0.18.1
 
 - Fix POS v19 installer being recognized as corrupted when downloaded from official server ([#6](https://github.com/neuralpain/qbactivator/issues/6))
 - Update build script with archive functionality (requires zip to be installed)
