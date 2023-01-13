@@ -1,23 +1,44 @@
 # qbactivator
 
-Activation script for QuickBooks Point Of Sale Software on Windows.
+Activation script for QuickBooks Point Of Sale Software on Windows ([jump to installation](#the-setup-with-installation)).
 
-> **Note** `qbactivator` **requires** PowerShell 4.0 or later to be installed on your Windows machine in order to function as intended.
+> **Note** `qbactivator` **requires** at least PowerShell 4.0 or later to be installed on your Windows machine in order to function as intended. If installing on Windows 10/11, you should already have version 5.0 or later installed. Use `$PSVersionTable` to check your version of PowerShell if you are unsure.
 
 ### A few things before you start
 
 - There is no need for you to manually run the QuickBooks installer or enter any keys into the installer. The script will take care of that part for you. All you need to do is move your mouse and click the "Next" and "Finish" buttons. Do not launch QuickBooks after installation: uncheck the "Launch QuickBooks" box before you click "Finish".
 
-- Normally, it's recommended to avoid installing updates through the application because there's a high chance that it will be blocked in the future; but I haven't had any issues when testing with **MANUAL** updates downloaded from Intuit.
+- Normally, it _is_ recommended to avoid installing updates through the application because there is a high chance that it will be blocked in the future; but I haven't had any issues when testing with **MANUAL** updates downloaded from Intuit.
 
-- If you ever need to cancel the installation for whatever reason, you can close the activator afterwards and start it again. It has not started any additional processes during that time so it will be fine.
+- If you ever need to cancel the installation for whatever reason, you can close the activator after cancelling and start it again. It has not started any additional processes during that time so it will be fine.
 
 ### Highest level of activation for each version
 - v11 - Pro
 - v12 - Basic
 - v18 & v19 - Pro Multistore
 
+> **Note** Keys will be updated as soon as they are made available and will be published in the following release to keep up the functionality of this activator.
+
 > **Warning** `qbactivator` was designed to work with only a single version of QuickBooks POS installed. If there are multiple versions installed, the activator will throw an error at your face (if only literally); otherwise, unexpected results may occur. Uninstall all other versions of QuickBooks POS before running this activator.
+
+## Building from source
+
+Download the repository, extract and open in your preferred WSL terminal. Run the command below.
+    
+``` bash
+chmod +x ./build.sh && ./build.sh -i
+```
+
+The build script requires the `zip` package to be installed for archivingthe compiled script. You should get this response if successful.
+
+```
+Build complete.
+Archived to "dist/qbactivator-x.x.x.zip"
+```
+
+Otherwise, the build will complete but you will receive a "failed to archive files" message.
+
+> **Note** Run `./build.sh` without the `-i` flag to build tests. Files will be marked with a unique build number.
 
 ## Downloads & Updates
 
@@ -28,6 +49,7 @@ Browse the [QuickBooks product download form](https://downloads.quickbooks.com/a
 - [QuickBooks Point Of Sale V19 (2019)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2019/Latest/QuickBooksPOSV19.exe)
 - [QuickBooks Point Of Sale V18 (2018)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2018/Latest/QuickBooksPOSV18.exe)
 - [QuickBooks Point Of Sale V12 (2015)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2015/Latest/QuickBooksPOSV12.exe)
+- [QuickBooks Point Of Sale V11 (2013)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2013/Latest/QuickBooksPOSV11.exe)
 
 ### *Optional* updates for QuickBooks POS Software from Intuit
 
@@ -37,7 +59,7 @@ Browse the [QuickBooks product download form](https://downloads.quickbooks.com/a
 
 ## The Setup (with installation)
 
-Download the [latest release](https://github.com/neuralpain/qbactivator/releases/download/v0.18.0/qbactivator-0.18.0.zip) of the activator and extract `qbactivator.cmd` and `qbpatch.dat` to the **same location** together with the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
+Download the [latest release](https://github.com/neuralpain/qbactivator/releases/download/v0.18.1/qbactivator-0.18.1.zip) of the activator and extract `qbactivator.cmd` and `qbpatch.dat` to the **same location** together with the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
 
 Ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe` or `QuickBooksPOSV12.exe` etc. If the name has changed, the installer will not be recognized by the activator.
 
@@ -84,24 +106,32 @@ Ensure that the QuickBooks installer executable has the original name from the d
 23. Click Finish
 24. Exit the software
 
+## Planned features/enhancements
+
+- Fully automated installation (and activation if possible)
+- AIO compilation to eliminate the need of a the extra `qbpatch.dat` file for activation
+
 ## FAQs
 
 ### Is this activator safe?
 
 Yes, it is.
 
+### Why should I use this?
+
+Because you should (and it supports [QB POS 2019](#downloads--updates)).
+
 ### Can I have multiple versions installed?
 
-Refer to the first warning above.
+Refer to the first warning [above](#highest-level-of-activation-for-each-version).
 
 ### Where are the license keys?
 
-License keys are no longer provided. Entering the keys manually have proven to cause errors in the activation. As such, the available keys have been sifted through and only the ones which work are being installed by the activation script.
+License keys are no longer provided. Entering the keys manually have proven to cause issues in the activation. As such, the available keys have been sifted through and only the ones which work are being installed by the activation script.
 
 ### The activator was closed while QuickBooks is open
 
 - For new installations, reinstall QuickBooks entirely (recommended).
-
 - For installations on current working environments, go to the folder below:
 
   ```
