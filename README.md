@@ -22,8 +22,6 @@ Activation script for QuickBooks Point Of Sale Software on Windows ([jump to ins
 > **Warning** `qbactivator` was designed to work with only a single version of QuickBooks POS installed. If there are multiple versions installed, the activator will throw an error at your face (if only literally); otherwise, unexpected results may occur. Uninstall all other versions of QuickBooks POS before running this activator.
 
 ## Building from source
-
-Download the repository, extract and open in your preferred WSL terminal and run the following one-liner below.
     
 ``` bash
 chmod +x ./build.sh && ./build.sh -i
