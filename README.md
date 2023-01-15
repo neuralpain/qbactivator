@@ -1,12 +1,14 @@
 # qbactivator
 
-Activation script for QuickBooks Point Of Sale Software on Windows ([jump to installation](#the-setup-with-installation)).
+Activation script for QuickBooks Point of Sale Software on Windows ([jump to installation](#the-setup-with-installation)).
 
 > **Note** `qbactivator` **requires** at least PowerShell 4.0 or later to be installed on your Windows machine in order to function as intended. If installing on Windows 10/11, you should already have version 5.0 or later installed. Use `$PSVersionTable` to check your version of PowerShell if you are unsure.
 
-### A few things before you start
+## A few things before you start
 
-- There is no need for you to manually run the QuickBooks installer or enter any keys into the installer. The script will take care of that part for you. All you need to do is move your mouse and click the "Next" and "Finish" buttons. Do not launch QuickBooks after installation: uncheck the "Launch QuickBooks" box before you click "Finish".
+- There is no need for you to manually run the QuickBooks installer or enter any keys into the installer. The script will take care of that part for you. All you need to do is move your mouse and click the "Next" and "Finish" buttons.
+
+- Remember that you **should not** launch the QuickBooks software after installation: uncheck the "Launch QuickBooks" box before you click "Finish" and continue on the script to proceed with the activation.
 
 - Normally, it _is_ recommended to avoid installing updates through the application because there is a high chance that it will be blocked in the future; but I haven't had any issues when testing with **MANUAL** updates downloaded from Intuit.
 
@@ -36,7 +38,7 @@ Archived to "dist/qbactivator-x.x.x.zip"
 
 Otherwise, the build will complete but you will receive a "failed to archive files" message.
 
-> **Note** Run `./build.sh` without the `-i` flag to build unit tests. Files will be marked with a unique build number.
+> **Note** Run `./build.sh` without the `-i` flag to build unit tests. Each test will be marked with a unique build number and stored in the `build` folder.
 
 ## Downloads & Updates
 
@@ -53,7 +55,7 @@ Otherwise, the build will complete but you will receive a "failed to archive fil
 - [Update for QuickBooks Point Of Sale V18 (2018)](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
 - [Update for QuickBooks Point Of Sale V12 (2015)](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
 
-> **Note** Browse the [QuickBooks product download form](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included here.
+> **Note** Browse the [QuickBooks product download page](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included here in this documentation.
 
 ## The Setup (with installation)
 
@@ -61,7 +63,7 @@ Download the [latest release](https://github.com/neuralpain/qbactivator/releases
 
 If you plan to run the installation with the activator, ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe` or `QuickBooksPOSV12.exe` etc. If the name has changed, the installer will not be recognized by the activator.
 
-> **Note** By default, the activator will search for the installer executable and assumes that you will be installing and activating QuickBooks all at once, however, it is not a requirement for the script to continue. Without an executable present, the script assumes an `activation-only` request and ignores installation. 
+> **Note** By default, the activator will search for the installer executable and assumes that you will be installing and activating QuickBooks all at once, however, it is not a requirement for the script to continue. Without an executable present, the script assumes an `activation-only` request and ignores installation.
 
 ## Instructions for activation
 
@@ -108,8 +110,9 @@ The following instructions are included in the activator and will be provided to
 
 ## Planned features/enhancements
 
-- Fully automated installation (and activation if possible)
+- Fully automated installation and activation
 - AIO compilation to eliminate the need of a the extra `qbpatch.dat` file for activation
+- Activation support for other QuickBooks Desktop products, i.e., QuickBooks Desktop Pro, QuickBooks Desktop Premier, QuickBooks Desktop Accountant and QuickBooks Desktop Enterprise
 
 ## FAQs
 
