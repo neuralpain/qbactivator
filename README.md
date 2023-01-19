@@ -56,15 +56,15 @@ Otherwise, the build will complete but you will receive a "failed to archive fil
 
 ## The Setup (with installation)
 
-Download the [latest release](https://github.com/neuralpain/qbactivator/releases/download/v0.18.1/qbactivator-0.18.1.zip) of the activator and extract `qbactivator.cmd` and `qbpatch.dat` to the **same location** together with the QuickBooks installer (if any). This is the main requirement. When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will terminate.
+Download the [latest release](https://github.com/neuralpain/qbactivator/releases/download/v0.18.1/qbactivator-0.18.1.zip) of the activator and extract the files to the **same location** together with the QuickBooks installer (if any). When the script is started it will look in the current location for `qbpatch.dat`. If it is not found, the activator will throw an error.
 
-If you plan to run the installation with the activator, ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe` or `QuickBooksPOSV12.exe` etc. If the name has changed, the installer will not be recognized by the activator.
+Backup (and archive) any existing company data in `C:\Users\Public\Documents\Intuit\QuickBooks Point of Sale XX.0\Data` and uninstall any previous versions of QuickBooks. Ensure that the QuickBooks installer executable has the original name from the download, e.g., `QuickBooksPOSV19.exe` or `QuickBooksPOSV12.exe` etc; before you run the activation script. If the name has changed, the installer will not be recognized by the activator.
 
 > **Note** By default, the activator will search for the installer executable and assumes that you will be installing and activating QuickBooks all at once, however, it is not a requirement for the script to continue. Without an executable present, the script assumes an `activation-only` request and ignores installation.
 
 ## Instructions for activation
 
-The following instructions are included in the activator and will be provided to you when the script is ready for activation.
+The following instructions are included in the activator and will be provided to you when the script is ready for activation. — [Add more users](#steps-18-23-are-for-adding-more-users-this-is-optional)
 
 1. Run `qbactivator.cmd` and allow the QuickBooks software to install completely before you continue.
 2. Uncheck the "Launch QuickBooks" box.
@@ -119,15 +119,15 @@ Yes, it is.
 
 ### Why should I use this?
 
-Because you should (and it supports [QB POS 2019](#downloads--updates)).
+Because you should (and it's the only activator that supports [QB POS 2019](#downloads--updates)).
 
 ### Can I have multiple versions installed?
 
-Refer to the first warning [above](#a-few-things-before-you-start).
+I don't know why anyone would want that but refer to the first warning [above](#a-few-things-before-you-start).
 
 ### Where are the license keys?
 
-License keys are no longer provided. Entering the keys manually have proven to cause issues in the activation. As such, the available keys have been sifted through and only the ones which work are being installed by the activation script.
+License keys are not provided. Entering the keys manually have proven to cause issues in the activation. As such, the available keys have been sifted through and only the ones which work are being installed by the activation script.
 
 ### The activator was closed while QuickBooks is open
 
