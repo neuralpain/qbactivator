@@ -159,4 +159,4 @@ Download one of the following ZIP archives for the latest release of `PowerShell
 
 ## License
 
-Licensed under [MIT](./LICENSE).
+Licensed under [BSD 2-Clause](./LICENSE).
