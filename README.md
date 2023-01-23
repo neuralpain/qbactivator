@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source srcset="https://user-images.githubusercontent.com/77242216/213914139-b21538e0-05c1-4194-99bc-620f5d559fc9.svg" media="(prefers-color-scheme: dark)" height="96px" alt="qbactivator logo dark">
+    <img src="https://user-images.githubusercontent.com/77242216/213914137-51bda12c-6214-44f8-bae4-e9b7e633233b.svg" height="96px" alt="qbactivator logo light">
+  </picture>
+</p>
+
 # qbactivator
 
 Activation script for QuickBooks Point of Sale Software on Windows. — [Jump to installation](#the-setup-with-installation)
@@ -128,6 +135,14 @@ I don't know why anyone would want that but refer to the first warning [above](#
 ### Where are the license keys?
 
 License keys are not provided. Entering the keys manually have proven to cause issues in the activation. As such, the available keys have been sifted through and only the ones which work are being installed by the activation script.
+
+### How do I update PowerShell?
+
+Download one of the following ZIP archives for the latest release of `PowerShell 7.3` based on your CPU architecture.
+
+- 64bit - [PowerShell-7.3.1-win-x64.zip](https://github.com/PowerShell/PowerShell/releases/download/v7.3.1/PowerShell-7.3.1-win-x64.zip)
+- 32bit - [PowerShell-7.3.1-win-x86.zip](https://github.com/PowerShell/PowerShell/releases/download/v7.3.1/PowerShell-7.3.1-win-x86.zip)
+- ARM64 - [PowerShell-7.3.1-win-arm64.zip](https://github.com/PowerShell/PowerShell/releases/download/v7.3.1/PowerShell-7.3.1-win-arm64.zip)
 
 ### The activator was closed while QuickBooks is open
 
