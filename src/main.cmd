@@ -14,24 +14,15 @@ if defined ARGS set ARGS=%ARGS:'=''%
 set "wdir=%~dp0"
 set "pwsh=PowerShell -NoP -C"
 
-:: Entitlememt client folder
-set "PATCHFOLDER=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
-
-:: QuickBooks POS v11
 set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe"
-
-:: QuickBooks POS v12
 set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 12.0\QBPOSShell.exe"
-
-:: QuickBooks POS v18
 set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0\QBPOSShell.exe"
-
-:: QuickBooks POS v19
 set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0\QBPOSShell.exe"
+set "PATCHFOLDER=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
 
 :: check admin permissions
 fsutil dirty query %systemdrive% >nul
-:: if error, we do not have admin.
+:: if error, we do not have admin
 cls & echo.
 if %ERRORLEVEL% NEQ 0 (
   echo This patcher requires administrative priviledges.
@@ -101,8 +92,8 @@ copy /v /y /z "%wdir%qbpatch.dat" "%PATCHFOLDER%\Intuit.Spc.Map.EntitlementClien
 :: export and open minified readme
 pushd "%wdir%"
 @set "0=%~f0"
-%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.min.md',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
-popd & start notepad.exe "qbreadme.min.md"
+%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.txt',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
+popd & start notepad.exe "qbreadme.txt"
 
 cls & echo.
 echo Starting services...
@@ -191,5 +182,5 @@ echo Activator will now terminate.
 ping -n 2 127.0.0.1 >nul
 :: clean up files and exit script
 taskkill /f /fi "WindowTitle eq qbreadme*" >nul
-del "%wdir%qbreadme.min.md" >nul
+del "%wdir%qbreadme.txt" >nul
 goto :eof
