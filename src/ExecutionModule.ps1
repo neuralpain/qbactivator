@@ -1,5 +1,5 @@
 <#
-  ExecutionModule.ps1, Version 3.13
+  ExecutionModule.ps1, Version 3.15
   Copyright (c) 2023, neuralpain
   qbactivator verification and execution
 #>
@@ -97,7 +97,7 @@ function Find-PatchFile {
   # Perform verification for file integrity on the patch file
   if (-not(Test-Path -Path .\qbpatch.dat -PathType Leaf)) {
     Clear-Host; Write-Host
-    Write-Host "WARNING: Patch file not found." -ForegroundColor Yellow
+    Write-Host "Patch file not found." -ForegroundColor Yellow
     Get-PatchFile
   } else {
     $result = Compare-Hash -Hash $PATCH_HASH -File .\qbpatch.dat
@@ -254,7 +254,7 @@ function Get-QuickBooksInstaller {
         Clear-Host; Write-Host
         Write-Host "Downloading ${qbdownloadsize} MB to `n`"$Target`""
         $TimeToComplete = Get-TimeToComplete ($qbdownloadsize/$downloadspeed)
-        Write-Host "Estimated $TimeToComplete to download @ $downloadspeed MB/s"
+        Write-Host; Write-Host "Estimated $TimeToComplete to download @ $downloadspeed MB/s"
         Write-Host "Please wait while the installer is being downloaded..."
         Start-BitsTransfer $qbdownloadurl $Target\QuickBooksPOSV${Version}.exe
         Write-Host "Download complete." -ForegroundColor Green
@@ -265,7 +265,6 @@ function Get-QuickBooksInstaller {
     exit $PAUSE
   }
 }
-
 
 function Select-QuickBooksVersion {
   $loopcount = 0
