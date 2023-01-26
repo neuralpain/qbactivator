@@ -5,8 +5,6 @@
   </picture>
 </p>
 
-# qbactivator
-
 Activation script for QuickBooks Point of Sale Software on Windows. — [Jump to installation](#the-setup-with-installation)
 
 > **Note** `qbactivator` **requires** at least PowerShell 4.0 [or later](#how-do-i-update-powershell) to be installed on your Windows machine in order to function as intended. If installing on Windows 10/11, you should be equipped with a suitable version of PowerShell. Use `$PSVersionTable` to check your version of PowerShell if you are unsure.
