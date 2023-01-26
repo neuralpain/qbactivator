@@ -1,16 +1,25 @@
+<p align="center">
+  <picture>
+    <source srcset="https://user-images.githubusercontent.com/77242216/213914139-b21538e0-05c1-4194-99bc-620f5d559fc9.svg" media="(prefers-color-scheme: dark)" height="96px" alt="qbactivator logo dark">
+    <img src="https://user-images.githubusercontent.com/77242216/213914137-51bda12c-6214-44f8-bae4-e9b7e633233b.svg" height="96px" alt="qbactivator logo light">
+  </picture>
+</p>
+
 # qbactivator
 
 Activation script for QuickBooks Point of Sale Software on Windows. — [Jump to installation](#the-setup-with-installation)
 
-> **Note** `qbactivator` **requires** at least PowerShell 4.0 or later to be installed on your Windows machine in order to function as intended. If installing on Windows 10/11, you should already have version 5.0 or later installed. Use `$PSVersionTable` to check your version of PowerShell if you are unsure.
+> **Note** `qbactivator` **requires** at least PowerShell 4.0 [or later](#how-do-i-update-powershell) to be installed on your Windows machine in order to function as intended. If installing on Windows 10/11, you should be equipped with a suitable version of PowerShell. Use `$PSVersionTable` to check your version of PowerShell if you are unsure.
 
 ## A few things before you start
+
+- An internet connection is **required** for activation and [modifying users](#steps-18-23-are-for-adding-more-users-this-is-optional). It needs that one free phone call to tell daddy you're not a threat while being held hostage.
 
 - There is no need for you to manually run the QuickBooks installer or enter any keys into the installer. The script will take care of that part for you. All you need to do is move your mouse and click the "Next" and "Finish" buttons.
 
 - Remember that you **should not** launch the QuickBooks software after installation: uncheck the "Launch QuickBooks" box before you click "Finish" and continue on the script to proceed with the activation.
 
-- Normally, it _is_ recommended to avoid installing updates through the application because there is a high chance that it will be blocked in the future; but I haven't had any issues when testing with **MANUAL** updates downloaded from Intuit.
+- Normally, it _is_ recommended to avoid installing updates through the application because there is a high chance that it will be blocked in the future; but I haven't had any issues when testing with [updates downloaded **manually** from Intuit](#optional-updates-for-quickbooks-pos-software-from-intuit).
 
 - If you ever need to cancel the installation for whatever reason, you can close the activator after cancelling and start it again. It has not started any additional processes during that time so it will be fine.
 
@@ -18,10 +27,10 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Jump to
 
 > **Note** Keys are updated as soon as they are made available and will be published in the following release to keep up the functionality of this activator.
 
-> **Warning** `qbactivator` was designed to work with only a single version of QuickBooks POS installed. If there are multiple versions installed, the activator will throw an error at your face (if only literally); otherwise, unexpected results may occur. Uninstall all other versions of QuickBooks POS before running this activator.
+> **Warning** `qbactivator` was designed to work with only a single version of QuickBooks POS installed. If there are multiple versions installed, the activator will throw an error at your face (if only literally). Uninstall all other versions of QuickBooks POS before running this activator.
 
 ## Building from source
-    
+
 ``` bash
 chmod +x ./build.sh && ./build.sh -i
 ```
@@ -128,6 +137,14 @@ I don't know why anyone would want that but refer to the first warning [above](#
 ### Where are the license keys?
 
 License keys are not provided. Entering the keys manually have proven to cause issues in the activation. As such, the available keys have been sifted through and only the ones which work are being installed by the activation script.
+
+### How do I update PowerShell?
+
+Download one of the following ZIP archives for the latest release of `PowerShell` based on your CPU architecture.
+
+- 64bit - [PowerShell-7.3.1-win-x64.zip ⧉](https://github.com/PowerShell/PowerShell/releases/download/v7.3.1/PowerShell-7.3.1-win-x64.zip)
+- 32bit - [PowerShell-7.3.1-win-x86.zip ⧉](https://github.com/PowerShell/PowerShell/releases/download/v7.3.1/PowerShell-7.3.1-win-x86.zip)
+- ARM64 - [PowerShell-7.3.1-win-arm64.zip ⧉](https://github.com/PowerShell/PowerShell/releases/download/v7.3.1/PowerShell-7.3.1-win-arm64.zip)
 
 ### The activator was closed while QuickBooks is open
 
