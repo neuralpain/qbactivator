@@ -1,12 +1,14 @@
 <#
-  ExecutionModule.ps1, Version 3.15
+  ExecutionModule.ps1, Version 3.16
   Copyright (c) 2023, neuralpain
   qbactivator verification and execution
 #>
 
 $OK = 0
 $ERR = 1
+$SKIP_START = 2
 $PAUSE = 3
+$CANCEL = 0x4
 
 $QBPOSV11 = "QuickBooksPOSV11.exe"
 $QBPOSV12 = "QuickBooksPOSV12.exe"
@@ -61,6 +63,11 @@ function Write-NoInternetConnectivity {
   Write-Host "Unable to start download."
   Write-Host "There is no internet connectivity at this time." -ForegroundColor Yellow
   Write-Host; Write-Host "Please check the connection and try again."
+}
+
+function Write-OperationCancelled {
+  Write-Host; Write-Host "Operation cancelled by user." -ForegroundColor Yellow
+  Start-Sleep -Milliseconds 500
 }
 
 function Clear-IntuitData {
@@ -175,7 +182,7 @@ function Install-IntuitLicense {
         if (Test-Path -Path ${env:ProgramFiles(x86)}\$path\QBPOSShell.exe -PathType Leaf) { 
           Write-Host "Found `"$path`""
           Start-Sleep -Seconds 2
-          return $OK
+          return $SKIP_START
         }
       }
 
@@ -205,6 +212,8 @@ function Get-TimeToComplete {
 function Get-QuickBooksInstaller {
   param ( $Version, $Target = $pwd )
 
+  if ($Version -eq $CANCEL) { return }
+
   $BYTE_CONVERT = 1048576
   $speedtestclifolder = "$env:APPDATA\Ookla\Speedtest CLI"
   $speedtestclilicense = "[Settings]`r`nLicenseAccepted=604ec27f828456331ebf441826292c49276bd3c1bee1a2f65a6452f505c4061c"
@@ -219,7 +228,6 @@ function Get-QuickBooksInstaller {
     Clear-Host; Write-Host
     Write-Host "Connection established."
     Write-Host "Preparing to download..."
-    
     Start-BitsTransfer $speedtestarchive "${Target}\speedtest.zip"
     Expand-Archive .\speedtest.zip $Target\speedtest -Force
     Remove-Item .\speedtest.zip
@@ -249,7 +257,10 @@ function Get-QuickBooksInstaller {
     $query = Read-Host "Do you want to continue? [Y/n]"
     
     switch ($query) {
-      "n" { return }
+      "n" {
+        Write-OperationCancelled
+        Get-QuickBooksInstaller -Version (Select-QuickBooksVersion)
+      }
       default {
         Clear-Host; Write-Host
         Write-Host "Downloading ${qbdownloadsize} MB to `n`"$Target`""
@@ -284,10 +295,8 @@ function Select-QuickBooksVersion {
     $Version = Read-Host "Version"
 
     if ($Version -eq 0) { 
-      Clear-Host; Write-Host
-      Write-Host "Download operation cancelled by user." -ForegroundColor Yellow
-      Write-HelpLink
-      exit $PAUSE
+      Write-OperationCancelled
+      return $CANCEL
     }
     
     foreach ($item in $qbVersionList) {
@@ -309,6 +318,8 @@ function Select-QuickBooksVersion {
 }
 
 function Invoke-QuickBooksInstaller {  
+  Clear-Host; Write-Host
+  Write-Host "Checking for QuickBooks installer..."
   # Checks if the POS installer is available and perform verification for file integrity
   # Find which installer version is available and compare known hashes against the installer for verification
   foreach ($exe in $qbExeList) {
@@ -351,28 +362,28 @@ function Invoke-QuickBooksInstaller {
       Start-Sleep -Seconds 2; exit $OK
     }
   }
+
+  Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
+  $query = Read-Host "Do you want to download one now? [Y/n]"
+
+  switch ($query) {
+    "n" { 
+      Write-OperationCancelled
+      return
+    }
+    default {
+      Get-QuickBooksInstaller -Version (Select-QuickBooksVersion)
+      Start-Sleep -Seconds 1
+      Invoke-QuickBooksInstaller
+    }
+  }
 }
 
 # ---------------------------------- start powershell execution ---------------------------------- # 
 
 Find-PatchFile
 Start-Sleep -Seconds 1
-Clear-Host; Write-Host
-Write-Host "Checking for QuickBooks installer..."
 Invoke-QuickBooksInstaller
-
-Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
-$query = Read-Host "Do you want to download one now? [Y/n]"
-
-switch ($query) {
-  "n" { break }
-  default { 
-    Get-QuickBooksInstaller -Version (Select-QuickBooksVersion)
-    Start-Sleep -Seconds 1
-    Invoke-QuickBooksInstaller
-  }
-}
-
 Clear-Host; Write-Host
 Write-Host "Assuming activation-only request."
 # Start-Sleep -Seconds 2
