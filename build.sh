@@ -21,11 +21,12 @@ build() {
   echo ":: Activation script body written in batch" >> $buildfile
   echo >> $buildfile
   # add main body
+  echo "@echo off" >> $buildfile
   echo '@set "uivr='$version'"' >> $buildfile
   cat $main >> $buildfile
   echo >> $buildfile
   # add instructions
-  echo ":: export instructions to text file">> $buildfile
+  echo ":: export instructions to text file" >> $buildfile
   echo ":qbreadme:">> $buildfile
   cat $helpfile >> $buildfile
   echo ":qbreadme:" >> $buildfile
@@ -34,24 +35,24 @@ build() {
   echo "# ---------- powershell script ---------- #>" >> $buildfile
   echo >> $buildfile
   cat $pwshscript >> $buildfile
-  printf "\033[1;32mBuild complete.\n\033[0m"
+  echo "Build complete."
 }
 
 compress() {
   cp ./LICENSE dist
-  cd dist && zip -q $zipfile * &>/dev/null || ( printf "\033[0;31mFailed to archive files.\033[0m" && return )
+  cd dist && zip -q $zipfile * &>/dev/null || ( echo -e "\033[0;31mE:\033[0m Failed to create archive." && return )
   rm ./LICENSE
-  if [ -f $zipfile ]; then printf "\033[0;37mArchived to \"dist/$zipfile\"\n\033[0m"; fi
+  if [ -f $zipfile ]; then echo -e "\033[0;37mArchived to \"dist/$zipfile\"\033[0m"; fi
 }
 
 printusage() {
   echo "Usage: build [OPTION]"
-  printf "Build script for qbactivator.cmd\n\n"
+  echo -e "Build script for qbactivator.cmd\n"
   echo "  -i, --release      Build for stable release"
   echo "  -t, --test         Build unit tests"
   echo "  -C, --clear-all    Delete \"build\" and \"dist\" folder"
   echo "  -c, --clear        Clear all unit test builds"
-  echo "  -h, --help         Display this help message" && echo
+  echo "  -h, --help         Display this help message"
 }
 
 case "$1" in
