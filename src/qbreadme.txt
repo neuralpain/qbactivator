@@ -1,4 +1,4 @@
-            # --- qbactivator - Simplified README v2.0 --- #
+            # --- qbactivator - Simplified README v2.1 --- #
 
 Activation script for QuickBooks Point Of Sale Software on Windows.
 
@@ -45,7 +45,7 @@ For more information, visit <https://github.com/neuralpain/qbactivator>
 12. Click the "Help" option in the menu bar
 13. Select "Registration" from the drop-down
 14. Click "Register by phone now"
-15. Enter the code "99999930"
+15. Enter the code "999999"
 16. Click Next
 17. Click Finish
  
