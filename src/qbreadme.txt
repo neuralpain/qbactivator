@@ -2,6 +2,8 @@
 
 Activation script for QuickBooks Point Of Sale Software on Windows.
 
+!!! An internet connection is required.
+
 For more information, visit <https://github.com/neuralpain/qbactivator>
 
 +---------------------------------------------------------------------+
@@ -14,14 +16,15 @@ For more information, visit <https://github.com/neuralpain/qbactivator>
 | By default, the activator will search for the installer executable  |
 | and assumes that you will be installing and activating QuickBooks   |
 | all at once, however, it is not a requirement for the script to     |
-| continue. Without an executable present, the script assumes an      |
+| continue. Without an installer present, the script assumes an       |
 | "activation-only" request and ignores installation.                 |
 +---------------------------------------------------------------------+
 
                 [ --- Instructions for activation --- ]
 
-1. Run "qbactivator.cmd" and allow the QuickBooks software to install 
-   completely before you continue.
+1. Run `qbactivator.cmd` and allow the QuickBooks software to install
+   completely before you press a key to continue the script.
+
 2. Uncheck the "Launch QuickBooks" box.
 3. Click Finish and continue with the script. QuickBooks will open 
    automatically.
@@ -59,7 +62,8 @@ For more information, visit <https://github.com/neuralpain/qbactivator>
 20. Click "Buy Additional User License"
 21. Enter the code for the number of users you want
 
-<?> For 5 users use "9999995". For 30 users use "99999930", etc.
+<?> For 5 users use "9999995". For 30 users use "99999930", etc. The 
+    maximum is 99 users.
 
 22. Click Next
 23. Click Finish
