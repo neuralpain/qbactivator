@@ -19,9 +19,14 @@ function Get-QuickBooksInstaller {
 
   Clear-Host
   Write-Host; Write-Host "Preparing to download..."
-  $speedtestarchive = "https://github.com/neuralpain/qbactivator/files/10474537/ookla-speedtest-1.2.0-win64.zip"
-  Start-BitsTransfer $speedtestarchive "${Target}\speedtest.zip"
+  # $speedtestarchive = 
+
+  Start-BitsTransfer "https://github.com/neuralpain/qbactivator/files/10474537/ookla-speedtest-1.2.0-win64.zip" "$pwd\speedtest.zip"
+  Start-Job -Name Download -ScriptBlock { Write-Host "asdasd" } -
+  # Receive-Job -Name Download
   Expand-Archive .\speedtest.zip $Target\speedtest -Force
+
+  exit
 
   Write-Host; Write-Host "Checking your internet connection..."
   Write-Host "This may take up to a minute depending on your system." -ForegroundColor Yellow
