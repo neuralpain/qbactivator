@@ -9,6 +9,8 @@ buildfile=./build/qbactivator.cmd
 zipfile=qbactivator-$version.zip
 main=./src/main.cmd
 helpfile=./src/qbreadme.txt
+encoded=./src/qbclient.bin
+decoder=./src/decode.ps1
 pwshscript=./src/ExecutionModule.ps1
 
 build() {
@@ -30,6 +32,11 @@ build() {
   echo ":qbreadme:">> $buildfile
   cat $helpfile >> $buildfile
   echo ":qbreadme:" >> $buildfile
+  echo >> $buildfile
+  echo ":qbclient:" >> $buildfile
+  cat $decoder >> $buildfile
+  echo >> $buildfile
+  cat $encoded >> $buildfile
   echo >> $buildfile
   # add powershell functions
   echo "# ---------- powershell script ---------- #>" >> $buildfile
