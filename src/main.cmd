@@ -87,7 +87,8 @@ echo. & echo Done.
 :: insert patch file for activation
 if exist "%CLIENTFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
   ren "%CLIENTFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul
-  copy /v /y /z "%wdir%qbpatch.dat" "%CLIENTFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
+  %pwsh% "$d=$env:CLIENTFOLDER;$f=[IO.File]::ReadAllText($env:0) -split ':qbclient\:.*';iex($f[1]); X 1" ) 
+  @REM copy /v /y /z "%wdir%qbpatch.dat" "%CLIENTFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
 
   :: export and open minified readme
   pushd "%wdir%"
