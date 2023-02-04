@@ -138,7 +138,7 @@ License keys are not provided. Entering the keys manually have proven to cause i
 
 ### How do I update PowerShell?
 
-Download one of the following ZIP archives for the latest release of `PowerShell` based on your CPU architecture.
+If your PowerShell version is older than `4.0`, you can download one of the following ZIP archives for the latest release of `PowerShell` based on your CPU architecture.
 
 - 64bit - [PowerShell-7.3.1-win-x64.zip ⧉](https://github.com/PowerShell/PowerShell/releases/download/v7.3.1/PowerShell-7.3.1-win-x64.zip)
 - 32bit - [PowerShell-7.3.1-win-x86.zip ⧉](https://github.com/PowerShell/PowerShell/releases/download/v7.3.1/PowerShell-7.3.1-win-x86.zip)
