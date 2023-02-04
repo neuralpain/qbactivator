@@ -1,19 +1,20 @@
 <#
-ExecutionModule.ps1, Version 3.18
+ExecutionModule.ps1, Version 3.19
   Copyright (c) 2023, neuralpain
   qbactivator verification and execution
 #>
 
-$OK         = 0x0
-$ERR        = 0x1
-$SKIP_START = 0x2
-$PAUSE      = 0x3
-$CANCEL     = 0x4
+$OK = 0x0
+$ERR = 0x1
+# $SKIP_START = 0x2
+$PAUSE = 0x3
+$CANCEL = 0x4
 
 $global:ProgressPreference = "SilentlyContinue"
 
-$patchhost = "https://github.com/neuralpain/qbactivator/files/10475450/qb.patch"
+$clientfilehost = "https://github.com/neuralpain/qbactivator/files/10475450/qb.patch"
 
+$PATCHFILE = ".\qbpatch.dat"
 $CLIENT_MODULE = "$env:SystemRoot\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5\Intuit.Spc.Map.EntitlementClient.Common.dll"
 
 $QBPOS11 = "QuickBooksPOSV11.exe"
@@ -39,15 +40,24 @@ $QBREGV18 = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" Pro
 $QBREGV19 = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
 
 # start list from most recent version first
-$qbVersionList = 19,18,12,11
-$qbExeList = @($QBPOS19,$QBPOS18,$QBPOS12,$QBPOS11)
-$qbHashList = @($QBHASH19,$QBHASH18,$QBHASH12,$QBHASH11)
-$qbPathList = @($QBPATH19,$QBPATH18,$QBPATH12,$QBPATH11)
+$qbVersionList = 19, 18, 12, 11
+$qbExeList = @($QBPOS19, $QBPOS18, $QBPOS12, $QBPOS11)
+$qbHashList = @($QBHASH19, $QBHASH18, $QBHASH12, $QBHASH11)
+$qbPathList = @($QBPATH19, $QBPATH18, $QBPATH12, $QBPATH11)
 
 function Compare-Hash {
   param ( $Hash, $File )
   if ((((Get-FileHash $File -Algorithm MD5 | Select-Object Hash) -split " "
-    ).Trim("@{Hash=}")) -ne $Hash) { return $ERR } else { return $OK }
+      ).Trim("@{Hash=}")) -ne $Hash) { return $ERR } else { return $OK }
+}
+
+function Write-WaitingScreen {
+  Clear-Host
+  Write-Host "`n=== qbactivator ==="
+  Write-Host "`nActivation script for QuickBooks POS."
+  Write-Host "`nPlease ensure that the QuickBooks software is completely"
+  Write-Host "installed before you continue. Continue when ready.`n"
+  Pause
 }
 
 function Write-HelpLink {
@@ -85,48 +95,6 @@ function Clear-IntuitData {
   Remove-Item -Path $env:ProgramData\Intuit\* -Recurse -Force >$null 2>&1
 }
 
-function Get-PatchFile {
-  Write-Host "Proceeding to download..."
-  Start-Sleep -Milliseconds 800
-  Write-Host "Testing connection..."
-  if (Test-Connection www.google.com -Quiet) {
-    Write-Host "Connection established."
-    Start-Sleep -Milliseconds 800
-    Write-Host "Downloading..."
-    Start-BitsTransfer $patchhost .\qbpatch.dat
-    Write-Host "Download complete." -ForegroundColor Green
-  } else { 
-    Write-NoInternetConnectivity
-    exit $PAUSE
-  }
-}
-
-function Find-PatchFile {
-  # Perform verification for file integrity on the patch file
-  if (-not(Test-Path -Path .\qbpatch.dat -PathType Leaf)) {
-    Clear-Host; Write-Host "`nPatch file not found." -ForegroundColor Yellow
-    Get-PatchFile
-  } else {
-    $result = Compare-Hash -Hash $PATCH_HASH -File .\qbpatch.dat
-    if ($result -eq $ERR) {
-      Clear-Host; Write-Host "`nPatch file is corrupted." -ForegroundColor White -BackgroundColor DarkRed
-      Get-PatchFile
-    }
-  }
-}
-
-function Find-ClientModule {
-  # Determine if the client module is present on the system. This is necessary for proper activation.
-  if (-not(Test-Path $CLIENT_MODULE -PathType Leaf)) {
-    Clear-Host
-    Write-Host "`nClient module could not be located." -ForegroundColor White -BackgroundColor DarkRed
-    Write-Host "`nThe activation cannot be completed." -ForegroundColor Yellow
-    Write-Host "`nPlease ensure that a QuickBooks product is correctly and `ncompletely installed before requesting activation-only." -ForegroundColor White
-    Write-HelpLink
-    exit $PAUSE
-  }
-}
-
 function Install-IntuitLicense {
   param ( $Hash )
   
@@ -140,25 +108,25 @@ function Install-IntuitLicense {
     $QBHASH11 {
       Clear-IntuitData
       if (-not(Test-Path -Path $env:ProgramData\$QBPATH11 -PathType Leaf)) { mkdir $env:ProgramData\$QBPATH11 >$null 2>&1 }
-      Out-File -FilePath $env:ProgramData\$QBPATH11\qbregistration.dat -InputObject $QBREGV11 -Encoding UTF8 -NoNewline; return
+      Out-File -FilePath $env:ProgramData\$QBPATH11\qbregistration.dat -InputObject $QBREGV11 -Encoding UTF8 -NoNewline
     }
     
     $QBHASH12 {
       Clear-IntuitData
       if (-not(Test-Path -Path $env:ProgramData\$QBPATH12 -PathType Leaf)) { mkdir $env:ProgramData\$QBPATH12 >$null 2>&1 }
-      Out-File -FilePath $env:ProgramData\$QBPATH12\qbregistration.dat -InputObject $QBREGV12 -Encoding UTF8 -NoNewline; return
+      Out-File -FilePath $env:ProgramData\$QBPATH12\qbregistration.dat -InputObject $QBREGV12 -Encoding UTF8 -NoNewline
     }
     
     $QBHASH18 {
       Clear-IntuitData
       if (-not(Test-Path -Path $env:ProgramData\$QBPATH18 -PathType Leaf)) { mkdir $env:ProgramData\$QBPATH18 >$null 2>&1 }
-      Out-File -FilePath $env:ProgramData\$QBPATH18\qbregistration.dat -InputObject $QBREGV18 -Encoding UTF8 -NoNewline; return
+      Out-File -FilePath $env:ProgramData\$QBPATH18\qbregistration.dat -InputObject $QBREGV18 -Encoding UTF8 -NoNewline
     }
     
     $QBHASH19 {
       Clear-IntuitData
       if (-not(Test-Path -Path $env:ProgramData\$QBPATH19 -PathType Leaf)) { mkdir $env:ProgramData\$QBPATH19 >$null 2>&1 }
-      Out-File -FilePath $env:ProgramData\$QBPATH19\qbregistration.dat -InputObject $QBREGV19 -Encoding UTF8 -NoNewline; return
+      Out-File -FilePath $env:ProgramData\$QBPATH19\qbregistration.dat -InputObject $QBREGV19 -Encoding UTF8 -NoNewline
     }
     
     <#
@@ -171,7 +139,7 @@ function Install-IntuitLicense {
 
       <#
         Intuit leaves some junk files after you uninstall QuickBooks so to accurately determine if an 
-        installation exists without the registry, this block will search for the main executable of
+        installation exists without the registry, this block will search for the launch executable of
         QuickBooks which should be present on complete installations.
       #>
 
@@ -179,7 +147,7 @@ function Install-IntuitLicense {
         if (Test-Path -Path ${env:ProgramFiles(x86)}\$path\QBPOSShell.exe -PathType Leaf) { 
           Write-Host "Found `"$path`""
           Start-Sleep -Milliseconds 2000
-          return $SKIP_START
+          return $OK
         }
       }
 
@@ -190,15 +158,15 @@ function Install-IntuitLicense {
       Write-HelpLink
       exit $PAUSE
     }
-  }
+  } return $OK
 }
 
 function Get-TimeToComplete {
   param ( $Time )
-  
+
   if ($Time -gt 60) {
-    $Time = $Time/60
-    $Time = [math]::Round($Time,2)
+    $Time = $Time / 60
+    $Time = [math]::Round($Time, 2)
     return "$Time minutes"
   }
   
@@ -218,17 +186,21 @@ function Get-QuickBooksInstaller {
 
   if (-not(Test-Path -Path "$speedtestclifolder\speedtest-cli.ini" -PathType Leaf)) {
     mkdir $speedtestclifolder >$null 2>&1
-    [IO.File]::WriteAllLines("$speedtestclifolder\speedtest-cli.ini",$speedtestclilicense)
+    [IO.File]::WriteAllLines("$speedtestclifolder\speedtest-cli.ini", $speedtestclilicense)
   }
 
+  Clear-Host; Write-Host "`nTesting connection..."
   if (Test-Connection www.google.com -Quiet) {
-    Clear-Host; Write-Host "`nConnection established."
+    Write-Host "Connection established."
+    Start-Sleep -Milliseconds 800
     Write-Host "Preparing to download..."
-    Start-BitsTransfer $speedtestarchive "${Target}\speedtest.zip"
+    Start-BitsTransfer $speedtestarchive "$Target\speedtest.zip"
 
     Add-Type -Assembly System.IO.Compression.FileSystem
     $_zip = [IO.Compression.ZipFile]::OpenRead("$pwd\speedtest.zip")
-    [System.IO.Compression.ZipFileExtensions]::ExtractToFile(($_zip.Entries | where {$_.Name -eq "speedtest.exe"}),"$pwd\speedtest.exe",$true)
+    [System.IO.Compression.ZipFileExtensions]::ExtractToFile((
+        $_zip.Entries | where { $_.Name -eq "speedtest.exe" }), 
+        "$pwd\speedtest.exe", $true)
     $_zip.Dispose()
 
     Remove-Item .\speedtest.zip
@@ -239,9 +211,8 @@ function Get-QuickBooksInstaller {
     $downloadspeed = .\speedtest.exe --format json --progress no
     $downloadspeed = $downloadspeed -replace ".*download"
     $downloadspeed = $downloadspeed.Trim(':{"bandwidth":') -replace ",.*"
-    $downloadspeed = [math]::Round($downloadspeed/$BYTE_CONVERT,2)
+    $downloadspeed = [math]::Round($downloadspeed / $BYTE_CONVERT, 2)
     Remove-Item .\speedtest.exe
-    Write-Host `n"=== Done ==="
 
     switch ($Version) {
       19 { $ReleaseYear = 2019 }
@@ -253,7 +224,7 @@ function Get-QuickBooksInstaller {
     Write-Host "Querying download size..."
     $qbdownloadurl = "https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/${ReleaseYear}/Latest/QuickBooksPOSV${Version}.exe"
     $qbdownloadsize = ((Invoke-WebRequest $qbdownloadurl -UseBasicParsing -Method Head).Headers.'Content-Length')
-    $qbdownloadsize = [math]::Round($qbdownloadsize/$BYTE_CONVERT,2)
+    $qbdownloadsize = [math]::Round($qbdownloadsize / $BYTE_CONVERT)
     
     Write-Host "`nNeed to download ${qbdownloadsize}MB installer."
     $query = Read-Host "Do you want to continue? [Y/n]"
@@ -265,22 +236,23 @@ function Get-QuickBooksInstaller {
       }
       default {
         Clear-Host; Write-Host "`nDownloading ${qbdownloadsize}MB to `n`"$Target`""
-        $TimeToComplete = Get-TimeToComplete ($qbdownloadsize/$downloadspeed)
-        Write-Host "`nEstimated $TimeToComplete to download @ $downloadspeed MB/s"
+        $TimeToComplete = Get-TimeToComplete ($qbdownloadsize / $downloadspeed)
+        Write-Host "Estimated $TimeToComplete to download @ $downloadspeed MB/s"
         Start-Sleep -Milliseconds 1000
-        Write-Host "Please wait while the installer is being downloaded..." -ForegroundColor Yellow
+        Write-Host "`nPlease wait while the installer is being downloaded..." -ForegroundColor Yellow
         Start-BitsTransfer $qbdownloadurl $Target\QuickBooksPOSV${Version}.exe
         Write-Host "Download complete." -ForegroundColor Green
       }
     }
-  } else { Write-NoInternetConnectivity; exit $PAUSE }
+  }
+  else { Write-NoInternetConnectivity; exit $PAUSE }
 }
 
 function Select-QuickBooksVersion {
   $Version = $null
 
   while ($null -eq $Version) {
-    Clear-Host; Write-Host "`nSelect QuickBooks POS verison"
+    Clear-Host; Write-Host "`nSelect QuickBooks POS verison to download"
     Write-Host "Only enter the version number" -ForegroundColor Yellow
     Write-Host "-----------------------------"
     Write-Host "11 - QuickBooks POS 2013"
@@ -288,34 +260,36 @@ function Select-QuickBooksVersion {
     Write-Host "18 - QuickBooks POS 2018"
     Write-Host "19 - QuickBooks POS 2019"
     Write-Host "0  - Cancel"
-    Write-Host
-    $Version = Read-Host "Version"
+    $Version = Read-Host "`nVersion"
 
     switch ($Version) {
       0 { Write-OperationCancelled; return $CANCEL }
       Default {
-        if ($qbVersionList -notcontains $Version) {
+        if ($Version.Length -eq 0) { $Version = $null }
+        elseif ($qbVersionList -notcontains $Version) {
           Write-Host "Invalid option `"${Version}`"" -ForegroundColor Red
           Start-Sleep -Milliseconds 500
           $Version = $null
         }
       }
     }
-  }
-  
-  return $Version
+  } return $Version
+}
+
+function Start-Installer {
+  param ( $Path )
+  Clear-Host; Write-Host "`nStarting installer..."
+  Start-Process -FilePath $Path
 }
 
 function Invoke-QuickBooksInstaller {  
   Clear-Host; Write-Host "`nChecking for QuickBooks installer..."
-  # Checks if the POS installer is available and perform verification for file integrity
   # Find which installer version is available and compare known hashes against the installer for verification
   foreach ($exe in $qbExeList) {
     if (Test-Path -Path .\$exe -PathType Leaf) {
-      Write-Host "Found `"$exe`"."
+      Write-Host "Found `"$exe`"." -ForegroundColor Green
       Start-Sleep -Milliseconds 500
 
-      # Compare known hashes against installer if the hash matches correctly, then add the appropriate license for that version of the software
       Clear-Host; Write-Host "`nVerifying `"$exe`"..."
       foreach ($hash in $qbHashList) {
         $result = (Compare-Hash -Hash $hash -File .\$exe)
@@ -328,26 +302,45 @@ function Invoke-QuickBooksInstaller {
       }
       
       if ($result -eq $ERR) {
-        Clear-Host; Write-Host "`nA problem was found with the installer.`n" -ForegroundColor White -BackgroundColor DarkRed
-        $query = Read-Host "Do you want to download one now? [Y/n]"
-        
+        Clear-Host; Write-Host "`nVerification failed." -ForegroundColor White -BackgroundColor DarkRed
+        Write-Host "`nThe installer `"$exe`" may be corrupted."
+        $query = Read-Host "Do you trust this installer? [Y/n]"
         switch ($query) {
-          "n" { exit $ERR }
+          "n" {
+            Clear-Host; Write-Host "`nVerification failed." -ForegroundColor White -BackgroundColor DarkRed
+            Write-Host "`nThe installer `"$exe`" may be corrupted."
+            $query = Read-Host "Do you want to download an installer? [Y/n]"
+            switch ($query) {
+              "n" { exit $ERR }
+              default {
+                Get-QuickBooksInstaller -Version (Select-QuickBooksVersion)
+                Invoke-QuickBooksInstaller
+              }
+            }
+          }
           default {
-            Get-QuickBooksInstaller -Version (Select-QuickBooksVersion)
-            Invoke-QuickBooksInstaller
+            Start-Installer .\$exe
+            if ($LASTEXITCODE -ne 0) { exit $ERR } 
+            else { 
+              Start-Sleep -Seconds 2
+              Write-WaitingScreen
+              Add-ClientModule
+              return
+            }
           }
         }
       }
 
-      Clear-Host; Write-Host "`nStarting installer..."
-      Start-Process -FilePath .\$exe
-      Start-Sleep -Milliseconds 2000; exit $OK
+      Start-Installer .\$exe
+      Start-Sleep -Seconds 2
+      Write-WaitingScreen
+      Add-ClientModule
+      return
     }
   }
 
   Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
-  $query = Read-Host "Do you want to download one now? [Y/n]"
+  $query = Read-Host "Do you need to install QB POS? [Y/n]"
 
   switch ($query) {
     "n" { Write-OperationCancelled; return }
@@ -358,15 +351,83 @@ function Invoke-QuickBooksInstaller {
   }
 }
 
+function Get-ClientModule {
+  Write-Host "Requesting client module..."
+  Start-Sleep -Milliseconds 800
+  Write-Host "Testing connection..."
+  if (Test-Connection www.google.com -Quiet) {
+    Write-Host "Connection established."
+    Start-Sleep -Milliseconds 800
+    Write-Host "Downloading..."
+    Start-BitsTransfer $clientfilehost $CLIENT_MODULE
+    Write-Host "Download complete." -ForegroundColor Green
+  }
+  else { Write-NoInternetConnectivity; exit $PAUSE }
+}
+
+function Find-GenuineClientModule {
+  # Determine if the client module is present on the system. This is necessary for proper activation.
+  if (-not(Test-Path $CLIENT_MODULE -PathType Leaf)) {
+    Clear-Host
+    Write-Host "`nClient module could not be located." -ForegroundColor White -BackgroundColor DarkRed
+    Write-Host "`nThe activation cannot be completed." -ForegroundColor Yellow
+    Write-Host "`nPlease ensure that a QuickBooks product is correctly and `ncompletely installed before requesting activation-only." -ForegroundColor White
+    Write-HelpLink
+    exit $PAUSE
+  }
+}
+
+function Add-ClientModule {
+  Clear-Host
+  Write-Host "`nProceeding with activation..." 
+  Start-Sleep -Milliseconds 800
+
+  Write-Host "Terminating QB processes..."
+  taskkill.exe /fi "imagename eq qb*" /f /t >$null 2>&1
+  taskkill.exe /fi "imagename eq intuit*" /f /t >$null 2>&1
+  taskkill.exe /f /im qbw.exe >$null 2>&1
+  taskkill.exe /f /im qbw32.exe >$null 2>&1
+  taskkill.exe /f /im qbupdate.exe >$null 2>&1
+  taskkill.exe /f /im qbhelp.exe >$null 2>&1
+  taskkill.exe /f /im QBCFMonitorService.exe >$null 2>&1
+  taskkill.exe /f /im QBUpdateService.exe >$null 2>&1
+  taskkill.exe /f /im IBuEngHost.exe >$null 2>&1
+  taskkill.exe /f /im msiexec.exe >$null 2>&1
+  taskkill.exe /f /im mscorsvw.exe >$null 2>&1
+  taskkill.exe /f /im QBWebConnector.exe >$null 2>&1
+  taskkill.exe /f /im QBDBMgr9.exe >$null 2>&1
+  taskkill.exe /f /im QBDBMgr.exe >$null 2>&1
+  taskkill.exe /f /im QBDBMgrN.exe >$null 2>&1
+  taskkill.exe /f /im QuickBooksMessaging.exe >$null 2>&1
+
+  if (Test-Path -Path $CLIENT_MODULE -PathType Leaf) {
+    Rename-Item $CLIENT_MODULE "${CLIENT_MODULE}.bak" >$null 2>&1  
+    # Perform verification for file integrity on the patch file
+    if (-not(Test-Path -Path $PATCHFILE -PathType Leaf)) { Get-ClientModule } 
+    else { 
+      $result = Compare-Hash -Hash $PATCH_HASH -File $PATCHFILE
+      if ($result -ne $ERR) { Copy-Item $PATCHFILE $CLIENT_MODULE } 
+      else { Get-ClientModule }
+    } exit $OK
+  }
+  else {
+    Clear-Host
+    Write-Host "`nQuickBooks was not found on the system." -ForegroundColor White -BackgroundColor DarkRed
+    Write-HelpLink
+    exit $PAUSE
+  }
+}
+
 # ---------------------------------- start powershell execution ---------------------------------- # 
 
-Find-PatchFile
-Start-Sleep -Milliseconds 500
 Invoke-QuickBooksInstaller
-Clear-Host; Write-Host "`nAssuming activation-only request."
-# Start-Sleep -Milliseconds 2000
-$exitcode = (Install-IntuitLicense)
-Find-ClientModule
-Write-Host "Proceeding with activation..." -ForegroundColor Green
-Start-Sleep -Milliseconds 2000
-exit $exitcode
+# if installation is cancelled:
+Clear-Host
+Write-Host "`nAssuming activation-only request."
+
+if ((Install-IntuitLicense) -eq $OK) {
+  Find-GenuineClientModule # will exit if missing
+  Add-ClientModule # inject modified client
+}
+
+exit

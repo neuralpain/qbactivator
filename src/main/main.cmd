@@ -10,15 +10,6 @@ set ARGS=%*
 if defined ARGS set ARGS=%ARGS:"=\"%
 if defined ARGS set ARGS=%ARGS:'=''%
 
-set "wdir=%~dp0"
-set "pwsh=PowerShell -NoP -C"
-
-set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe"
-set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 12.0\QBPOSShell.exe"
-set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0\QBPOSShell.exe"
-set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0\QBPOSShell.exe"
-set "CLIENTFOLDER=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
-
 :: check admin permissions
 fsutil dirty query %systemdrive% >nul
 :: if error, we do not have admin
@@ -41,84 +32,47 @@ goto :eof
 :init
 cls & echo.
 echo Initializing. Please wait...
+
+set "wdir=%~dp0"
+set "pwsh=PowerShell -NoP -C"
+
+set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe"
+set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 12.0\QBPOSShell.exe"
+set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0\QBPOSShell.exe"
+set "QBPOSDIR19=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0\QBPOSShell.exe"
+set "CLIENTFOLDER=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
+
 %pwsh% ^"Invoke-Expression ('^& {' + (Get-Content -Raw '%~f0') + '} %ARGS%')"
+
 if %ERRORLEVEL% EQU 3 (
   echo. & pause
   goto exitQBA
-) else if %ERRORLEVEL% EQU 2 (
-  goto :beginActivation
 ) else if %ERRORLEVEL% EQU 0 (
-  goto :startQBA
+  goto :beginActivation
 ) else ( goto exitQBA ) 
 
-:startQBA
-:: start screen
-cls & echo.
-echo qbactivator %uivr%
-echo.
-echo Activation script for QuickBooks POS.
-echo.
-echo Please ensure that a QuickBooks software is completely
-echo installed before you continue. Continue when ready.
-echo.
-pause
-
 :beginActivation
-cls & echo.
-echo Terminating QB processes...
-taskkill /fi "imagename eq qb*" /f /t >nul 2>&1
-taskkill /fi "imagename eq intuit*" /f /t >nul 2>&1
-taskkill /f /im qbw.exe >nul 2>&1
-taskkill /f /im qbw32.exe >nul 2>&1
-taskkill /f /im qbupdate.exe >nul 2>&1
-taskkill /f /im qbhelp.exe >nul 2>&1
-taskkill /f /im QBCFMonitorService.exe >nul 2>&1
-taskkill /f /im QBUpdateService.exe >nul 2>&1
-taskkill /f /im IBuEngHost.exe >nul 2>&1
-taskkill /f /im msiexec.exe >nul 2>&1
-taskkill /f /im mscorsvw.exe >nul 2>&1
-taskkill /f /im QBWebConnector.exe >nul 2>&1
-taskkill /f /im QBDBMgr9.exe >nul 2>&1
-taskkill /f /im QBDBMgr.exe >nul 2>&1
-taskkill /f /im QBDBMgrN.exe >nul 2>&1
-taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
-echo. & echo Done.
-
-:: insert patch file for activation
-if exist "%CLIENTFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" (
-  ren "%CLIENTFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" "Intuit.Spc.Map.EntitlementClient.Common.dll.bak" >nul
-  copy /v /y /z "%wdir%qbpatch.dat" "%CLIENTFOLDER%\Intuit.Spc.Map.EntitlementClient.Common.dll" >nul
-
-  :: export and open minified readme
-  pushd "%wdir%"
-  @set "0=%~f0"
-  %pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.txt',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
-  popd & start notepad.exe "qbreadme.txt"
-
-  cls & echo.
-  echo Starting services...
-  net start "Intuit Entitlement Service v8" >nul 2>&1
-  net start "QBPOSDBServiceV11" >nul 2>&1
-
-  :: start quickbooks
-  cls & echo.
-  echo Starting QuickBooks...
-  if exist "%QBPOSDIR19%" (
-    %pwsh% "Start-Process -FilePath '%QBPOSDIR19%'"
-  ) else if exist "%QBPOSDIR18%" (
-    %pwsh% "Start-Process -FilePath '%QBPOSDIR18%'"
-  ) else if exist "%QBPOSDIR12%" (
-    %pwsh% "Start-Process -FilePath '%QBPOSDIR12%'"
-  ) else if exist "%QBPOSDIR11%" (
-    %pwsh% "Start-Process -FilePath '%QBPOSDIR11%'"
-  )
-  ping -n 3 127.0.0.1 >nul
-) else (
-  cls & echo.
-  echo QuickBooks was not found on the system.
-  ping -n 3 127.0.0.1 >nul
-  goto exitQBA
+:: export and open minified readme
+pushd "%wdir%"
+@set "0=%~f0"
+%pwsh% "$f=[IO.File]::ReadAllText($env:0) -split ':qbreadme\:.*'; [IO.File]::WriteAllText('qbreadme.txt',$f[1].Trim(),[System.Text.Encoding]::UTF8)"
+popd & start notepad.exe "qbreadme.txt"
+@REM cls & echo.
+echo Starting services...
+net start "Intuit Entitlement Service v8" >nul 2>&1
+net start "QBPOSDBServiceV11" >nul 2>&1
+:: start quickbooks
+echo Starting QuickBooks...
+if exist "%QBPOSDIR19%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%'"
+) else if exist "%QBPOSDIR18%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%'"
+) else if exist "%QBPOSDIR12%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%'"
+) else if exist "%QBPOSDIR11%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%'"
 )
+ping -n 3 127.0.0.1 >nul
 
 cls & echo.
 echo Follow the steps below to activate QuickBooks software.
@@ -154,7 +108,6 @@ taskkill /f /im QBDBMgr9.exe >nul 2>&1
 taskkill /f /im QBDBMgr.exe >nul 2>&1
 taskkill /f /im QBDBMgrN.exe >nul 2>&1
 taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
-echo. & echo Done.
 
 :: restore files to original state
 cls & echo.
