@@ -5,21 +5,21 @@
 # Build script for qbactivator.cmd
 
 version=$(<VERSION)
-name=qbactivator.cmd
-buildfile=./build/$name
-zipfile=qbactivator-$version.zip
-zipfile2=qbactivator-$version-standalone.zip
+name=qbactivator
+buildfile=./build/$name.cmd
 main=./src/main/main.cmd
 patchfile=./src/main/qbpatch.dat
 helpfile=./src/main/qbreadme.txt
 pwshscript=./src/main/ExecutionModule.ps1
+zipfile=qbactivator-$version.zip
+zipfile2=qbactivator-$version-standalone.zip
 
 build() {
   # script header
   echo "<# :# DO NOT REMOVE THIS LINE" > $buildfile
   echo >> $buildfile
   # script info
-  echo ":: qbactivator.cmd, Version $version" >> $buildfile
+  echo ":: $name, Version $version" >> $buildfile
   echo ":: Copyright (c) 2023, neuralpain" >> $buildfile
   echo ":: Activation script body written in batch" >> $buildfile
   echo >> $buildfile
@@ -41,8 +41,30 @@ build() {
   echo "Build complete."
 }
 
+convert() {
+  file=$name.cmd
+  source=$(pwd)/dist
+  source=${source////\\} && source=${source/mnt\\??}
+  outfile=$source\\$name.exe
+  sedprop=properties.sed
+  cat build.cfg > $sedprop
+  echo "TargetName=$outfile" >> $sedprop
+  echo "FriendlyName=$name" >> $sedprop
+  echo "AppLaunched=cmd /c $file" >> $sedprop
+  # program file name
+  echo "FILE0=\"$file\"" >> $sedprop
+  # directory of program file
+  echo "[SourceFiles]" >> $sedprop
+  echo "SourceFiles0=$source" >> $sedprop
+  echo "[SourceFiles0]" >> $sedprop
+  echo "%FILE0%=" >> $sedprop
+  iexpress.exe /n /q /m $sedprop
+  rm $sedprop
+}
+
 compress() {
-  cp ./LICENSE ./VERSION $patchfile dist && cd dist 
+  cp ./LICENSE ./VERSION $patchfile dist
+  cd dist 
   ( zip -q $zipfile * && zip -q $zipfile2 * -x qbpatch.dat *.zip ) || ( echo -e "\033[0;31mE:\033[0m Failed to create archive." && return )
   rm ./LICENSE ./VERSION ./qbpatch.dat
   if [ -f $zipfile ]; then echo -e "\033[0;37mArchived to \"dist/$zipfile\"\033[0m"; fi
@@ -64,7 +86,7 @@ case "$1" in
   -C|--clear-all) rm -r ./build ./dist &>/dev/null;;
   -i|--release) buildfile=./dist/qbactivator.cmd
     [[ ! -d "./dist" ]] && mkdir dist || rm ./dist/*
-    build && compress;;
+    build && convert && compress;;
   -t|--test) build="$(date "+$version.%y%m%d%H%M%S")"
     version="$version [Build $build]"
     buildfile=./build/qbactivator-$build.cmd
