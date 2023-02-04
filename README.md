@@ -19,7 +19,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Jump to
 
 - Normally, it _is_ recommended to avoid installing updates through the application because there is a high chance that it will be blocked in the future; but I haven't had any issues when testing with [updates downloaded **manually** from Intuit](#optional-updates-for-quickbooks-pos-software-from-intuit).
 
-- If you ever need to cancel the installation for whatever reason, you can close the activator after cancelling and start it again. It has not started any additional processes during that time so it will be fine.
+- If you ever need to stop the QuickBooks installation for whatever reason, click "Cancel" and close the activator after cancelling. It has not started any additional processes during that time so it will be fine.
 
 - All POS products, i.e., `v12`, `v18`, `v19`; are licensed as `Pro Multistore` Level except for POS `v11` which is licensed as `Pro` only.
 
@@ -48,16 +48,16 @@ Otherwise, the build will complete but you will receive a "failed to archive fil
 
 ### Available QuickBooks POS Software from Intuit
 
-- [QuickBooks Point Of Sale V19 (2019)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2019/Latest/QuickBooksPOSV19.exe)
-- [QuickBooks Point Of Sale V18 (2018)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2018/Latest/QuickBooksPOSV18.exe)
-- [QuickBooks Point Of Sale V12 (2015)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2015/Latest/QuickBooksPOSV12.exe)
-- [QuickBooks Point Of Sale V11 (2013)](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2013/Latest/QuickBooksPOSV11.exe)
+- [QuickBooks Point Of Sale V19 (2019) ⧉](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2019/Latest/QuickBooksPOSV19.exe)
+- [QuickBooks Point Of Sale V18 (2018) ⧉](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2018/Latest/QuickBooksPOSV18.exe)
+- [QuickBooks Point Of Sale V12 (2015) ⧉](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2015/Latest/QuickBooksPOSV12.exe)
+- [QuickBooks Point Of Sale V11 (2013) ⧉](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2013/Latest/QuickBooksPOSV11.exe)
 
 ### *Optional* updates for QuickBooks POS Software from Intuit
 
-- [Update for QuickBooks Point Of Sale V19 (2019)](https://qbpos.intuit.com/POS19.0/WebQBPOSPatch_V19R5.exe)
-- [Update for QuickBooks Point Of Sale V18 (2018)](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
-- [Update for QuickBooks Point Of Sale V12 (2015)](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
+- [Update for QuickBooks Point Of Sale V19 (2019) ⧉](https://qbpos.intuit.com/POS19.0/WebQBPOSPatch_V19R5.exe)
+- [Update for QuickBooks Point Of Sale V18 (2018) ⧉](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
+- [Update for QuickBooks Point Of Sale V12 (2015) ⧉](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
 
 > **Note** Browse the QuickBooks [product download page](https://downloads.quickbooks.com/app/qbdt/products) for earlier downloads or additional QuickBooks Desktop software that isn't included here in this documentation.
 
