@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# compile, Version 1.6
+# Copyright (c) 2023, neuralpain
+# Compile script for qbactivator
+
+version=$(<VERSION)
+name=qbactivator
+buildfile=./build/$name
+zipfile=qbactivator-$version.zip
+zipfile2=qbactivator-$version.min.zip
+main=./src/main/main.cmd
+patchfile=./src/main/qbpatch.dat
+helpfile=./src/main/qbreadme.txt
+pwshscript=./src/main/ExecutionModule.ps1
+return=compile:
+v="1.6"
+
+compile() {
+  cat $main >> $buildfile
+  sed -i -e "3i :: qbactivator.cmd, Version $version" $buildfile
+  sed -i -e "8i @set \"uivr=$version\"" $buildfile
+  echo >> $buildfile
+  # add instructions
+  echo ":qbreadme:">> $buildfile
+  cat $helpfile >> $buildfile
+  echo ":qbreadme:" >> $buildfile
+  echo >> $buildfile
+  # add powershell functions
+  echo "# ---------- powershell script ---------- #>" >> $buildfile
+  echo >> $buildfile
+  cat $pwshscript >> $buildfile
+
+  mv $buildfile $buildfile.cmd
+  echo "$return Build complete."
+  [[ $1 == "-o" ]] && exit
+}
+
+compress() {
+  cp ./LICENSE ./VERSION $patchfile dist && cd dist 
+  ( zip -q $zipfile * && zip -q $zipfile2 * -x qbpatch.dat *.zip ) || ( echo -e "$return error: Failed to create archive." && return )
+  rm ./LICENSE ./VERSION ./qbpatch.dat
+  [[ -f $zipfile ]] && echo -e "$return Archived to \"/dist\""
+}
+
+printusage() {
+  echo "Usage: compile [OPTION...]"
+  echo -e "Compile script for qbactivator\n"
+  echo "  -i, --release      Build for stable release"
+  echo "  -o, --only-cmd     Build script only"
+  echo "  -t, --test [note]  Build unit tests"
+  echo "  -C, --clear-all    Delete \"build\" and \"dist\" folder"
+  echo "  -c, --clear        Clear all unit test builds"
+  echo "  -v, --version      Display version number and exit"
+  echo "  -h, --help         Display this help message and exit"
+  echo -e "\nFor more information, visit\033[0m"
+  echo -e "\033[0;32mhttps://github.com/neuralpain/qbactivator\033[0m"
+}
+
+printversion() {
+  echo "Compile script for qbactivator"
+  echo -e "Version $v"
+}
+
+case "$1" in
+  -h|--help) printusage && exit;;
+  -v|--verison) printversion && exit;;
+  -c|--clear) rm ./build/* &>/dev/null && exit;;
+  -C|--clear-all) rm -r ./build ./dist &>/dev/null && exit;;
+  -i|--release) buildfile=./dist/$name-$version
+    [[ ! -d "./dist" ]] && mkdir dist || rm ./dist/*;
+    compile $2; compress;;
+  -t|--test) [[ $# -gt 1 ]] && note=$@ && note=${note/"-t "} && note=${note//" "/-} && note="--$note"
+    version="$version-beta"
+    build="$(date "+$version.%y%m%d%H%M%S")$note"
+    version="$version [Build $build]"
+    buildfile=$buildfile-$build
+    [[ ! -d "./build" ]] && mkdir build; compile;;
+  *) if [[ "$1" == "" ]]; then echo "$return error: Missing argument."
+    else echo -e "$return error: Invalid option '$1'"; fi
+    exit
+esac
+
+exit

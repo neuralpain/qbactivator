@@ -1,6 +1,15 @@
 # Changelog
 
-## v0.18.1
+## 0.19.0
+
+- New: Previous client errors are fixed during activation request
+- Add menu to download POS software if unavailable locally
+- Add bypass for installer verification if user trusts their own installer
+- Add automatic download of patch if unavailable or an error occured with local copy
+- Removed 4 steps from instructions
+- Code optimization and error handling improvements
+
+#### v0.18.1
 
 - Fix POS v19 installer being recognized as corrupted when downloaded from official server ([#6](https://github.com/neuralpain/qbactivator/issues/6))
 - Update build script with archive functionality (requires zip to be installed)

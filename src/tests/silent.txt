@@ -1,0 +1,56 @@
+QuickBooksPremier2019.exe -s -a QBMIGRATOR=1 MSICOMMAND=/s QB_PRODUCTNUM=XXX-XXX QB_LICENSENUM=XXXX-XXXX-XXXX-XXX
+
+.\QuickBooksPOSV11.exe QB_PRODUCTNUM=023-147 QB_LICENSENUM=1063-0575-1585-222
+
+.\QuickBooksPOSV19.exe /S /v /qn QB_PRODUCTNUM=595-828 QB_LICENSENUM=0106-3903-4389-908
+
+
+
+QuickBooksPremier2022.exe -s -a QBMIGRATOR=1 MSICOMMAND=/s QB_PRODUCTNUM=747060 QB_LICENSENUM=XXXXXX
+
+QuickBooksEnterprise22.exe -s -a QBMIGRATOR=1 MSICOMMAND=/s QB_PRODUCTNUM=884649 QB_LICENSENUM=XXXXXX
+
+
+Now deploy Quickbooks 2014 or 2015 using a custom command line:
+msiexec.exe /i "QuickBooks.msi" NSTALLMANAGER=1 ALLUSERS=1 /qn /norestart /log output.log CKBOX_GDS=0 AgreeToLicense=Yes INSTALLDESKTOPICONS=0 MULTIUSERINSTALL=1 QB_LICENSENUM=XXXX-XXXX-XXXX-XXX QB_PRODUCTNUM=XXX-XXX PARENTAPP=INSTALLMANAGER
+
+
+======================================
+
+
+Examples of silent installation commands
+Last Updated: 2021-03-06
+
+To perform a silent installation, run the setup program with the appropriate command line options. This section provides some examples.
+
+These examples use standard Microsoft command line parameters with the InstallShield setup command. Only the CMDVISUAL property is specific to the zSecure™ Visual client application.
+
+Specify command-line options that require a parameter with no space between the option and its parameter. For example, this command is valid:
+
+zSecureVisualSetup.exe /v"INSTALLDIR=c:\MyDirectory"
+
+This command is not valid:
+
+zSecureVisualSetup.exe /v "INSTALLDIR=c:\MyDirectory" 
+
+Put quotation marks around the parameters of an option only if the parameter contains spaces.
+
+If a path in a parameter contains spaces, you might need to use quotation marks in quotation marks, as in this example:
+zSecureVisualSetup.exe /v"INSTALLDIR=\"c:\My Directory\""
+
+Silent installation with default settings
+zSecureVisualSetup.exe /s /v"/qn”
+
+Silent installation with a different target directory
+zSecureVisualSetup.exe /s /v"/qn INSTALLDIR=<c:\target_directory>"
+
+Silent installation with a different target directory and a configuration file
+zSecureVisualSetup.exe /s /v"/qn CMDVISUAL=C:\temp\setup1.cfg 
+INSTALLDIR=<c:\target_directory>"
+
+Silent installation with a different target directory and a log file
+zSecureVisualSetup.exe /s /v"/l*v c:\test.log 
+"INSTALLDIR=<c:\target_directory> /qb" 
+
+Silent installation with default settings and no reboot
+zSecureVisualSetup.exe /s /v"/qn /norestart ”
