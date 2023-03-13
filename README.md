@@ -11,37 +11,35 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Jump to
 
 ### A few things before you start
 
-- An internet connection is **mandatory** for both the activation process and the [addition of users](#steps-14-19-are-for-adding-more-users-this-is-optional). It needs that one free phone call to let Intuit know that it's safe.
+- An internet connection is **required** for activation and [adding users](#steps-14-19-are-for-adding-more-users-this-is-optional). It needs that one free phone call to let Intuit know that it's safe.
 
 - Manually running the QuickBooks installer or entering any keys into the installer is not required as the script will handle these tasks. You only need to click on the "Next" and "Finish" buttons.
 
-- It is important to remember not to launch the QuickBooks software after installation. Ensure that you uncheck the "Launch QuickBooks" option before clicking on "Finish" and proceeding with the activation process. In the event that QuickBooks is launched, the activator will close it automatically.
+- Remember that you **should not** launch the QuickBooks software after installation. Ensure that you uncheck the "Launch QuickBooks" option before clicking on "Finish" and proceeding with the activation process. If QuickBooks is launched, the activator will close it automatically.
 
 - Usually, it is recommended to avoid installing updates through the application due to the likelihood of it being blocked in the future. However, during testing, I did not encounter any problems with [updates that were downloaded manually from Intuit](#optional-updates-for-quickbooks-pos-software-from-intuit).
 
-- All versions of QuickBooks Point of Sale products, including v12, v18, and v19, are licensed as `Pro Multistore Level`. The only exception is POS v11, which is licensed as `Pro Level` only.
+- All versions of QuickBooks Desktop Point of Sale, including v12, v18, and v19, are licensed as `Pro Multistore Level`. The only exception is POS v11, which is licensed as `Pro Level`.
 
-- I recommend that you take time to [read the FAQs](#faqs) for further information and guidance for any concerns you may have.
+- [Read the FAQs](#faqs) for further information and guidance for any concerns you may have.
 
-> **Note** To maintain the activator's functionality, any available keys are updated promptly and will be disclosed in the subsequent release.
-
-> **Warning** It is important to note that `qbactivator` is intended to operate with only one instance of QuickBooks POS installed. In the event of multiple installations, the activator may encounter errors. Therefore, before executing qbactivator, it is crucial to remove all other versions of QuickBooks POS.
+> **Warning** `qbactivator` is intended to operate with only one version of QuickBooks POS installed. In the event of multiple installations, the activator may encounter errors. Therefore, before executing qbactivator, it is crucial to remove all other versions of QuickBooks POS.
 
 ## The Setup (with installation)
 
-To begin the activation process, navigate to the [most recent release](https://github.com/neuralpain/qbactivator/releases/latest) of `qbactivator` and download one of the attached files. If the download is a ZIP file, extract its contents to the same location as the QuickBooks installer (if applicable).
+To begin the activation process, navigate to the [most recent release](https://github.com/neuralpain/qbactivator/releases/latest) of `qbactivator` and download one of the packages and extract the contents to the same location as the QuickBooks installer (if applicable). If there is no installer, you can just run the script.
 
-> **Note** For a compact, portable package (~8KB in size), it is recommended to download the `*.min.zip` archive.
+> **Note** Download the `*.min.zip` archive for a compact, portable package (~8KB in size).
 
 ### Installing the software
 
 Prior to the installation of QuickBooks, it is recommended that you take the necessary precautions to safeguard any existing company data in `C:\Users\Public\Documents\Intuit\QuickBooks Point of Sale XX.0\Data` (if present) by creating a backup and archive. Additionally, ensure that any prior versions of QuickBooks are uninstalled before proceeding with the new installation.
 
-Additionally, it is crucial to confirm that you possess a legitimate copy of the software installer package and that the installer bears the original name from the download, such as `QuickBooksPOSV19.exe` or `QuickBooksPOSV12.exe`, etc. In the event that the name has been altered, the activator will not be able to recognize the installer. The option to [download an installer](#downloads--updates) is always available.
+Additionally, you should possess a legitimate copy of the software installer package that bears the original name from the download, such as `QuickBooksPOSV19.exe` or `QuickBooksPOSV12.exe`, etc. In the event that the name has been altered, the activator will not be able to recognize the installer. The option to [download an installer](#downloads--updates) is always available.
 
-The activator will initially look for the installer executable as the default setting, assuming that the user requires installation **and** activation of QuickBooks POS. If the executable is not found, you will receive a prompt for the subsequent course of action, which will allow you to decide whether you want to download an installer package or proceed with activation if you have already installed QuickBooks POS.
+The activator will initially look for the installer executable, assuming that the user requires installation **and** activation of QuickBooks POS. If the executable is not found, you will receive a prompt for the subsequent course of action, which will allow you to decide whether you want to download an installer package or proceed with activation if you have already installed QuickBooks POS.
 
-> **Note** If an internet connection is available, `qbactivator` can download the necessary patch file and installer for activation when they are not present. However, the download duration may differ depending on the speed of the internet.
+> **Note** If an internet connection is available, `qbactivator` is able to download the necessary patch file and installer for activation when they are not present. However, the download duration may differ depending on the speed of your internet connection.
 
 ## Instructions for activation
 
@@ -65,7 +63,7 @@ The following instructions are included in the activator and will be provided to
 
 > **Note** You can end the activation here (skip to step 20) or continue to add more users if that's something you need.
 
-### Steps 14-19 are for adding more users. (This is optional.)
+#### Steps 14-19 are for adding more users. (This is optional.)
 
 14. Click the "Help" option in the menu bar
 15. Click "Manage My License"
@@ -94,13 +92,13 @@ The following instructions are included in the activator and will be provided to
 - [Update for QuickBooks Point Of Sale V18 (2018) ⧉](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
 - [Update for QuickBooks Point Of Sale V12 (2015) ⧉](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
 
-> **Note** Browse the QuickBooks [product download page](https://downloads.quickbooks.com/app/qbdt/products) for earlier and additional QuickBooks Desktop software that isn't included here in this documentation.
+> **Note** Browse the QuickBooks [product download page](https://downloads.quickbooks.com/app/qbdt/products) for additional QuickBooks Desktop software that is not included here in this documentation.
 
 ---
 
 ## Building from source
 
-If you need to build this project from source, you will need to run the `compile` script. If you encounter any issues running the script, ensure that you have the necessary permissions by providing executable permissions.
+If you want to build this project from source (for whatever reason), you will need to run the `compile` script. If you encounter any issues running the script, ensure that you have provided the poor thing with executable permissions.
 
 ``` bash
 cd path/to/folder
@@ -125,7 +123,7 @@ Yes, it is.
 
 ### Why should I use this?
 
-Because you should (and it's the only activator that supports [POS 2019](#downloads--updates)).
+You don't have to, but you should (and it's the only activator that supports [POS 2019](#downloads--updates)).
 
 ### Can I have multiple versions installed?
 
@@ -133,7 +131,7 @@ I don't know why anyone would want that but refer to the first warning [above](#
 
 ### Where are the license keys?
 
-License keys are not provided. The qbactivator script will automatically install the [appropriate license keys](#a-few-things-before-you-start) for the version of QuickBooks software (being) installed on the system. This is to ensure stability during activation and avoid any potential issues that may arise from using invalid or incorrect license keys.
+License keys are not provided. `qbactivator` will automatically install the [appropriate license keys](#a-few-things-before-you-start) for the version of QuickBooks software (being) installed on the system. This is to ensure stability during activation and avoid any potential issues that may arise from using invalid or incorrect license keys. To maintain the activator's functionality, keys are updated as soon as they are made available and will be published in the following release.
 
 ### Should I run this activator with PowerShell?
 
