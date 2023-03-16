@@ -1,1 +1,0 @@
-# qbactivator: Test for embedding files into script
