@@ -1,8 +1,14 @@
 # Changelog
 
-## 0.19.0
+## v0.20.0
 
-- New: Previous client errors are fixed during activation request
+- Fix error fetching headers from the web on certain Windows installations 
+- Now deletes specific Point of Sale installation folder instead of entire Intuit directory
+- Bug fixes and improvements
+
+#### v0.19.0
+
+- Previous client errors are fixed during activation request
 - Add menu to download POS software if unavailable locally
 - Add bypass for installer verification if user trusts their own installer
 - Add automatic download of patch if unavailable or an error occured with local copy

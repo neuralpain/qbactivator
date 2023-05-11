@@ -9,9 +9,9 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 > **Warning**  
 >
-> **DO NOT** clone or download this repository in an attempt to run `qbactivator`. Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way (Ref: [#10][issue_10]).
+> **DO NOT** clone or download this repository in an attempt to run `qbactivator` (Ref: [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way.
 >
-> If you are trying to run the script, please [read the Wiki to get started][getstarted] using `qbactivator` or proceed to [download the release package][release].
+> If you are trying to run the script, please [read the Wiki][getstarted] to get started using `qbactivator` or proceed to [download the latest release package][release].
 
 ### Supported Operating Systems
 - Windows 11
@@ -20,7 +20,8 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - Windows 7 SP1 (requires [Windows Management Framework 4.0][wikiwmf4])
 - Windows Server 2012-2022
 
-> **Note** `qbactivator` **requires** at least PowerShell 4.0 [or later][updatepowershell] to be installed on your Windows machine in order to function as intended. If you are using Windows 10 or above, it is likely that PowerShell 5.1 or a later version is already installed on your machine. You can check your PowerShell version by using the `$PSVersionTable` command in PowerShell if you are unsure.
+> **Note**  
+> `qbactivator` **requires** at least PowerShell 4.0 [or later][updatepowershell] to be installed on your Windows machine in order to function as intended. If you are using Windows 10 or above, it is likely that PowerShell 5.1 or a later version is already installed on your machine. You can check your PowerShell version by using the `$PSVersionTable` command in PowerShell if you are unsure.
 
 ### A few things before you start
 
@@ -38,7 +39,8 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 - [Read the FAQs](#faqs) for further information and guidance for any concerns you may have.
 
-> **Warning** `qbactivator` is intended to operate with only one version of QuickBooks POS installed. In the event of multiple installations, the activator may encounter errors. Therefore, before executing qbactivator, it is crucial to remove all other versions of QuickBooks POS.
+> **Warning**  
+> `qbactivator` is intended to operate with only one version of QuickBooks POS installed. In the event of multiple installations, the activator may encounter errors. Therefore, before executing qbactivator, it is crucial to remove all other versions of QuickBooks POS.
 
 ## Downloads & Updates
 
@@ -49,14 +51,8 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - [QuickBooks Point Of Sale V12 (2015) ⧉](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2015/Latest/QuickBooksPOSV12.exe)
 - [QuickBooks Point Of Sale V11 (2013) ⧉](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2013/Latest/QuickBooksPOSV11.exe)
 
-### Optional updates for QuickBooks POS Software from Intuit
-
-- [Update for QuickBooks Point Of Sale V19 (2019) ⧉](https://qbpos.intuit.com/POS19.0/WebQBPOSPatch_V19R5.exe)
-- [Update for QuickBooks Point Of Sale V18 (2018) ⧉](https://qbpos.intuit.com/POS18.0/WebQBPOSPatch_V18R14.exe)
-- [Update for QuickBooks Point Of Sale V12 (2015) ⧉](https://qbpos.intuit.com/POS12.0/WebQBPOSPatch_V12R21.exe)
-- *No update found for QuickBooks Point Of Sale V11 (2013)*
-
-> **Note** Browse the QuickBooks [product download page](https://downloads.quickbooks.com/app/qbdt/products) for additional QuickBooks Desktop software that is not included here in this documentation.
+> **Note**  
+> Browse the QuickBooks [product download page](https://downloads.quickbooks.com/app/qbdt/products) for additional QuickBooks Desktop software that is not included here in this documentation.
 
 ## FAQs
 
@@ -68,9 +64,11 @@ Yes, it is.
 
 You don't have to, but it's the only activator that fully supports [all versions](#available-quickbooks-pos-software-from-intuit) of QuickBooks Point Of Sale.
 
-### Can I have multiple versions installed?
+### Where are the license keys?
 
-I don't know why anyone would want that but refer to the second warning [above](#a-few-things-before-you-start). In short, the answer is no.
+License keys are not provided. `qbactivator` will automatically install the appropriate license keys for the version of QuickBooks Point of Sale being installed on the system. This is to ensure stability during activation and avoid any potential issues that may arise from using invalid or incorrect license keys.
+
+License keys are reviewed regularly to keep `qbactivator` functioning as intended.
 
 [Click to view more frequently asked questions][faqs]
 
@@ -86,7 +84,7 @@ Licensed under [BSD 2-Clause](LICENSE).
 [getstarted]: https://github.com/neuralpain/qbactivator/wiki#getting-started
 [update]: https://github.com/neuralpain/qbactivator/wiki#downloads--updates
 [instructions]: https://github.com/neuralpain/qbactivator/wiki/How-to-Use
-[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.19.0/qbactivator-0.19.0.min.zip
+[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.20.0/qbactivator-0.20.0.min.zip
 [release]: https://github.com/neuralpain/qbactivator/releases/latest
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell

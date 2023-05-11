@@ -1,55 +1,76 @@
 #!/bin/bash
 
-# compile, Version 1.6
+# compile, Version 1.8.5
 # Copyright (c) 2023, neuralpain
 # Compile script for qbactivator
 
 version=$(<VERSION)
 name=qbactivator
+main=./src/main
+bin=./src/bin
+res=./res
+functions=$main/functions
+
 buildfile=./build/$name
-zipfile=qbactivator-$version.zip
-zipfile2=qbactivator-$version.min.zip
-main=./src/main/main.cmd
-patchfile=./src/main/qbpatch.dat
-helpfile=./src/main/qbreadme.txt
-pwshscript=./src/main/ExecutionModule.ps1
+cmd_cache=./cache/cmd.build.cmd
+pwsh_cache=./cache/pwsh.build.ps1
+zipfile=$name-$version.zip
+zipfile2=$name-$version.min.zip
+patchfilename=EntClient.dll
+patchfile=$bin/ecc/$patchfilename
+helpfile=$res/doc/readme.txt
+
 return=compile:
-v="1.6"
+v="1.8.5"
 
 compile() {
-  cat $main >> $buildfile
-  sed -i -e "3i :: qbactivator.cmd, Version $version" $buildfile
-  sed -i -e "8i @set \"uivr=$version\"" $buildfile
-  echo >> $buildfile
+  [[ ! -d "./cache" ]] && mkdir cache || rm ./cache/*;
+  
+  cat $main/main.cmd > $cmd_cache
+  sed -i -e "3i :: qbactivator.cmd, Version $version" $cmd_cache
+  sed -i -e "8i @set \"uivr=$version\"" $cmd_cache
+  echo >> $cmd_cache
+  
   # add instructions
-  echo ":qbreadme:">> $buildfile
-  cat $helpfile >> $buildfile
-  echo ":qbreadme:" >> $buildfile
-  echo >> $buildfile
-  # add powershell functions
-  echo "# ---------- powershell script ---------- #>" >> $buildfile
-  echo >> $buildfile
-  cat $pwshscript >> $buildfile
+  echo ":qbreadme:">> $cmd_cache
+  cat $helpfile >> $cmd_cache
+  echo ":qbreadme:" >> $cmd_cache
+  echo >> $cmd_cache
+  echo "# ---------- powershell script ---------- #>" >> $cmd_cache
+  echo >> $cmd_cache
 
-  mv $buildfile $buildfile.cmd
+  # add powershell functions
+  cat $functions/Header.ps1 > $pwsh_cache; echo >> $pwsh_cache
+  cat $functions/InformationDisplay.ps1 >> $pwsh_cache; echo >> $pwsh_cache
+  cat $functions/SpeedtestModule.ps1 >> $pwsh_cache; echo >> $pwsh_cache
+  cat $functions/LicenseOps.ps1 >> $pwsh_cache; echo >> $pwsh_cache
+  cat $functions/Execution.ps1 >> $pwsh_cache; echo >> $pwsh_cache
+  cat $functions/ClientModuleOps.ps1 >> $pwsh_cache; echo >> $pwsh_cache
+  cat $main/Main.ps1 >> $pwsh_cache
+
+  # final compile
+  cat $cmd_cache > $buildfile.cmd
+  cat $pwsh_cache >> $buildfile.cmd
   echo "$return Build complete."
-  [[ $1 == "-o" ]] && exit
+
+  # archive for stable release
+  [[ $1 == "-a" || $1 == "--archive" ]] && compress
 }
 
 compress() {
   cp ./LICENSE ./VERSION $patchfile dist && cd dist 
-  ( zip -q $zipfile * && zip -q $zipfile2 * -x qbpatch.dat *.zip ) || ( echo -e "$return error: Failed to create archive." && return )
-  rm ./LICENSE ./VERSION ./qbpatch.dat
+  ( zip -q $zipfile * && zip -q $zipfile2 * -x $patchfilename *.zip ) || ( echo -e "$return error: Failed to create archive." && return )
+  rm ./LICENSE ./VERSION ./$patchfilename
   [[ -f $zipfile ]] && echo -e "$return Archived to \"/dist\""
 }
 
 printusage() {
   echo "Usage: compile [OPTION...]"
   echo -e "Compile script for qbactivator\n"
-  echo "  -i, --release      Build for stable release"
-  echo "  -o, --only-cmd     Build script only"
+  echo "  -s, --release      Build for stable release"
+  echo "  -a, --archive      Archive stable release package"
   echo "  -t, --test [note]  Build unit tests"
-  echo "  -C, --clear-all    Delete \"build\" and \"dist\" folder"
+  echo "  -C, --clear-all    Delete temporary files and folders"
   echo "  -c, --clear        Clear all unit test builds"
   echo "  -v, --version      Display version number and exit"
   echo "  -h, --help         Display this help message and exit"
@@ -58,7 +79,6 @@ printusage() {
 }
 
 printversion() {
-  echo "Compile script for qbactivator"
   echo -e "Version $v"
 }
 
@@ -66,15 +86,14 @@ case "$1" in
   -h|--help) printusage && exit;;
   -v|--verison) printversion && exit;;
   -c|--clear) rm ./build/* &>/dev/null && exit;;
-  -C|--clear-all) rm -r ./build ./dist &>/dev/null && exit;;
-  -i|--release) buildfile=./dist/$name-$version
+  -C|--clear-all) rm -r ./build ./dist ./cache &>/dev/null && exit;;
+  -s|--release) buildfile=./dist/$name-$version
     [[ ! -d "./dist" ]] && mkdir dist || rm ./dist/*;
-    compile $2; compress;;
-  -t|--test) [[ $# -gt 1 ]] && note=$@ && note=${note/"-t "} && note=${note//" "/-} && note="--$note"
-    version="$version-beta"
+    compile $2;;
+  -t|--test) [[ $# -gt 1 ]] && note=$@ && note=${note/"-t "} && note=${note//" "/-} && note="-$note"
     build="$(date "+$version.%y%m%d%H%M%S")$note"
-    version="$version [Build $build]"
-    buildfile=$buildfile-$build
+    version="$version-beta [Build $build]"
+    buildfile=$buildfile-beta-$build
     [[ ! -d "./build" ]] && mkdir build; compile;;
   *) if [[ "$1" == "" ]]; then echo "$return error: Missing argument."
     else echo -e "$return error: Invalid option '$1'"; fi

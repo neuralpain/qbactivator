@@ -2,23 +2,13 @@ qbactivator | Simplified README v2.3
 
 Activation script for QuickBooks Point Of Sale Software on Windows.
 
-To view the full documentation for this activation script, visit
-<https://github.com/neuralpain/qbactivator>
+For more information on this activation script, visit
+<https://github.com/neuralpain/qbactivator/wiki>
+
+Take a moment to read the FAQs for any issues you may encounter:
+<https://github.com/neuralpain/qbactivator/wiki/FAQs>
 
 !!! An internet connection is required.
-
-+---------------------------------------------------------------------+
-| "qbactivator" was designed to work with only a single version of    |
-| QuickBooks POS installed. If there are multiple versions installed, |
-| the activator may throw an error. Ensure to remove all other        |
-| versions of QuickBooks POS before running this activator.           |
-+=====================================================================+
-| By default, the activator will search for the installer executable  |
-| first and assumes that you will be installing and activating        |
-| QuickBooks all at once. However, it is not a requirement for the    |
-| script to continue: without an installer present, the script        |
-| assumes an "activation-only" request and ignores installation.      |
-+---------------------------------------------------------------------+
 
 [ --- Instructions for activation --- ]
 

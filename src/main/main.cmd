@@ -1,7 +1,7 @@
 <# :# DO NOT REMOVE THIS LINE
 
 :: Copyright (c) 2023, neuralpain
-:: Activation script body written in Batch
+:: QuickBooks activation script
 
 @echo off
 @title QuickBooks POS Activator %uivr%

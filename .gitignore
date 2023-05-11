@@ -2,8 +2,16 @@
 *.exe
 *.zip
 log.txt
-qbactivator*/
 
 # build files
 build/
 dist/
+cache/
+
+# qb
+intuit
+QuickBooks Tool Hub
+
+# misc
+.history/
+target/
