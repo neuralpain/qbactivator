@@ -1,2 +1,5 @@
 .history
+*.cmd
+
+# cargo binary builds
 /target
