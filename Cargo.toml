@@ -1,8 +1,10 @@
 [package]
 name = "qbactivator"
-version = "0.20.0"
+version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+hex-literal = "0.4.1"
+sha2 = "0.10.7"
