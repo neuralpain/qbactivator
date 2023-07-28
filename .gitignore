@@ -4,9 +4,17 @@
 # cargo binary builds
 /target
 
+# testing
+*.exe
+*.zip
+log.txt
 
-# Added by cargo
-#
-# already existing elements were commented out
+# build files
+/build
+/dist
+/cache
 
-#/target
+# qb
+intuit
+QuickBooks Tool Hub
+
