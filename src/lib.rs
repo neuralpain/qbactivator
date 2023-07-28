@@ -7,14 +7,19 @@ pub enum Version {
 
 pub struct PointOfSale {
     pub version_number: Version,
-    pub installer_name: String,
-    pub pos_shell_location: String,
-    pub data_location: String,
-    pub hash: String,
+    pub installer_path: &'static str,
+    pub shell_location: &'static str,
+    pub data_location: &'static str,
+    pub license: &'static str,
+    pub hash: &'static str,
 }
 
 impl PointOfSale {
     pub fn install_quickbooks(self) {
-        todo!()
+        self.hash_cmp()
+    }
+
+    fn hash_cmp(self) {
+        println!("{}", self.hash);
     }
 }
