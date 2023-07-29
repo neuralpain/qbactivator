@@ -1,7 +1,9 @@
 use hex_literal::hex;
 use qbactivator::*;
+use relative_path::RelativePath;
 use sha2::{Digest, Sha256, Sha512};
-use std::{fs, hash, io, os, path::Path};
+use std::{ fs, hash, io, os, path::Path};
+use std::env::current_dir;
 
 fn main() {
     const CLIENT_MODULE: &'static str = r"C:\Windows\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5\Intuit.Spc.Map.EntitlementClient.Common.dll";
@@ -43,7 +45,7 @@ fn main() {
 
     let pos_version_11: PointOfSale = PointOfSale {
         version_number: Version::Eleven,
-        installer_path: r"/QuickBooksPOSV11.exe",
+        installer_path: r"target\debug\QuickBooksPOSV11.exe",
         shell_location: r"C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe",
         data_location: r"C:\ProgramData\Intuit\QuickBooks Point of Sale 11.0",
         license: r#"<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="023-147"/>"#,
@@ -56,15 +58,26 @@ fn main() {
     // 4. download
     // 5. run qb installer
 
-    if Path::new(&pos_version_11.installer_path).exists() {
-        pos_version_11.install_quickbooks();
-    } else if Path::new(&pos_version_12.installer_path).exists() {
-        pos_version_12.install_quickbooks();
-    } else if Path::new(&pos_version_18.installer_path).exists() {
-        pos_version_18.install_quickbooks();
-    } else if Path::new(&pos_version_19.installer_path).exists() {
-        pos_version_19.install_quickbooks();
-    } else { println!("does not activate"); }
+    // let x: Result<bool, bool> = Ok(fs::metadata(&pos_version_11.installer_path)).is_ok()
+
+    // println!("{}", current_dir());
+
+    match fs::metadata(&pos_version_11.installer_path) {
+        Ok(_) => pos_version_11.install_quickbooks(),
+        Err(_) => println!("will not install {}", pos_version_11.installer_path),
+    };
+
+    // if Ok(fs::metadata(&pos_version_11.installer_path)).is_ok() {
+    // pos_version_11.install_quickbooks();
+    // } else if (Ok(fs::metadata(&pos_version_12.installer_path))).is_ok() {
+    // pos_version_12.install_quickbooks();
+    // } else if (Ok(fs::metadata(&pos_version_18.installer_path))).is_ok() {
+    // pos_version_18.install_quickbooks();
+    // } else if (Ok(fs::metadata(&pos_version_19.installer_path))).is_ok() {
+    // pos_version_19.install_quickbooks();
+    // } else {
+    // println!("does not activate");
+    // }
 
     // let mut ver = String::new();
 
