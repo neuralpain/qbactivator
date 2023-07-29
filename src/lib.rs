@@ -1,3 +1,5 @@
+use std::path::Path;
+
 pub enum Version {
     Eleven = 11,
     Twelve = 12,
@@ -7,7 +9,7 @@ pub enum Version {
 
 pub struct PointOfSale {
     pub version_number: Version,
-    pub installer_path: &'static str,
+    pub installer_path: &'static Path,
     pub shell_location: &'static str,
     pub data_location: &'static str,
     pub license: &'static str,
@@ -24,6 +26,11 @@ impl PointOfSale {
         println!("{}", self.hash);
     }
 }
+
+
+
+
+
 
 // let asd = fs::metadata(&pos_version_11.installer_path).expect("does not exist");
 
