@@ -1,6 +1,5 @@
 use hex_literal::hex;
 use qbactivator::*;
-use relative_path::RelativePath;
 use sha2::{Digest, Sha256, Sha512};
 use std::fs;
 use std::hash;
@@ -8,46 +7,6 @@ use std::io;
 use std::os;
 use std::path::Path;
 use std::path::PathBuf;
-
-static pos_version_19: PointOfSale = PointOfSale {
-    version_number: Version::Nineteen,
-    installer_path: Path::new("QuickBooksPOSV19.exe"),
-    shell_location: r"C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 19.0\QBPOSShell.exe",
-    data_location: r"C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 19.0",
-    license: r#"<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>"#,
-    hash: "F5C434677270319F9A515210CA916187",
-};
-
-static pos_version_18: PointOfSale = PointOfSale {
-    version_number: Version::Eighteen,
-    installer_path: Path::new("QuickBooksPOSV18.exe"),
-    shell_location: r"C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0\QBPOSShell.exe",
-    data_location: r"C:\ProgramData\Intuit\QuickBooks Desktop Point of Sale 18.0",
-    license: r#"<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>"#,
-    hash: "DD45AA4EC0DF431243C9836816E2305A",
-};
-
-static pos_version_12: PointOfSale = PointOfSale {
-    version_number: Version::Twelve,
-    installer_path: Path::new("QuickBooksPOSV12.exe"),
-    shell_location: r"C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 12.0\QBPOSShell.exe",
-    data_location: r"C:\ProgramData\Intuit\QuickBooks Point of Sale 12.0",
-    license: r#"<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>"#,
-    hash: "30FB99C5E98DF6874D438C478314EF9D",
-};
-
-static pos_version_11: PointOfSale = PointOfSale {
-    version_number: Version::Eleven,
-    installer_path: Path::new("QuickBooksPOSV11.exe"),
-    shell_location: r"C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe",
-    data_location: r"C:\ProgramData\Intuit\QuickBooks Point of Sale 11.0",
-    license: r#"<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="023-147"/>"#,
-    hash: "A1AF552A49ADFF40E6462A968DD552A4",
-};
-
-
-
-
 
 fn main() {
     const CLIENT_MODULE: &'static str = r"C:\Windows\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5\Intuit.Spc.Map.EntitlementClient.Common.dll";
@@ -72,13 +31,13 @@ fn main() {
 
     // let current_dir = "."; // Current directory
 
-    let exe_files = collect_exe_files();
-    let quickbooks_pos_file = find_quickbooks_pos(&exe_files);
-
-    match quickbooks_pos_file {
-        Some(file) => println!("Found QuickBooksPOS: {:?}", file),
-        None => println!("QuickBooksPOS not found."),
-    }
+    // let exe_files = collect_exe_files();
+    // let quickbooks_pos_file = find_quickbooks_pos(&exe_files);
+    //
+    // match quickbooks_pos_file {
+    //     Some(file) => println!("Found QuickBooksPOS: {:?}", file),
+    //     None => println!("QuickBooksPOS not found."),
+    // }
 
     // match fs::metadata(&pos_version_11.installer_path) {
     // Ok(_) => println!("will  install {}", pos_version_11.installer_path.display()),
@@ -104,49 +63,42 @@ fn main() {
     //   .expect("no response");
 }
 
+// fn collect_exe_files() -> Vec<PathBuf> {
+//     let current_dir = std::env::current_dir().expect("Failed to get the current directory.");
 
+//     let mut exe_files = Vec::new();
 
+//     if let Ok(entries) = fs::read_dir(current_dir) {
+//         for entry in entries {
+//             if let Ok(entry) = entry {
+//                 let file_name = entry.file_name().to_string_lossy().to_string();
+//                 if file_name.ends_with(".exe") {
+//                     exe_files.push(entry.path());
+//                 }
+//             }
+//         }
+//     }
 
+//     exe_files
+// }
 
+// fn find_quickbooks_pos(exe_files: &[PathBuf]) -> Option<&PathBuf> {
+//     let quickbooks_pos_versions = [
+//         &pos_version_11.installer_path,
+//         &pos_version_12.installer_path,
+//         &pos_version_18.installer_path,
+//         &pos_version_19.installer_path,
+//     ];
 
+//     for version in &quickbooks_pos_versions {
+//         for file in exe_files {
+//             if let Some(file_name) = file.file_name() {
+//                 if file_name == *version {
+//                     return Some(file);
+//                 }
+//             }
+//         }
+//     }
 
-
-fn collect_exe_files() -> Vec<PathBuf> {
-    let current_dir = std::env::current_dir().expect("Failed to get the current directory.");
-
-    let mut exe_files = Vec::new();
-
-    if let Ok(entries) = fs::read_dir(current_dir) {
-        for entry in entries {
-            if let Ok(entry) = entry {
-                let file_name = entry.file_name().to_string_lossy().to_string();
-                if file_name.ends_with(".exe") {
-                    exe_files.push(entry.path());
-                }
-            }
-        }
-    }
-
-    exe_files
-}
-
-fn find_quickbooks_pos(exe_files: &[PathBuf]) -> Option<&PathBuf> {
-    let quickbooks_pos_versions = [
-        &pos_version_11.installer_path,
-        &pos_version_12.installer_path,
-        &pos_version_18.installer_path,
-        &pos_version_19.installer_path,
-    ];
-
-    for version in &quickbooks_pos_versions {
-        for file in exe_files {
-            if let Some(file_name) = file.file_name() {
-                if file_name == *version {
-                    return Some(file);
-                }
-            }
-        }
-    }
-
-    None
-}
+//     None
+// }
