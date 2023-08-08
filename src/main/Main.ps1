@@ -27,7 +27,7 @@ function Remove-TemporaryActvationFiles {
 }
 
 function Invoke-Activation {
-  param ([switch]$ActivationOnly)
+  param ([switch]$ActivationOnly, [Switch]$GeneralActivation)
   
   if ($ActivationOnly) { New-ActivationOnlyRequest }
 
@@ -40,7 +40,9 @@ function Invoke-Activation {
 
   Write-Host "Proceeding with activation..." 
   Start-Sleep -Milliseconds $TIME_SLOW
-  exit $OK
+  
+  if ($GeneralActivation) { exit $GENERAL_ACT }
+  else { exit $OK }
 }
 
 # ---------------------------------- start powershell execution ---------------------------------- #

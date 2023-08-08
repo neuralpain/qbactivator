@@ -20,12 +20,13 @@ function Write-InfoLink {
 
 function Write-MainMenu {
   Clear-Host
-  Write-HeaderLabel
+  Write-HeaderLabel "Evaluation/Beta"
   Write-Host "`nSelect QuickBooks product"
   Write-Host "-------------------------"
   Write-Host "1 - Point of Sale (Single/Client)"
   Write-Host "2 - Point of Sale (Server)"
-  Write-Host "3 - Other QuickBooks Activation"
+  Write-Host "3 - General QuickBooks activation"
+  Write-Host "--- ^^^^ Pro/Enterprise/Other ^^^^"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
@@ -33,14 +34,15 @@ function Write-MainMenu {
     0 { Write-ExitActivator; exit $NONE }
     1 { Invoke-QuickBooksInstaller }
     2 { Invoke-QuickBooksInstaller -Server }
-    3 { Write-OptionUnavailable; Write-MainMenu }
+    # 3 { Write-OptionUnavailable; Write-MainMenu }
+    3 { Clear-Host; Write-Host; Invoke-Activation -GeneralActivation }
     default { Write-MainMenu }
   }
 }
 
 function Write-NextOperationMenu {
   Clear-Host
-  Write-HeaderLabel
+  Write-HeaderLabel "Evaluation/Beta"
   Write-Host "`nSelect next operation"
   Write-Host "---------------------"
   Write-Host "1 - Request software activation"
