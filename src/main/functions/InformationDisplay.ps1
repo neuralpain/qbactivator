@@ -23,15 +23,17 @@ function Write-MainMenu {
   Write-HeaderLabel
   Write-Host "`nSelect QuickBooks product"
   Write-Host "-------------------------"
-  Write-Host "1 - Point of Sale"
-  Write-Host "2 - Other QuickBooks Activation"
+  Write-Host "1 - Point of Sale (Single/Client)"
+  Write-Host "2 - Point of Sale (Server)"
+  Write-Host "3 - Other QuickBooks Activation"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
   switch ($query) {
     0 { Write-ExitActivator; exit $NONE }
     1 { Invoke-QuickBooksInstaller }
-    2 { Write-OptionUnavailable; Write-MainMenu }
+    2 { Invoke-QuickBooksInstaller -Server }
+    3 { Write-OptionUnavailable; Write-MainMenu }
     default { Write-MainMenu }
   }
 }

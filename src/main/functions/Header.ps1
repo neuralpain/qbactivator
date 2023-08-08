@@ -38,10 +38,15 @@ $QBPATH12 = "Intuit\QuickBooks Point of Sale 12.0"
 $QBPATH18 = "Intuit\QuickBooks Desktop Point of Sale 18.0"
 $QBPATH19 = "Intuit\QuickBooks Desktop Point of Sale 19.0"
 
-$QBREGV11 = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="023-147"/>'
-$QBREGV12 = '<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
-$QBREGV18 = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
-$QBREGV19 = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
+$QBREGV11_SERVER = '<Registration InstallDate="" LicenseNumber="8432-0480-0178-029" ProductNumber="023-147"/>'
+$QBREGV12_SERVER = '<Registration InstallDate="" LicenseNumber="0877-0442-6111-615" ProductNumber="448-229"/>'
+$QBREGV18_SERVER = '<Registration InstallDate="" LicenseNumber="3130-3560-7860-900" ProductNumber="818-769"/>'
+$QBREGV19_SERVER = '<Registration InstallDate="" LicenseNumber="7447-0864-8898-657" ProductNumber="595-828"/>'
+
+$QBREGV11_CLIENT = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="023-147"/>'
+$QBREGV12_CLIENT = '<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
+$QBREGV18_CLIENT = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
+$QBREGV19_CLIENT = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
 
 # start list from most recent version first
 $qbVersionList = 19, 18, 12, 11

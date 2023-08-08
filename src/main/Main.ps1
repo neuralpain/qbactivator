@@ -27,7 +27,7 @@ function Remove-TemporaryActvationFiles {
 }
 
 function Invoke-Activation {
-  param ([switch] $ActivationOnly)
+  param ([switch]$ActivationOnly)
   
   if ($ActivationOnly) { New-ActivationOnlyRequest }
 

@@ -3,7 +3,7 @@
 $PATCH_FILE = ".\EntClient.dll"
 $PATCH_HASH = "1A1816C78925E734FCA16974BDBAA4AA"
 # $clientfilehost = "https://github.com/neuralpain/qbactivator/files/10475450/qb.patch"
-$clientfilehost = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.20.0/src/bin/ecc/EntClient.dll"
+$clientfilehost = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.20.1/src/bin/ecc/EntClient.dll"
 $CLIENT_MODULE = "$env:SystemRoot\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5\Intuit.Spc.Map.EntitlementClient.Common.dll"
 
 function Get-ClientModule {

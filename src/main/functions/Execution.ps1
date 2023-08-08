@@ -133,6 +133,8 @@ function New-ActivationOnlyRequest {
 }
 
 function Invoke-QuickBooksInstaller {
+  param([Switch]$Server)
+
   Clear-Host
   Write-Host "`nChecking for QuickBooks installer..."
   
@@ -152,7 +154,12 @@ function Invoke-QuickBooksInstaller {
 
       foreach ($hash in $qbHashList) {
         $result = (Compare-Hash -Hash $hash -File .\$exe)
-        if ($result -eq $OK) { Write-Host "OK"; Get-IntuitLicense -Hash $hash; break }
+        if ($result -eq $OK) {
+          Write-Host "OK"
+          if ($Server) { Get-IntuitLicense -Hash $hash -Server } 
+          else { Get-IntuitLicense -Hash $hash } 
+          break 
+        }
       }
       
       # if hashes do not match at any in the list
@@ -166,8 +173,9 @@ function Invoke-QuickBooksInstaller {
         switch ($query) {
           "y" { 
             Write-Host
-            Get-IntuitLicense -Version $QB_VERSION
-            Start-Installer .\$exe >$null 2>&1 
+            if ($Server) { Get-IntuitLicense -Version $QB_VERSION -Server }
+            else { Get-IntuitLicense -Version $QB_VERSION }
+            Start-Installer .\$exe >$null 2>&1
             Invoke-Activation
           }
 

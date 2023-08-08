@@ -18,15 +18,16 @@ function Clear-IntuitData {
 }
 
 function Install-IntuitLicense {
-  param ($Version)
+  param ($Version, $License)
   
   Write-Host -NoNewLine "Installing registration keys... "
   
   switch ($Version) {
     19 {
       mkdir $env:ProgramData\$QBPATH19 >$null 2>&1
+      if ($Server) {} 
       Out-File -FilePath $env:ProgramData\$QBPATH19\qbregistration.dat `
-               -InputObject $QBREGV19 `
+               -InputObject $License `
                -Encoding UTF8 `
                -NoNewline
     }
@@ -34,7 +35,7 @@ function Install-IntuitLicense {
     18 {
       mkdir $env:ProgramData\$QBPATH18 >$null 2>&1
       Out-File -FilePath $env:ProgramData\$QBPATH18\qbregistration.dat `
-               -InputObject $QBREGV18 `
+               -InputObject $License `
                -Encoding UTF8 `
                -NoNewline
     }
@@ -42,7 +43,7 @@ function Install-IntuitLicense {
     12 {
       mkdir $env:ProgramData\$QBPATH12 >$null 2>&1
       Out-File -FilePath $env:ProgramData\$QBPATH12\qbregistration.dat `
-               -InputObject $QBREGV12 `
+               -InputObject $License `
                -Encoding UTF8 `
                -NoNewline
     }
@@ -50,7 +51,7 @@ function Install-IntuitLicense {
     11 {
       mkdir $env:ProgramData\$QBPATH11 >$null 2>&1
       Out-File -FilePath $env:ProgramData\$QBPATH11\qbregistration.dat `
-               -InputObject $QBREGV11 `
+               -InputObject $License `
                -Encoding UTF8 `
                -NoNewline
     }
@@ -60,17 +61,36 @@ function Install-IntuitLicense {
 }
 
 function Get-IntuitLicense {
-  param ($Hash, $Version)
+  param ($Hash, $Version, [Switch]$Server)
 
   Clear-IntuitData
   
   switch ($Hash) {
-    $QBHASH19 { $Version = 19 }
-    $QBHASH18 { $Version = 18 }
-    $QBHASH12 { $Version = 12 }
-    $QBHASH11 { $Version = 11 }
+    $QBHASH19 { 
+      $Version = 19
+      if ($Server) { $License = $QBREGV19_SERVER }
+      else { $License = $QBREGV19_CLIENT }
+    }
+
+    $QBHASH18 { 
+      $Version = 18
+      if ($Server) { $License = $QBREGV18_SERVER }
+      else { $License = $QBREGV18_CLIENT }
+    }
+
+    $QBHASH12 { 
+      $Version = 12
+      if ($Server) { $License = $QBREGV12_SERVER }
+      else { $License = $QBREGV12_CLIENT }
+    }
+    
+    $QBHASH11 { 
+      $Version = 11
+      if ($Server) { $License = $QBREGV11_SERVER }
+      else { $License = $QBREGV11_CLIENT }
+    }
   }
 
-  Install-IntuitLicense -Version $Version
+  Install-IntuitLicense $Version $License
   return
 }
