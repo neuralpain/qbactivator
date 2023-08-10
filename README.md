@@ -84,7 +84,7 @@ Licensed under [BSD 2-Clause](LICENSE).
 [getstarted]: https://github.com/neuralpain/qbactivator/wiki#getting-started
 [update]: https://github.com/neuralpain/qbactivator/wiki#downloads--updates
 [instructions]: https://github.com/neuralpain/qbactivator/wiki/How-to-Use
-[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.20.0/qbactivator-0.20.0.min.zip
+[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.20.1/qbactivator-0.20.1.min.zip
 [release]: https://github.com/neuralpain/qbactivator/releases/latest
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell
