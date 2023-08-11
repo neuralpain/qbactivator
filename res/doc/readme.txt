@@ -1,4 +1,4 @@
-qbactivator | Simplified README v2.3
+qbactivator | Simplified README v2.6
 
 Activation script for QuickBooks Point Of Sale Software on Windows.
 
@@ -12,17 +12,23 @@ Take a moment to read the FAQs for any issues you may encounter:
 
 [ --- Instructions for activation --- ]
 
-1. Run "qbactivator.cmd" and allow the QuickBooks software to install
-   completely before you continue the activation.
-2. Uncheck the "Launch QuickBooks" box.
-3. Click Finish and continue with the script. QuickBooks will open 
-   automatically.
-4. You will be asked for Administrative privileges. Click Next.
-5. Select "Open Practice Mode"
-6. Click Next
-7. Select "Use Sample Data..."
-8. Click Next
-9. Click OK
+ 1. Run "qbactivator.cmd", select the store you need to install and
+    activate (Store 1 or Store 2) and allow the QuickBooks software to 
+    install completely before you continue the activation.
+ 
+<?> If you are installing on Client, exit the activator after the
+    software is installed. The Client will be activated automatically
+    with the license from the Server workstation.
+ 
+ 2. Uncheck the "Launch QuickBooks" box.
+ 3. Click Finish and continue with the script. QuickBooks will open 
+    automatically.
+ 4. You will be asked for Administrative privileges. Click Next.
+ 5. Select "Open Practice Mode"
+ 6. Click Next
+ 7. Select "Use Sample Data..."
+ 8. Click Next
+ 9. Click OK
 10. Click "Register by phone now"
 11. Enter the code `999999`
 12. Click Next
@@ -37,6 +43,7 @@ Take a moment to read the FAQs for any issues you may encounter:
     that is something you need.
 
 [ --- OPTIONAL --- Steps 18-23 are for adding more users --- ]
+[ ---------------- on the Server workstation --------------- ]
 
 14. Click the "Help" option in the menu bar
 15. Click "Manage My License"
@@ -51,3 +58,6 @@ Take a moment to read the FAQs for any issues you may encounter:
 21. Continue the script
 
 @neuralpain // 'cause why not?
+With help from @Navish360
+--
+Original patch by Beast_iND
