@@ -18,22 +18,27 @@ function Write-InfoLink {
   Write-Host "https://github.com/neuralpain/qbactivator" -ForegroundColor Green
 }      
 
+
+
 function Write-MainMenu {
   Clear-Host
   Write-HeaderLabel "Evaluation/Beta"
   Write-Host "`nSelect QuickBooks product"
   Write-Host "-------------------------"
-  Write-Host "1 - Point of Sale (Single/Client)"
-  Write-Host "2 - Point of Sale (Server)"
+  Write-Host "1 - POS Store 1 (Server/Client)"
+  Write-Host "2 - POS Store 2 (Server/Client)"
   Write-Host "3 - General QuickBooks activation"
-  Write-Host "--- ^^^^ Pro/Enterprise/Other ^^^^"
+  Write-Host "    ^^^^ Pro/Enterprise/Other ^^^^"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
   switch ($query) {
     0 { Write-ExitActivator; exit $NONE }
     1 { Invoke-QuickBooksInstaller }
-    2 { Invoke-QuickBooksInstaller -Server }
+    2 { 
+      $script:SECOND_STORE = $true
+      Invoke-QuickBooksInstaller
+    }
     # 3 { Write-OptionUnavailable; Write-MainMenu }
     3 { Clear-Host; Write-Host; Invoke-Activation -GeneralActivation }
     default { Write-MainMenu }
