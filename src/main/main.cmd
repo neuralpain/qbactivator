@@ -111,8 +111,8 @@ echo.
 echo Follow the steps below to activate QuickBooks software.
 echo.
 echo 1. Open the QuickBooks software
-echo 2. Go to activate/register the software
-echo 3. Enter the code 999999
+echo "2. Click Help > About" 
+echo 3. Enter the code 99999930
 echo 4. Click Next
 echo 5. Click Finish
 echo.
