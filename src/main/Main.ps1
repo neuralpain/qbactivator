@@ -41,7 +41,7 @@ function Invoke-Activation {
   Write-Host "Proceeding with activation..." 
   Start-Sleep -Milliseconds $TIME_SLOW
   
-  if ($GeneralActivation) { exit $GENERAL_ACT }
+  if ($GeneralActivation) { exit $GENERAL_ACTIVATION }
   else { exit $OK }
 }
 
