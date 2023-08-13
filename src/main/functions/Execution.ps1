@@ -3,6 +3,22 @@
 function Set-Version($Version) { $script:QB_VERSION = $Version }
 function Get-Version { return $script:QB_VERSION }
 
+<#
+function Get-BitsTransfer($Source, $Destination) {
+  
+  try { 
+    Start-BitsTransfer $Source $Destination 
+  }
+  
+  catch [StartBitsTransferCOMException],[Microsoft.BackgroundIntelligentTransfer.Management.NewBitsTransferCommand] {
+    Write-FileNotFound $Source; exit $PAUSE
+  }
+  
+  catch [FileNotFoundException] {
+    Write-FileNotFound $Source; exit $PAUSE
+  }
+}
+#>
 
 function Compare-Hash {
   param ($Hash, $File)

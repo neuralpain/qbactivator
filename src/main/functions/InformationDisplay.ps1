@@ -18,7 +18,13 @@ function Write-InfoLink {
   Write-Host "https://github.com/neuralpain/qbactivator" -ForegroundColor Green
 }      
 
-
+function Write-FileNotFound($File) {
+  Clear-Host
+  Write-Host "`nThe requested file could not be downloaded." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nThe file was not found on the server at `"$File`"" -ForegroundColor White
+  Write-Host "Please submit this issue to @neuralpain. Thank you." -ForegroundColor White
+  Write-InfoLink
+}
 
 function Write-MainMenu {
   Clear-Host
