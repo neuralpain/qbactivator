@@ -27,7 +27,7 @@ function Remove-TemporaryActvationFiles {
 }
 
 function Invoke-Activation {
-  param ([switch]$ActivationOnly)
+  param ([switch]$ActivationOnly, [Switch]$GeneralActivation)
   
   if ($ActivationOnly) { New-ActivationOnlyRequest }
 
@@ -35,12 +35,17 @@ function Invoke-Activation {
   Repair-GenuineClientModule # if damaged
   Find-GenuineClientModule # will exit if missing
   Install-ClientModule # inject modified client
+  
+  # currently in development
   # Install-ClientDataModule -Version 11
+  
   Remove-TemporaryActvationFiles
 
   Write-Host "Proceeding with activation..." 
   Start-Sleep -Milliseconds $TIME_SLOW
-  exit $OK
+  
+  if ($GeneralActivation) { exit $GENERAL_ACTIVATION }
+  else { exit $OK }
 }
 
 # ---------------------------------- start powershell execution ---------------------------------- #

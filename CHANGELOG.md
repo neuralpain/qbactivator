@@ -1,6 +1,15 @@
 # Changelog
 
-## v0.20.0
+## v0.20.2
+- Fix error requesting network information
+- Add support for multi-store licensing with help from @Navish360
+- Bug fixes and improvements
+
+#### v0.20.1
+- Add licenses for server and client workstations
+- Bug fixes and improvements
+
+#### v0.20.0
 
 - Fix error fetching headers from the web on certain Windows installations 
 - Now deletes specific Point of Sale installation folder instead of entire Intuit directory

@@ -3,6 +3,22 @@
 function Set-Version($Version) { $script:QB_VERSION = $Version }
 function Get-Version { return $script:QB_VERSION }
 
+<#
+function Get-BitsTransfer($Source, $Destination) {
+  
+  try { 
+    Start-BitsTransfer $Source $Destination 
+  }
+  
+  catch [StartBitsTransferCOMException],[Microsoft.BackgroundIntelligentTransfer.Management.NewBitsTransferCommand] {
+    Write-FileNotFound $Source; exit $PAUSE
+  }
+  
+  catch [FileNotFoundException] {
+    Write-FileNotFound $Source; exit $PAUSE
+  }
+}
+#>
 
 function Compare-Hash {
   param ($Hash, $File)
@@ -27,8 +43,8 @@ function Select-QuickBooksVersion {
           break
         }
         else {
-          Set-Version $Version
-          return $Version 
+          Set-Version $Version 
+          return
         }
       }
     }
@@ -38,12 +54,15 @@ function Select-QuickBooksVersion {
 }
 
 
-function Get-WebClientHeaderContent {
-  param($URL)
+function Get-InstallerSize($URL) {
+
+  # catch potential errors in making requests 
+  # to the server for the QuickBooks installer 
+  # size for the user's reference
   
   $Error.Clear()
-  $size_header = ((Invoke-WebRequest $URL -UseBasicParsing -Method Head).Headers.'Content-Length')
-  $content = [math]::Round($size_header / $BYTE_TO_MEGABYTE)
+  [int]$size_header = ((Invoke-WebRequest $URL -UseBasicParsing -Method Head).Headers.'Content-Length')
+  [int]$content = [math]::Round($size_header / $BYTE_TO_MEGABYTE)
   
   if ($Error) {
     Clear-Host
@@ -54,7 +73,9 @@ function Get-WebClientHeaderContent {
     Write-Host "MB_Size: ${content}MB"
     Write-InfoLink
     exit $PAUSE
-  } else { return $content }
+  } 
+  
+  return $content
 }
 
 function Get-QuickBooksInstaller {
@@ -64,12 +85,16 @@ function Get-QuickBooksInstaller {
   if ($Version -eq $CANCEL) { return }
 
   Clear-Host
-  Write-Host -NoNewLine "`nTesting connectivity... "
-
+  Write-Host "`nPreparing to download POS v${Version}... "
+  Write-Host "This may take up to a minute." -ForegroundColor Yellow
+  Write-Host -NoNewLine "Testing connectivity... "
+  
   if (Test-Connection www.google.com -Quiet) {
-    Write-Host "OK`nPreparing to download..."
-
-    $downloadspeed = (Get-SpeedTestResults)
+    Write-Host "OK"
+    
+    Write-Host "Testing internet speed..." -NoNewline
+    $download_speed = (Get-SpeedTestResults)
+    Write-Host " Done."
     
     switch ($Version) {
       19 { $ReleaseYear = 2019 }
@@ -78,13 +103,13 @@ function Get-QuickBooksInstaller {
       11 { $ReleaseYear = 2013 }
     }
     
-    Write-Host -NoNewLine "Querying download size... "
-    $qbdownloadurl = "https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/${ReleaseYear}/Latest/QuickBooksPOSV${Version}.exe"
-    $qbdownloadsize = Get-WebClientHeaderContent -URL $qbdownloadurl
-    $TimeToComplete = Get-TimeToComplete ($qbdownloadsize / $downloadspeed)
+    Write-Host -NoNewLine "Requesting installer size... "
+    $installer_download_url = "https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/${ReleaseYear}/Latest/QuickBooksPOSV${Version}.exe"
+    $installer_size = Get-InstallerSize -URL $installer_download_url
+    $time_to_complete = Get-TimeToComplete $installer_size $download_speed
     Write-Host "Done"
 
-    Write-Host "Need to download ${qbdownloadsize}MB installer."
+    Write-Host "Need to download ${installer_size}MB installer."
     $query = Read-Host "Do you want to continue? (Y/n)"
     switch ($query) {
       "n" {
@@ -93,7 +118,7 @@ function Get-QuickBooksInstaller {
         Get-QuickBooksInstaller -Version (Get-Version)
       }
       default {
-        if ($Version -gt 12 -and $downloadspeed -le 2) {
+        if ($Version -gt 12 -and $download_speed -le 2) {
           Write-Host "Download may take more than 5 minutes to complete`non your current system." -ForegroundColor Yellow
           $query = Read-Host "Are you ready to start the download? (Y/n)"
           if ($query -eq "n") {
@@ -104,16 +129,17 @@ function Get-QuickBooksInstaller {
         }
 
         Clear-Host
-        Write-Host "`n Downloading ${qbdownloadsize}MB... " -ForegroundColor White -BackgroundColor DarkCyan
-        Write-Host "`nDST: $Target`nETC: $TimeToComplete @ $downloadspeed MB/s" -ForegroundColor White
+        Write-Host "`n Downloading ${installer_size}MB... " -ForegroundColor White -BackgroundColor DarkCyan
+        Write-Host "`nDST: $Target`nETC: $time_to_complete @ $download_speed MB/s" -ForegroundColor White
         Write-Host "`nEstimated time is calculated from the point that your`ninternet speed was tested. This is just an estimation and`nmay not reflect the actual time that it would take for the`ndownload to complete on your system. This is subject to`nchange as your internet speed fluctuates."
         Write-Host "`nPlease wait while the installer is being downloaded." -ForegroundColor Yellow
-        Start-BitsTransfer $qbdownloadurl "$Target\QuickBooksPOSV${Version}.exe"
+        Start-BitsTransfer $installer_download_url "$Target\QuickBooksPOSV${Version}.exe"
         Write-Host "`nDownload complete."
         Start-Sleep -Milliseconds $TIME_BLINK
       }
     }
   }
+  
   else { Write-NoInternetConnectivity; exit $PAUSE }
 }
 
@@ -124,7 +150,10 @@ function New-ActivationOnlyRequest {
   Write-Host "Checking for installed QuickBooks software..."
 
   foreach ($path in $qbPathList) {
-    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { Write-Host "Found `"$path`""; return }
+    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { 
+      Write-Host "Found `"$path`""
+      return 
+    }
   }
 
   # If nothing is found then the activation will not continue.
@@ -133,8 +162,6 @@ function New-ActivationOnlyRequest {
 }
 
 function Invoke-QuickBooksInstaller {
-  param([Switch]$Server)
-
   Clear-Host
   Write-Host "`nChecking for QuickBooks installer..."
   
@@ -146,8 +173,8 @@ function Invoke-QuickBooksInstaller {
       Write-Host "Found `"$exe`"."
       
       # quickbooks version retrieved here in the even that
-      # the user's installer is not recognized, but the user
-      # still wants to invoke it
+      # the user's installer is not recognized from the hash, 
+      # but the user still wants to invoke it
       $script:QB_VERSION = ($exe.Trim("QuickBooksPOSV.exe"))
       
       Write-Host -NoNewLine "Verifying `"$exe`"... "
@@ -156,13 +183,12 @@ function Invoke-QuickBooksInstaller {
         $result = (Compare-Hash -Hash $hash -File .\$exe)
         if ($result -eq $OK) {
           Write-Host "OK"
-          if ($Server) { Get-IntuitLicense -Hash $hash -Server } 
-          else { Get-IntuitLicense -Hash $hash } 
+          Get-IntuitLicense -Hash $hash
           break 
         }
       }
       
-      # if hashes do not match at any in the list
+      # throw error if hashes do not match at any in the list
       if ($result -eq $ERR) {
         Clear-Host
         Write-Host "`nFailed to verify the installer." -ForegroundColor White -BackgroundColor DarkRed
@@ -173,8 +199,7 @@ function Invoke-QuickBooksInstaller {
         switch ($query) {
           "y" { 
             Write-Host
-            if ($Server) { Get-IntuitLicense -Version $QB_VERSION -Server }
-            else { Get-IntuitLicense -Version $QB_VERSION }
+            Get-IntuitLicense -Version $QB_VERSION
             Start-Installer .\$exe >$null 2>&1
             Invoke-Activation
           }
@@ -200,6 +225,7 @@ function Invoke-QuickBooksInstaller {
 
   Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_SLOW
+  
   Write-NextOperationMenu
 }
 

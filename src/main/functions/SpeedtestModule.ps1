@@ -1,31 +1,19 @@
-function Get-TimeToComplete {
-  param ($Time)
+# add speedtest cli license
+$speedtest_folder = "$env:APPDATA\Ookla\Speedtest CLI"
+$speedtest_license_file = "$env:APPDATA\Ookla\Speedtest CLI\speedtest-cli.ini"
+$speedtest_license_text = "[Settings]`r`nLicenseAccepted=604ec27f828456331ebf441826292c49276bd3c1bee1a2f65a6452f505c4061c" # utf8, noBOM
 
-  if ($Time -gt 60) {
-    $Time = $Time / 60
-    $Time = [math]::Round($Time, 2)
-    return "$Time minutes"
-  }
-  
-  [int]$Time = $Time
-  return "$Time seconds"
+if (-not(Test-Path "$speedtest_license_file" -PathType Leaf)) {
+  mkdir $speedtest_folder >$null 2>&1 
+  [IO.File]::WriteAllLines($speedtest_license_file, $speedtest_license_text)
 }
 
 function Get-SpeedTestResults {
-  $speedtestinstallfolder = "$env:APPDATA\Ookla\Speedtest CLI"
-  $speedtestlicensefile = "$env:APPDATA\Ookla\Speedtest CLI\speedtest-cli.ini"
-  $speedtestlicensetext = "[Settings]`r`nLicenseAccepted=604ec27f828456331ebf441826292c49276bd3c1bee1a2f65a6452f505c4061c" # utf8, noBOM
-  $speedtestarchive = "https://github.com/neuralpain/qbactivator/files/11450516/speedtest.zip"
-  
-  # add cli license text
-  if (-not(Test-Path "$speedtestlicensefile" -PathType Leaf)) {
-    mkdir $speedtestinstallfolder
-    [IO.File]::WriteAllLines($speedtestlicensefile, $speedtestlicensetext)
-  }
+  $speedtest_archive = "https://github.com/neuralpain/qbactivator/files/11450516/speedtest.zip"
   
   # don't waste time downloading the cli again if it's available
   if (-not(Test-Path "$qbactivator_temp\speedtest.exe")) {
-    Start-BitsTransfer $speedtestarchive "$qbactivator_temp\speedtest.zip"
+    Start-BitsTransfer $speedtest_archive "$qbactivator_temp\speedtest.zip"
     Add-Type -Assembly System.IO.Compression.FileSystem
     $_zip = [IO.Compression.ZipFile]::OpenRead("$qbactivator_temp\speedtest.zip")
     [System.IO.Compression.ZipFileExtensions]::ExtractToFile((
@@ -34,13 +22,21 @@ function Get-SpeedTestResults {
     $_zip.Dispose()
   }
 
-  Write-Host "This may take up to a minute based on your system." -ForegroundColor Yellow
-  Write-Host "Querying internet speed..." -NoNewline
-  
-  $speedtestresult = [math]::Round((((Invoke-Expression "$qbactivator_temp\speedtest.exe --format json --progress no"
+  [int]$speedtestresult = [math]::Round((((Invoke-Expression "$qbactivator_temp\speedtest.exe --format json --progress no"
         ) -replace ".*download").Trim(':{"bandwidth":') -replace ",.*") / $BYTE_TO_MEGABYTE, 2)
 
-  Write-Host " Done."
+  return [int]$speedtestresult
+}
 
-  return $speedtestresult
+function Get-TimeToComplete {
+  param ([int]$DownloadSize, [int]$DownloadSpeed)
+
+  [int]$Time = [math]::Round($DownloadSize / $DownloadSpeed)
+
+  if ($Time -gt 60) {
+    $Time = [math]::Round($Time / 60)
+    return "$Time minutes"
+  }
+
+  return "$Time seconds"
 }

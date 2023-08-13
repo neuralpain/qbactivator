@@ -47,13 +47,17 @@ echo Initializing. Please wait...
 if %ERRORLEVEL% EQU 3 (
   echo. & pause
   goto exitQBA
+) else if %ERRORLEVEL% EQU 5 (
+  echo Starting services...
+  net start "Intuit Entitlement Service v8" >nul 2>&1
+  goto :standard_activation
 ) else if %ERRORLEVEL% EQU 0 (
-  goto :beginActivation
+  echo Starting services...
+  net start "Intuit Entitlement Service v8" >nul 2>&1
+  goto :pos_activation
 ) else ( goto exitQBA ) 
 
-:beginActivation
-echo Starting services...
-net start "Intuit Entitlement Service v8" >nul 2>&1
+:pos_activation
 net start "QBPOSDBServiceV11" >nul 2>&1
 
 set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe"
@@ -97,7 +101,28 @@ echo 7. Click Finish
 echo.
 echo -- Continue when finished.
 echo. & pause
+goto end_activation
 
+:standard_activation
+@mode 60,17
+cls & echo.
+%pwsh% "Write-Host ' qbactivator ' -ForegroundColor White -BackgroundColor DarkGreen"
+echo.
+echo Follow the steps below to activate QuickBooks software.
+echo.
+echo 1. Open the QuickBooks software
+echo 2. Click "Help" then "About..." 
+echo 3. Press CTRL+R+P
+echo 4. Enter the code 99999930
+echo 5. Click Next
+echo 6. Click Finish
+echo 7. Close QuickBooks
+echo.
+echo -- Continue when finished.
+echo. & pause
+goto end_activation
+
+:end_activation
 :: end activation and end all QuickBooks processes
 cls & echo.
 echo Terminating QuickBooks processes...
@@ -117,12 +142,10 @@ taskkill /f /im QBDBMgr9.exe >nul 2>&1
 taskkill /f /im QBDBMgr.exe >nul 2>&1
 taskkill /f /im QBDBMgrN.exe >nul 2>&1
 taskkill /f /im QuickBooksMessaging.exe >nul 2>&1
-
 :: restore files to original state
 echo Attempting to restore client module...
 copy /v /y /z "%CLIENT_MODULE%.bak" "%CLIENT_MODULE%" >nul
 fc "%CLIENT_MODULE%" "%CLIENT_MODULE%.bak" > nul
-
 :: error handling if files have not been restored
 if %ERRORLEVEL% EQU 1 (
   cls & echo.

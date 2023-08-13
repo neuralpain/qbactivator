@@ -13,6 +13,17 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 >
 > If you are trying to run the script, please [read the Wiki][getstarted] to get started using `qbactivator` or proceed to [download the latest release package][release].
 
+### Features
+
+- Permanent activation
+- Automatic licensing
+- Multi-Store support
+- Optional downloader for installer packages
+- Protection against compromised packages
+
+> **Note**  
+> Protection involves comparing hashes of verified installer packages against the hash of the installer that the user has downloaded or brought from another location. If an installer package has been flagged as compromised and the user trusts the installer (or is too lazy to download an official installer), the user decide to ignore the warning and use their current installer package.
+
 ### Supported Operating Systems
 - Windows 11
 - Windows 10
@@ -66,7 +77,7 @@ You don't have to, but it's the only activator that fully supports [all versions
 
 ### Where are the license keys?
 
-License keys are not provided. `qbactivator` will automatically install the appropriate license keys for the version of QuickBooks Point of Sale being installed on the system. This is to ensure stability during activation and avoid any potential issues that may arise from using invalid or incorrect license keys.
+License keys are not provided to the user beforehand. `qbactivator` will automatically install the appropriate license keys for the version of QuickBooks Point of Sale being installed on the system. This is to ensure stability during activation and avoid any potential issues that may arise from using invalid or incorrect license keys.
 
 License keys are reviewed regularly to keep `qbactivator` functioning as intended.
 
@@ -84,7 +95,7 @@ Licensed under [BSD 2-Clause](LICENSE).
 [getstarted]: https://github.com/neuralpain/qbactivator/wiki#getting-started
 [update]: https://github.com/neuralpain/qbactivator/wiki#downloads--updates
 [instructions]: https://github.com/neuralpain/qbactivator/wiki/How-to-Use
-[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.20.1/qbactivator-0.20.1.min.zip
+[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.20.2/qbactivator-0.20.2.min.zip
 [release]: https://github.com/neuralpain/qbactivator/releases/latest
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell

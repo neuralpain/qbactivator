@@ -1,3 +1,15 @@
+# pos store group 1
+$QBREGV11_STORE_1 = '<Registration InstallDate="" LicenseNumber="1063-0575-1585-222" ProductNumber="023-147"/>'
+$QBREGV12_STORE_1 = '<Registration InstallDate="" LicenseNumber="6740-7656-8840-594" ProductNumber="448-229"/>'
+$QBREGV18_STORE_1 = '<Registration InstallDate="" LicenseNumber="2421-4122-2213-596" ProductNumber="818-769"/>'
+$QBREGV19_STORE_1 = '<Registration InstallDate="" LicenseNumber="0106-3903-4389-908" ProductNumber="595-828"/>'
+
+# pos store group 2
+$QBREGV11_STORE_2 = '<Registration InstallDate="" LicenseNumber="8432-0480-0178-029" ProductNumber="023-147"/>'
+$QBREGV12_STORE_2 = '<Registration InstallDate="" LicenseNumber="0877-0442-6111-615" ProductNumber="448-229"/>'
+$QBREGV18_STORE_2 = '<Registration InstallDate="" LicenseNumber="3130-3560-7860-900" ProductNumber="818-769"/>'
+$QBREGV19_STORE_2 = '<Registration InstallDate="" LicenseNumber="7447-0864-8898-657" ProductNumber="595-828"/>'
+
 function Clear-IntuitData {
   # Delete Intuit POS installation debris
   
@@ -25,7 +37,6 @@ function Install-IntuitLicense {
   switch ($Version) {
     19 {
       mkdir $env:ProgramData\$QBPATH19 >$null 2>&1
-      if ($Server) {} 
       Out-File -FilePath $env:ProgramData\$QBPATH19\qbregistration.dat `
                -InputObject $License `
                -Encoding UTF8 `
@@ -61,36 +72,35 @@ function Install-IntuitLicense {
 }
 
 function Get-IntuitLicense {
-  param ($Hash, $Version, [Switch]$Server)
+  param ($Hash, $Version)
 
   Clear-IntuitData
   
   switch ($Hash) {
     $QBHASH19 { 
       $Version = 19
-      if ($Server) { $License = $QBREGV19_SERVER }
-      else { $License = $QBREGV19_CLIENT }
+      if ($script:SECOND_STORE) { $License = $QBREGV19_STORE_2 }
+      else { $License = $QBREGV19_STORE_1 }
     }
 
     $QBHASH18 { 
       $Version = 18
-      if ($Server) { $License = $QBREGV18_SERVER }
-      else { $License = $QBREGV18_CLIENT }
+      if ($script:SECOND_STORE) { $License = $QBREGV18_STORE_2 }
+      else { $License = $QBREGV18_STORE_1 }
     }
 
     $QBHASH12 { 
       $Version = 12
-      if ($Server) { $License = $QBREGV12_SERVER }
-      else { $License = $QBREGV12_CLIENT }
+      if ($script:SECOND_STORE) { $License = $QBREGV12_STORE_2 }
+      else { $License = $QBREGV12_STORE_1 }
     }
     
     $QBHASH11 { 
       $Version = 11
-      if ($Server) { $License = $QBREGV11_SERVER }
-      else { $License = $QBREGV11_CLIENT }
+      if ($script:SECOND_STORE) { $License = $QBREGV11_STORE_2 }
+      else { $License = $QBREGV11_STORE_1 }
     }
   }
 
   Install-IntuitLicense $Version $License
-  return
 }
