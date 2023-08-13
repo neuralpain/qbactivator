@@ -1,4 +1,4 @@
-qbactivator | Simplified README v2.6
+qbactivator | Simplified README v2.7
 
 Activation script for QuickBooks Point Of Sale Software on Windows.
 
@@ -56,6 +56,17 @@ Take a moment to read the FAQs for any issues you may encounter:
 19. Click Finish
 20. Exit the software
 21. Continue the script
+
+[ ----- EXTRA ---- The following steps is for activation --- ]
+[ ---------------- of Pro/Enterprise/Other QB products ----- ]
+
+ 1. Select Option 3 and open the QuickBooks software
+ 2. Click "Help" then "About..."
+ 3. Press CTRL+R+P
+ 4. Enter the code 99999930
+ 5. Click Next
+ 6. Click Finish
+ 7. Close QuickBooks
 
 @neuralpain // 'cause why not?
 With help from @Navish360
