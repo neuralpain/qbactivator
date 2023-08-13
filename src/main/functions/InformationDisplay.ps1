@@ -28,7 +28,7 @@ function Write-FileNotFound($File) {
 
 function Write-MainMenu {
   Clear-Host
-  Write-HeaderLabel "Evaluation/Beta"
+  Write-HeaderLabel
   Write-Host "`nSelect QuickBooks product"
   Write-Host "-------------------------"
   Write-Host "1 - POS Store 1 (Server/Client)"
@@ -53,7 +53,7 @@ function Write-MainMenu {
 
 function Write-NextOperationMenu {
   Clear-Host
-  Write-HeaderLabel "Evaluation/Beta"
+  Write-HeaderLabel
   Write-Host "`nSelect next operation"
   Write-Host "---------------------"
   Write-Host "1 - Request software activation"

@@ -86,7 +86,7 @@ popd & start notepad.exe "README.txt"
 
 @mode 60,18
 cls & echo.
-%pwsh% "Write-Host ' qbactivator - Evaluation/Beta ' -ForegroundColor White -BackgroundColor DarkGreen"
+%pwsh% "Write-Host ' qbactivator ' -ForegroundColor White -BackgroundColor DarkGreen"
 echo.
 echo Follow the steps below to activate QuickBooks software.
 echo.
@@ -104,17 +104,19 @@ echo. & pause
 goto end_activation
 
 :standard_activation
-@mode 60,15
+@mode 60,17
 cls & echo.
-%pwsh% "Write-Host ' qbactivator - Evaluation/Beta ' -ForegroundColor White -BackgroundColor DarkGreen"
+%pwsh% "Write-Host ' qbactivator ' -ForegroundColor White -BackgroundColor DarkGreen"
 echo.
 echo Follow the steps below to activate QuickBooks software.
 echo.
 echo 1. Open the QuickBooks software
-echo "2. Click Help > About" 
-echo 3. Enter the code 99999930
-echo 4. Click Next
-echo 5. Click Finish
+echo 2. Click "Help" then "About..." 
+echo 3. Press CTRL+R+P
+echo 4. Enter the code 99999930
+echo 5. Click Next
+echo 6. Click Finish
+echo 7. Close QuickBooks
 echo.
 echo -- Continue when finished.
 echo. & pause
