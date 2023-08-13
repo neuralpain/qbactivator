@@ -22,7 +22,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - Protection against compromised packages
 
 > **Note**  
-> Protection involves comparing hashes of verified installer packages against the hash of the installer that the user has downloaded or brought from another location. If an installer package has been flagged as compromised and the user trusts the installer (or is too lazy to download an official installer), the user decide to ignore the warning and use their current installer package.
+> Protection involves comparing hashes of verified installer packages against the hash of the installer that the user has downloaded or brought from another location. If an installer package has been flagged as compromised and the user trusts the installer (or is too lazy to download an official installer), the user can decide to ignore the warning and use their current installer package.
 
 ### Supported Operating Systems
 - Windows 11
