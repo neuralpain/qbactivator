@@ -35,7 +35,10 @@ function Invoke-Activation {
   Repair-GenuineClientModule # if damaged
   Find-GenuineClientModule # will exit if missing
   Install-ClientModule # inject modified client
+  
+  # currently in development
   # Install-ClientDataModule -Version 11
+  
   Remove-TemporaryActvationFiles
 
   Write-Host "Proceeding with activation..." 
