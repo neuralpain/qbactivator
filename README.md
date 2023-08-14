@@ -42,7 +42,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 - Remember that you **should not** launch QuickBooks Point of Sale after installation. Ensure that you uncheck the "Launch QuickBooks" option before clicking on "Finish" and proceeding with the activation process. If QuickBooks is launched, the activator will close it automatically.
 
-- It is recommended to **avoid** installing updates through the application due to the likelihood of it being blocked in the future. However, during testing, I did not encounter any problems with updates manually [downloaded from Intuit](#optional-updates-for-quickbooks-pos-software-from-intuit).
+- It is recommended to **avoid** installing updates through the application due to the likelihood of it being blocked in the future. However, during testing, I did not encounter any problems with updates manually [downloaded from Intuit](https://github.com/neuralpain/qbactivator/wiki#optional-updates-for-quickbooks-pos-software-from-intuit).
 
 - All versions of QuickBooks Desktop Point of Sale, including v12, v18, and v19, are licensed as `Pro Multistore Level`. The only exception is POS v11, which is licensed as `Pro Level`.
 
