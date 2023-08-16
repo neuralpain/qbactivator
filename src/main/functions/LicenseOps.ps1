@@ -18,7 +18,7 @@ function Clear-IntuitData {
   foreach ($path in $qbPathList) {
     if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { Write-QuickBooksIsInstalled; exit $PAUSE }
     else {
-      Remove-Item -Path $env:ProgramData\Intuit\$path -Recurse -Force >$null 2>&1 # remove pos program data folder
+      Remove-Item -Path "$env:ProgramData\$path" -Recurse -Force >$null 2>&1 # remove pos program data folder
       Remove-Item -Path "${env:ProgramFiles(x86)}\$path" -Recurse -Force >$null 2>&1  # remove installation folder
       Remove-Item -Path "$env:PUBLIC\Documents\$path\Data\Sample Practice" -Recurse -Force >$null 2>&1  #remove previous copy of sample practice 
     }
