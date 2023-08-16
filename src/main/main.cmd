@@ -1,9 +1,3 @@
-<# :# DO NOT REMOVE THIS LINE
-
-:: Copyright (c) 2023, neuralpain
-:: QuickBooks activation script
-
-@echo off
 @title QuickBooks POS Activator %uivr%
 @mode 60,16
 
