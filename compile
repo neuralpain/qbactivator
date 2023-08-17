@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # compile, Version 1.8.6
-# Copyright (c) 2023, neuralpain
+# Copyright (c) 2023, neuralpain 
+# https://github.com/neuralpain/qbactivator
 # Compile script for qbactivator
 
 version=$(<VERSION)
@@ -30,6 +31,7 @@ compile() {
   echo >> $cmd_cache
   echo ":: qbactivator.cmd, Version $version" >> $cmd_cache
   echo ":: Copyright (c) 2023, neuralpain" >> $cmd_cache
+  echo ":: https://github.com/neuralpain/qbactivator" >> $cmd_cache
   echo ":: QuickBooks activation script" >> $cmd_cache
   echo >> $cmd_cache
   echo "@echo off" >> $cmd_cache
@@ -97,7 +99,7 @@ case "$1" in
     [[ ! -d "./dist" ]] && mkdir dist || rm ./dist/*;
     compile $2;;
   -t|--test) [[ $# -gt 1 ]] && note=$@ && note=${note/"-t "} && note=${note//" "/-} && note="-$note"
-    build="$(date "+%y%m%d%H%M%S")$note"
+    build="$(date "+%y%m%d.%H%M%S")$note"
     buildfile="$buildfile-$version-beta-Build.$build"
     version="$version-beta [Build $build]"
     [[ ! -d "./build" ]] && mkdir build; compile;;
