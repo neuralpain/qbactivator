@@ -1,6 +1,9 @@
 # Changelog
 
-## v0.20.2
+## v0.20.3
+- Minor bug fix in deleting items from `C:\ProgramData\Intuit`
+
+#### v0.20.2
 - Fix error requesting network information
 - Add support for multi-store licensing with help from @Navish360
 - Bug fixes and improvements
