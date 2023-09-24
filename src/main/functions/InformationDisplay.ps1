@@ -10,7 +10,7 @@ function Write-CannotStartInstaller {
 function Write-HeaderLabel {
   param ([string]$Mssg)
   if (-not($Mssg -eq "")) { $Mssg = "- $Mssg " }
-  Write-Host "`n qbactivator $Mssg" -ForegroundColor White -BackgroundColor DarkGreen
+  Clear-Host; Write-Host "`n qbactivator $Mssg`n" -ForegroundColor White -BackgroundColor DarkGreen
 }  
 
 function Write-InfoLink {
@@ -27,14 +27,14 @@ function Write-FileNotFound($File) {
 }
 
 function Write-MainMenu {
-  Clear-Host
   Write-HeaderLabel
-  Write-Host "`nSelect QuickBooks product"
+  Write-Host "Select QuickBooks product"
   Write-Host "-------------------------"
   Write-Host "1 - POS Store 1 (Server/Client)"
   Write-Host "2 - POS Store 2 (Server/Client)"
-  Write-Host "3 - General QuickBooks activation"
-  Write-Host "    ^^^^ Pro/Enterprise/Other ^^^^"
+  Write-Host "3 - I have my own license :p"
+  Write-Host "4 - General QuickBooks activation"
+  Write-Host "    ^^^^ Pro/Enterprise/Other ^^^"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
@@ -45,16 +45,83 @@ function Write-MainMenu {
       $script:SECOND_STORE = $true
       Invoke-QuickBooksInstaller
     }
-    # 3 { Write-OptionUnavailable; Write-MainMenu }
-    3 { Clear-Host; Write-Host; Invoke-Activation -GeneralActivation }
+    # { Write-OptionUnavailable; Write-MainMenu }
+    3 { 
+      Clear-Host; Write-Host; 
+      Write-LieResponse
+      Invoke-QuickBooksInstaller
+    }
+    4 { Clear-Host; Write-Host; Invoke-Activation -GeneralActivation }
     default { Write-MainMenu }
   }
 }
 
-function Write-NextOperationMenu {
+function Write-IncorrectLicense {
+  param(
+    [Switch]$LicenseNumber, 
+    [Switch]$ProductNumber
+  )
+
   Clear-Host
+  
+  if ($LicenseNumber) {
+    Write-Host "`nLicense number must be 18 characters long!" -ForegroundColor White -BackgroundColor DarkRed
+    Write-Host "`nCheck your license and try again." -ForegroundColor White
+  }
+
+  if ($ProductNumber) {
+    Write-Host "`nProduct number must be 7 characters long!" -ForegroundColor White -BackgroundColor DarkRed
+    Write-Host "`nCheck your license and try again." -ForegroundColor White
+  }
+
+  Start-Sleep -Milliseconds $TIME_SLOW
+
+  $query = Read-Host "`nTry again? (y/N)"
+
+  switch ($query) {
+    "y" { Get-UserOwnLicense }
+    default { Write-MainMenu }
+  }
+}
+
+function Write-LieScolding {
+  param($Mssg, [Switch]$ReadAKey)
+
+  Clear-Host
+  Write-Host "`n$Mssg" -ForegroundColor White -BackgroundColor DarkRed
+  Write-InfoLink
+
+  if ($ReadAKey) { Read-Host }
+  else { Start-Sleep -Milliseconds $TIME_SLOW }
+
+  Write-MainMenu
+}
+
+function Write-LieResponse {
   Write-HeaderLabel
-  Write-Host "`nSelect next operation"
+  Write-Host "Do you really have one?`n"
+  Write-Host "1. No, I lied."
+  Write-Host "2. I have a cat."
+  Write-Host "3. I can't remeber it."
+  Write-Host "4. My dog ate my license."
+  Write-Host "5. Yes, I do."
+  Write-Host "6. I just wanted to see what would happen."
+  $query = Read-Host "`n#"
+    
+  switch ($query) {
+    1 { Write-LieScolding "Lying is bad." }
+    2 { Write-LieScolding "Having a cat does not make you a good person." }
+    3 { Write-LieScolding "It's likely you never will." }
+    4 { Write-LieScolding "Ha ha... nice try." }
+    5 { Get-UserOwnLicense }
+    6 { Write-LieScolding "And now you've wasted both our time." -ReadAKey }
+    default { Write-LieResponse }
+  }
+}
+
+function Write-NextOperationMenu {
+  Write-HeaderLabel
+  Write-Host "Select next operation"
   Write-Host "---------------------"
   Write-Host "1 - Request software activation"
   Write-Host "2 - Download and install QuickBooks POS"
@@ -122,9 +189,8 @@ function Write-OptionUnavailable {
 }
 
 function Write-VersionSelectionMenu {
-  Clear-Host
   Write-HeaderLabel
-  Write-Host "`nSelect QuickBooks POS verison"
+  Write-Host "Select QuickBooks POS verison"
   Write-Host "Only enter the version number" -ForegroundColor Yellow
   Write-Host "-----------------------------"
   Write-Host "v11 - QuickBooks POS 2013"
@@ -135,8 +201,8 @@ function Write-VersionSelectionMenu {
 }  
 
 function Write-WaitingScreen {
-  Clear-Host; Write-HeaderLabel
-  Write-Host "`nQuickBooks software installation in progress..." -ForegroundColor White
+  Write-HeaderLabel
+  Write-Host "QuickBooks software installation in progress..." -ForegroundColor White
   Write-Host "`nPlease ensure that the QuickBooks software is completely`ninstalled on your system. Activation will proceed after`nthe installation is completed."
   Write-Host "`nIf you need to cancel the installation for any reason,`nplease close this window afterwards." -ForegroundColor Cyan
   Write-InfoLink

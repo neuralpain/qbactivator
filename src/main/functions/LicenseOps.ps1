@@ -12,7 +12,6 @@ $QBREGV19_STORE_2 = '<Registration InstallDate="" LicenseNumber="7447-0864-8898-
 
 function Clear-IntuitData {
   # Delete Intuit POS installation debris
-  
   Write-Host -NoNewLine "Removing junk files... "
   
   foreach ($path in $qbPathList) {
@@ -27,6 +26,36 @@ function Clear-IntuitData {
   # Remove entitlement data store
   Remove-Item -Path $CLIENT_MODULE_DATA_PATH -Recurse -Force >$null 2>&1
   Write-Host "Done"
+}
+
+function Get-UserOwnLicense {
+  Clear-Host; Write-Host
+  Write-Host "Enter a valid license below`n" -ForegroundColor White -BackgroundColor DarkCyan
+  Write-Host "A valid license pattern: 0000-0000-0000-000" -ForegroundColor White
+  Write-Host "A valid product key pattern: 000-000`n" -ForegroundColor White
+
+  $script:LICENSE_NUMBER = Read-Host "License"
+  $script:PRODUCT_NUMBER = Read-Host "Product Key"
+  
+  Write-Host "`nIs this license information correct? (Y/n): " -ForegroundColor Yellow -NoNewline
+  $query = Read-Host
+
+  switch ($query) {
+    "n" { Get-UserOwnLicense }
+    default { break }
+  }
+
+  # verify the length of the license key that the user enters
+  if ($script:LICENSE_NUMBER.Length -lt 18 -or $script:LICENSE_NUMBER.Length -gt 18) { Write-IncorrectLicense -LicenseNumber }
+  if ($script:PRODUCT_NUMBER.Length -lt 7 -or $script:PRODUCT_NUMBER.Length -gt 7) { Write-IncorrectLicense -ProductNumber }
+
+  # if license information is correct, the license will be 
+  # saved and marked as the user's license
+  $script:USER_OWN_LICENSE = `
+    '<Registration InstallDate="" LicenseNumber="', $script:LICENSE_NUMBER, `
+    '" ProductNumber="', $script:PRODUCT_NUMBER, '"/>' -join ''
+
+  $script:USER_HAS_OWN_LICENSE = $true
 }
 
 function Install-IntuitLicense {
@@ -102,5 +131,6 @@ function Get-IntuitLicense {
     }
   }
 
-  Install-IntuitLicense $Version $License
+  if ($script:USER_HAS_OWN_LICENSE) { Install-IntuitLicense $Version $script:USER_OWN_LICENSE }
+  else { Install-IntuitLicense $Version $License }
 }

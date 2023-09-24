@@ -1,5 +1,5 @@
 <#
-  Execution Module, Version 5.16
+  Execution Module, Version 5.17
   Copyright (c) 2023, neuralpain
   qbactivator verification and execution
 #>
@@ -41,9 +41,14 @@ $qbExeList = $QBPOS19, $QBPOS18, $QBPOS12, $QBPOS11
 $qbHashList = $QBHASH19, $QBHASH18, $QBHASH12, $QBHASH11
 $qbPathList = $QBPATH19, $QBPATH18, $QBPATH12, $QBPATH11
 
-# CONFIG
 $script:QB_VERSION = $null
 $script:SECOND_STORE = $false
+$script:USER_HAS_OWN_LICENSE = $false
+$script:LICENSE_NUMBER
+$script:PRODUCT_NUMBER
+$script:USER_OWN_LICENSE
+
+# CONFIG
 $global:ProgressPreference = "SilentlyContinue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
