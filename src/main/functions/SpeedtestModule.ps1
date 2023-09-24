@@ -22,7 +22,7 @@ function Get-SpeedTestResults {
     $_zip.Dispose()
   }
 
-  [int]$speedtestresult = [math]::Round((((Invoke-Expression "$qbactivator_temp\speedtest.exe --format json --progress no"
+  [int]$speedtestresult = [math]::Round((((Invoke-Expression "$qbactivator_temp\speedtest.exe --accept-gdpr --format json --progress no"
         ) -replace ".*download").Trim(':{"bandwidth":') -replace ",.*") / $BYTE_TO_MEGABYTE, 2)
 
   return [int]$speedtestresult

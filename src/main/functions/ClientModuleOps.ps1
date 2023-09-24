@@ -12,8 +12,10 @@ function Get-ClientModule {
     Write-Host -NoNewLine "Downloading client module... "
     Start-BitsTransfer $clientfilehost $CLIENT_MODULE
     Write-Host "Done"
+  } else { 
+    Write-NoInternetConnectivity
+    exit $PAUSE 
   }
-  else { Write-NoInternetConnectivity; exit $PAUSE }
 }
 
 function Find-GenuineClientModule {
@@ -32,7 +34,11 @@ function Repair-GenuineClientModule {
     Write-Host "Done"
 
     $query = Read-Host "Continue to patch QuickBooks POS? (Y/n)"
-    switch ($query) { "n" { exit $NONE } default { break } }
+    
+    switch ($query) { 
+      "n" { exit $NONE } 
+      default { break } 
+    }
   }
 }
 
@@ -99,7 +105,10 @@ function Install-ClientDataModule {
   #>
   
   Remove-ClientDataModulePatch # if previously patched
-  if (Test-Path $CLIENT_MODULE_DATA -PathType Leaf) { Copy-Item $CLIENT_MODULE_DATA "${CLIENT_MODULE_DATA}.bak" }
+  
+  if (Test-Path $CLIENT_MODULE_DATA -PathType Leaf) { 
+    Copy-Item $CLIENT_MODULE_DATA "${CLIENT_MODULE_DATA}.bak" 
+  }
   
   Write-Host -NoNewline "Testing connectivity... "
   if (Test-Connection www.google.com -Quiet) {
@@ -115,6 +124,8 @@ function Install-ClientDataModule {
     }
 
     Write-Host "Done"
+  } else { 
+    Write-NoInternetConnectivity
+    exit $PAUSE 
   }
-  else { Write-NoInternetConnectivity; exit $PAUSE }
 }

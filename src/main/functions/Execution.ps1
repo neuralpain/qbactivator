@@ -23,7 +23,8 @@ function Get-BitsTransfer($Source, $Destination) {
 function Compare-Hash {
   param ($Hash, $File)
   if ((((Get-FileHash $File -Algorithm MD5 | Select-Object Hash) -split " "
-      ).Trim("@{Hash=}")) -ne $Hash) { return $ERR } else { return $OK }
+      ).Trim("@{Hash=}")) -ne $Hash) { return $ERR }
+  else { return $OK }
 }
 
 function Select-QuickBooksVersion {
@@ -87,7 +88,7 @@ function Get-QuickBooksInstaller {
   Clear-Host
   Write-Host "`nPreparing to download POS v${Version}... "
   Write-Host "This may take up to a minute." -ForegroundColor Yellow
-  Write-Host -NoNewLine "Testing connectivity... "
+  Write-Host "Testing connectivity... " -NoNewLine
   
   if (Test-Connection www.google.com -Quiet) {
     Write-Host "OK"
@@ -111,6 +112,7 @@ function Get-QuickBooksInstaller {
 
     Write-Host "Need to download ${installer_size}MB installer."
     $query = Read-Host "Do you want to continue? (Y/n)"
+    
     switch ($query) {
       "n" {
         Write-OperationCancelled
@@ -121,6 +123,7 @@ function Get-QuickBooksInstaller {
         if ($Version -gt 12 -and $download_speed -le 2) {
           Write-Host "Download may take more than 5 minutes to complete`non your current system." -ForegroundColor Yellow
           $query = Read-Host "Are you ready to start the download? (Y/n)"
+          
           if ($query -eq "n") {
             Write-OperationCancelled
             Select-QuickBooksVersion
@@ -167,14 +170,13 @@ function Invoke-QuickBooksInstaller {
   
   # Find which installer version is available and compare 
   # known hashes against the installer for verification
-  
   foreach ($exe in $qbExeList) {
     if (Test-Path ".\$exe" -PathType Leaf) {
       Write-Host "Found `"$exe`"."
       
       # quickbooks version retrieved here in the even that
       # the user's installer is not recognized from the hash, 
-      # but the user still wants to invoke it
+      # but they still want to use it
       $script:QB_VERSION = ($exe.Trim("QuickBooksPOSV.exe"))
       
       Write-Host -NoNewLine "Verifying `"$exe`"... "
@@ -233,14 +235,24 @@ function Invoke-QuickBooksInstaller {
 
 function Start-Installer {
   param ($PosInstaller)
-  
+  # clear temporary installation files from previous 
+  # installer launch and start a new installation process
   Remove-Item $intuit_temp -Recurse -Force >$null 2>&1
   Write-WaitingScreen
   $Error.Clear() # reset to catch installer error, if any
   Start-Process -FilePath $PosInstaller -Wait
-
-  if ($Error) { Write-CannotStartInstaller; exit $PAUSE }
-  foreach ($path in $qbPathList) { if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { Clear-Host; Write-Host; return } }
+  
+  if ($Error) { 
+    Write-CannotStartInstaller
+    exit $PAUSE 
+  }
+  
+  foreach ($path in $qbPathList) { 
+    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { 
+      Clear-Host; Write-Host
+      return 
+    } 
+  }
   
   Write-QuickBooksNotInstalled
   exit $PAUSE
