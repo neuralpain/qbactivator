@@ -72,6 +72,7 @@ function Get-InstallerSize($URL) {
     Write-Host "Version: ${Version}"
     Write-Host "Byte_Size: $size_header"
     Write-Host "MB_Size: ${content}MB"
+    Write-Host "`nPlease take a screenshot and send to neuralpain." -ForegroundColor White
     Write-InfoLink
     exit $PAUSE
   } 
