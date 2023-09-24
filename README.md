@@ -1,7 +1,8 @@
 <p align="center">
   <picture>
     <source srcset="https://user-images.githubusercontent.com/77242216/213914139-b21538e0-05c1-4194-99bc-620f5d559fc9.svg" media="(prefers-color-scheme: dark)" height="96px" alt="qbactivator logo dark">
-    <img src="https://user-images.githubusercontent.com/77242216/213914137-51bda12c-6214-44f8-bae4-e9b7e633233b.svg" height="96px" alt="qbactivator logo light">
+    <source srcset="https://user-images.githubusercontent.com/77242216/213914137-51bda12c-6214-44f8-bae4-e9b7e633233b.svg" media="(prefers-color-scheme: light)" height="96px" alt="qbactivator logo light">
+    <img src="https://user-images.githubusercontent.com/77242216/213914139-b21538e0-05c1-4194-99bc-620f5d559fc9.svg" height="96px" alt="qbactivator logo dark">
   </picture>
 </p>
 
@@ -37,17 +38,11 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 ### A few things before you start
 
 - An internet connection is **required** for activation and adding users. It needs that one free phone call to let Intuit know that it's safe.
-
 - Manually running the QuickBooks POS installer or entering any keys into the installer **is not required** as the script will handle these tasks. You only need to click on the "Next" and "Finish" buttons.
-
 - Remember that you **should not** launch QuickBooks Point of Sale after installation. Ensure that you uncheck the "Launch QuickBooks" option before clicking on "Finish" and proceeding with the activation process. If QuickBooks is launched, the activator will close it automatically.
-
 - It is recommended to **avoid** installing updates through the application due to the likelihood of it being blocked in the future. However, during testing, I did not encounter any problems with updates manually [downloaded from Intuit](https://github.com/neuralpain/qbactivator/wiki#optional-updates-for-quickbooks-pos-software-from-intuit).
-
 - All versions of QuickBooks Desktop Point of Sale, including v12, v18, and v19, are licensed as `Pro Multistore Level`. The only exception is POS v11, which is licensed as `Pro Level`.
-
 - [View the instructions][instructions] to run `qbactivator` and activate QuickBooks
-
 - [Read the FAQs](#faqs) for further information and guidance for any concerns you may have.
 
 > **Warning**  
@@ -95,7 +90,7 @@ Licensed under [BSD 2-Clause](LICENSE).
 [getstarted]: https://github.com/neuralpain/qbactivator/wiki#getting-started
 [update]: https://github.com/neuralpain/qbactivator/wiki#downloads--updates
 [instructions]: https://github.com/neuralpain/qbactivator/wiki/How-to-Use
-[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.20.2/qbactivator-0.20.2.min.zip
+[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.21.0/qbactivator-0.21.0.min.zip
 [release]: https://github.com/neuralpain/qbactivator/releases/latest
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell
