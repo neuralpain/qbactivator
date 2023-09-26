@@ -1,6 +1,5 @@
 <p align="center">
   <picture>
-    <source srcset="https://user-images.githubusercontent.com/77242216/213914139-b21538e0-05c1-4194-99bc-620f5d559fc9.svg" media="(prefers-color-scheme: dark)" height="96px" alt="qbactivator logo dark">
     <source srcset="https://user-images.githubusercontent.com/77242216/213914137-51bda12c-6214-44f8-bae4-e9b7e633233b.svg" media="(prefers-color-scheme: light)" height="96px" alt="qbactivator logo light">
     <img src="https://user-images.githubusercontent.com/77242216/213914139-b21538e0-05c1-4194-99bc-620f5d559fc9.svg" height="96px" alt="qbactivator logo dark">
   </picture>
