@@ -36,8 +36,10 @@ function Invoke-Activation {
   Find-GenuineClientModule # will exit if missing
   Install-ClientModule # inject modified client
   
-  # currently in development
-  # Install-ClientDataModule -Version 11
+  <#
+    currently in development
+    Install-ClientDataModule -Version 11
+  #>
   
   Remove-TemporaryActvationFiles
 

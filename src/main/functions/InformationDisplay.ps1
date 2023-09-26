@@ -1,30 +1,27 @@
 <# --- WRITE-INFO --- #>
 
-function Write-CannotStartInstaller {
-  Clear-Host
-  Write-Host "`nUnable to execute the installer." -ForegroundColor White -BackgroundColor DarkRed
-  Write-Host "`nPlease ensure that you are using a genuine installer`ndownloaded from Intuit." -ForegroundColor White
-  Write-InfoLink
-}
-
 function Write-HeaderLabel {
   param ([string]$Mssg)
   if (-not($Mssg -eq "")) { $Mssg = "- $Mssg " }
   Clear-Host; Write-Host "`n qbactivator $Mssg`n" -ForegroundColor White -BackgroundColor DarkGreen
-}  
+}
 
 function Write-InfoLink {
+  param([Switch]$WithFAQs)
   Write-Host "`nFor more information, visit:" -ForegroundColor White
   Write-Host "https://github.com/neuralpain/qbactivator" -ForegroundColor Green
-}      
+  if ($WithFAQs) { Write-Host "https://github.com/neuralpain/qbactivator/wiki/FAQs" -ForegroundColor Green }
+}
 
-function Write-FileNotFound($File) {
-  Clear-Host
-  Write-Host "`nThe requested file could not be downloaded." -ForegroundColor White -BackgroundColor DarkRed
-  Write-Host "`nThe file was not found on the server at `"$File`"" -ForegroundColor White
-  Write-Host "Please submit this issue to @neuralpain. Thank you." -ForegroundColor White
+function Write-WaitingScreen {
+  Write-HeaderLabel
+  Write-Host "QuickBooks software installation in progress..." -ForegroundColor White
+  Write-Host "`nPlease ensure that the QuickBooks software is completely`ninstalled on your system. Activation will proceed after`nthe installation is completed."
+  Write-Host "`nIf you need to cancel the installation for any reason,`nplease close this window afterwards." -ForegroundColor Cyan
   Write-InfoLink
 }
+
+# --- FUNCTION MSSG --- #
 
 function Write-MainMenu {
   Write-HeaderLabel
@@ -39,13 +36,13 @@ function Write-MainMenu {
   $query = Read-Host "`n#"
   
   switch ($query) {
-    0 { Write-ExitActivator; exit $NONE }
+    0 { Write-Action_ExitActivator; exit $NONE }
     1 { Invoke-QuickBooksInstaller }
     2 { 
       $script:SECOND_STORE = $true
       Invoke-QuickBooksInstaller
     }
-    # { Write-OptionUnavailable; Write-MainMenu }
+    # { Write-Action_OptionUnavailable; Write-MainMenu }
     3 { 
       Clear-Host; Write-Host; 
       Write-LieResponse
@@ -56,7 +53,144 @@ function Write-MainMenu {
   }
 }
 
-function Write-IncorrectLicense {
+function Write-LieScolding {
+  # from `Write-LieResponse`
+  param($Mssg, [Switch]$ReadAKey)
+
+  Clear-Host
+  Write-Host "`n$Mssg" -ForegroundColor White -BackgroundColor DarkRed
+  Write-InfoLink
+
+  if ($ReadAKey) { Read-Host }
+  else { Start-Sleep -Milliseconds $TIME_SLOW }
+
+  Write-MainMenu
+}
+
+function Write-LieResponse {
+  # from `Write-MainMenu`
+  Write-HeaderLabel
+  Write-Host "Do you really have one?`n"
+  Write-Host "1. No, I lied."
+  Write-Host "2. I have a cat."
+  Write-Host "3. I can't remeber it."
+  Write-Host "4. My dog ate my license."
+  Write-Host "5. Yes, I do."
+  Write-Host "6. I just wanted to see what would happen."
+  $query = Read-Host "`n#"
+    
+  switch ($query) {
+    1 { Write-LieScolding "Lying is bad." }
+    2 { Write-LieScolding "Having a cat does not make you a good person." }
+    3 { Write-LieScolding "It's likely you never will." }
+    4 { Write-LieScolding "Ha ha... nice try." }
+    5 { Get-UserOwnLicense }
+    6 { Write-LieScolding "And now you've wasted both our time." -ReadAKey }
+    default { Write-LieResponse }
+  }
+}
+
+function Write-MainMenu_NoInstaller {
+  Write-HeaderLabel
+  Write-Host "Select next operation"
+  Write-Host "---------------------"
+  Write-Host "1 - Request software activation"
+  Write-Host "2 - Download and install QuickBooks POS"
+  Write-Host "3 - Locate installer"
+  Write-Host "4 - Restore entitlement data"
+  Write-Host "0 - Cancel"
+  $query = Read-Host "`n#"
+  
+  switch ($query) {
+    0 { Write-Action_OperationCancelled; Write-MainMenu }
+    1 { Invoke-Activation -ActivationOnly }
+    2 { 
+      Select-QuickBooksVersion
+      Get-QuickBooksInstaller -Version (Get-Version) 
+      break 
+    }
+    3 { break }
+    4 { Remove-ClientDataModulePatch; break }
+    default { Write-MainMenu_NoInstaller }
+  }   
+  
+  Invoke-QuickBooksInstaller
+}
+
+function Write-VersionSelectionMenu {
+  Write-HeaderLabel
+  Write-Host "Select QuickBooks POS verison"
+  Write-Host "Only enter the version number" -ForegroundColor Yellow
+  Write-Host "-----------------------------"
+  Write-Host "v11 - QuickBooks POS 2013"
+  Write-Host "v12 - QuickBooks POS 2015"
+  Write-Host "v18 - QuickBooks POS 2018"
+  Write-Host "v19 - QuickBooks POS 2019"
+  Write-Host "0 --- Cancel"
+}  
+
+# --- ACTION MSSG --- #
+
+function Write-Action_ExitActivator {
+  Write-Host "---"
+  Write-Host -NoNewline "Exiting qbactivator..." -ForegroundColor Yellow
+  Start-Sleep -Milliseconds $TIME_BLINK
+}
+
+function Write-Action_OperationCancelled {
+  Write-Host "---"
+  Write-Host -NoNewline "Operation cancelled by user." -ForegroundColor Yellow
+  Start-Sleep -Milliseconds $TIME_BLINK
+}
+
+function Write-Action_OptionUnavailable {
+  Write-Host "---"
+  Write-Host -NoNewline "Unable to perform this action." -ForegroundColor Yellow
+  Start-Sleep -Milliseconds $TIME_NORMAL
+}
+
+# --- ERROR MSSG --- #
+
+function Write-Error_CannotStartInstaller {
+  Clear-Host
+  Write-Host "`nUnable to execute the installer." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nPlease ensure that you are using a genuine installer`ndownloaded from Intuit." -ForegroundColor White
+  Write-InfoLink
+}
+
+function Write-Error_NoInternetConnectivity {
+  Clear-Host
+  Write-Host "`nUnable to start the download." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nThere is no internet connectivity at this time." -ForegroundColor White
+  Write-Host "Please check the connection and try again." -ForegroundColor White
+  Write-InfoLink
+}  
+
+function Write-Error_QuickBooksIsInstalled {
+  Clear-Host
+  Write-Host "`nA version of QuickBooks is already installed." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nAll previous versions must be removed before installation." -ForegroundColor Yellow
+  Write-Host "`nIf you are requesting activation-only, remove the installer`nfrom this location and restart the activator. The activator`nimmediately checks for a QuickBooks installation executable`nand runs it if one is available." -ForegroundColor White
+  Write-InfoLink
+}  
+
+function Write-Error_QuickBooksNotInstalled {
+  Clear-Host
+  Write-Host "`nQuickBooks is not installed on the system." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nThe activation cannot be completed." -ForegroundColor Yellow
+  Write-Host "`nPlease ensure that a QuickBooks product is correctly and`ncompletely installed before requesting activation." -ForegroundColor White
+  Write-InfoLink
+}
+
+function Write-Error_FileNotFound($File) {
+  Clear-Host
+  Write-Host "`nThe requested file could not be downloaded." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nThe file was not found on the server at `"$File`"" -ForegroundColor White
+  Write-Host "Please submit this issue to @neuralpain. Thank you." -ForegroundColor White
+  Write-InfoLink
+}
+
+function Write-Error_IncorrectLicense {
   param(
     [Switch]$LicenseNumber, 
     [Switch]$ProductNumber
@@ -82,128 +216,4 @@ function Write-IncorrectLicense {
     "y" { Get-UserOwnLicense }
     default { Write-MainMenu }
   }
-}
-
-function Write-LieScolding {
-  param($Mssg, [Switch]$ReadAKey)
-
-  Clear-Host
-  Write-Host "`n$Mssg" -ForegroundColor White -BackgroundColor DarkRed
-  Write-InfoLink
-
-  if ($ReadAKey) { Read-Host }
-  else { Start-Sleep -Milliseconds $TIME_SLOW }
-
-  Write-MainMenu
-}
-
-function Write-LieResponse {
-  Write-HeaderLabel
-  Write-Host "Do you really have one?`n"
-  Write-Host "1. No, I lied."
-  Write-Host "2. I have a cat."
-  Write-Host "3. I can't remeber it."
-  Write-Host "4. My dog ate my license."
-  Write-Host "5. Yes, I do."
-  Write-Host "6. I just wanted to see what would happen."
-  $query = Read-Host "`n#"
-    
-  switch ($query) {
-    1 { Write-LieScolding "Lying is bad." }
-    2 { Write-LieScolding "Having a cat does not make you a good person." }
-    3 { Write-LieScolding "It's likely you never will." }
-    4 { Write-LieScolding "Ha ha... nice try." }
-    5 { Get-UserOwnLicense }
-    6 { Write-LieScolding "And now you've wasted both our time." -ReadAKey }
-    default { Write-LieResponse }
-  }
-}
-
-function Write-NextOperationMenu {
-  Write-HeaderLabel
-  Write-Host "Select next operation"
-  Write-Host "---------------------"
-  Write-Host "1 - Request software activation"
-  Write-Host "2 - Download and install QuickBooks POS"
-  Write-Host "3 - Locate installer"
-  Write-Host "4 - Restore entitlement data"
-  Write-Host "0 - Cancel"
-  $query = Read-Host "`n#"
-  
-  switch ($query) {
-    0 { Write-OperationCancelled; Write-MainMenu }
-    1 { Invoke-Activation -ActivationOnly }
-    2 { 
-      Select-QuickBooksVersion
-      Get-QuickBooksInstaller -Version (Get-Version) 
-      break 
-    }
-    3 { break }
-    4 { Remove-ClientDataModulePatch; break }
-    default { Write-NextOperationMenu }
-  }   
-  
-  Invoke-QuickBooksInstaller
-}  
-
-function Write-NoInternetConnectivity {
-  Clear-Host
-  Write-Host "`nUnable to start the download." -ForegroundColor White -BackgroundColor DarkRed
-  Write-Host "`nThere is no internet connectivity at this time." -ForegroundColor White
-  Write-Host "Please check the connection and try again." -ForegroundColor White
-  Write-InfoLink
-}  
-
-function Write-QuickBooksIsInstalled {
-  Clear-Host
-  Write-Host "`nA version of QuickBooks is already installed." -ForegroundColor White -BackgroundColor DarkRed
-  Write-Host "`nAll previous versions must be removed before installation." -ForegroundColor Yellow
-  Write-Host "`nIf you are requesting activation-only, remove the installer`nfrom this location and restart the activator. The activator`nimmediately checks for a QuickBooks installation executable`nand runs it if one is available." -ForegroundColor White
-  Write-InfoLink
-}  
-
-function Write-QuickBooksNotInstalled {
-  Clear-Host
-  Write-Host "`nQuickBooks is not installed on the system." -ForegroundColor White -BackgroundColor DarkRed
-  Write-Host "`nThe activation cannot be completed." -ForegroundColor Yellow
-  Write-Host "`nPlease ensure that a QuickBooks product is correctly and`ncompletely installed before requesting activation." -ForegroundColor White
-  Write-InfoLink
-}    
-
-function Write-ExitActivator {
-  Write-Host "---"
-  Write-Host -NoNewline "Exiting qbactivator..." -ForegroundColor Yellow
-  Start-Sleep -Milliseconds $TIME_BLINK
-}
-
-function Write-OperationCancelled {
-  Write-Host "---"
-  Write-Host -NoNewline "Operation cancelled by user." -ForegroundColor Yellow
-  Start-Sleep -Milliseconds $TIME_BLINK
-}
-
-function Write-OptionUnavailable {
-  Write-Host "---"
-  Write-Host -NoNewline "Unable to perform this action." -ForegroundColor Yellow
-  Start-Sleep -Milliseconds $TIME_NORMAL
-}
-
-function Write-VersionSelectionMenu {
-  Write-HeaderLabel
-  Write-Host "Select QuickBooks POS verison"
-  Write-Host "Only enter the version number" -ForegroundColor Yellow
-  Write-Host "-----------------------------"
-  Write-Host "v11 - QuickBooks POS 2013"
-  Write-Host "v12 - QuickBooks POS 2015"
-  Write-Host "v18 - QuickBooks POS 2018"
-  Write-Host "v19 - QuickBooks POS 2019"
-  Write-Host "0 --- Cancel"
-}  
-
-function Write-WaitingScreen {
-  Write-HeaderLabel
-  Write-Host "QuickBooks software installation in progress..." -ForegroundColor White
-  Write-Host "`nPlease ensure that the QuickBooks software is completely`ninstalled on your system. Activation will proceed after`nthe installation is completed."
-  Write-Host "`nIf you need to cancel the installation for any reason,`nplease close this window afterwards." -ForegroundColor Cyan
-  Write-InfoLink
 }

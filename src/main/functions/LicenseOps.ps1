@@ -15,11 +15,16 @@ function Clear-IntuitData {
   Write-Host -NoNewLine "Removing junk files... "
   
   foreach ($path in $qbPathList) {
-    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { Write-QuickBooksIsInstalled; exit $PAUSE }
-    else {
-      Remove-Item -Path "$env:ProgramData\$path" -Recurse -Force >$null 2>&1 # remove pos program data folder
-      Remove-Item -Path "${env:ProgramFiles(x86)}\$path" -Recurse -Force >$null 2>&1  # remove installation folder
-      Remove-Item -Path "$env:PUBLIC\Documents\$path\Data\Sample Practice" -Recurse -Force >$null 2>&1  #remove previous copy of sample practice 
+    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { 
+      Write-Error_QuickBooksIsInstalled
+      exit $PAUSE 
+    } else {
+      # remove quickbooks pos program data folder
+      Remove-Item "$env:ProgramData\$path" -Recurse -Force >$null 2>&1 
+      # remove folder of the last quickbooks pos version installed
+      Remove-Item "${env:ProgramFiles(x86)}\$path" -Recurse -Force >$null 2>&1
+      # remove previous copy of sample practice company
+      Remove-Item "$env:PUBLIC\Documents\$path\Data\Sample Practice" -Recurse -Force >$null 2>&1
     }
   }
   
@@ -29,6 +34,7 @@ function Clear-IntuitData {
 }
 
 function Get-UserOwnLicense {
+  # from `Write-LieResponse`
   Clear-Host; Write-Host
   Write-Host "Enter a valid license below`n" -ForegroundColor White -BackgroundColor DarkCyan
   Write-Host "A valid license pattern: 0000-0000-0000-000" -ForegroundColor White
@@ -46,8 +52,8 @@ function Get-UserOwnLicense {
   }
 
   # verify the length of the license key that the user enters
-  if ($script:LICENSE_NUMBER.Length -lt 18 -or $script:LICENSE_NUMBER.Length -gt 18) { Write-IncorrectLicense -LicenseNumber }
-  if ($script:PRODUCT_NUMBER.Length -lt 7 -or $script:PRODUCT_NUMBER.Length -gt 7) { Write-IncorrectLicense -ProductNumber }
+  if ($script:LICENSE_NUMBER.Length -lt 18 -or $script:LICENSE_NUMBER.Length -gt 18) { Write-Error_IncorrectLicense -LicenseNumber }
+  if ($script:PRODUCT_NUMBER.Length -lt 7 -or $script:PRODUCT_NUMBER.Length -gt 7) { Write-Error_IncorrectLicense -ProductNumber }
 
   # if license information is correct, the license will be 
   # saved and marked as the user's license

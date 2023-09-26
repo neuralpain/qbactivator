@@ -11,11 +11,11 @@ function Get-BitsTransfer($Source, $Destination) {
   }
   
   catch [StartBitsTransferCOMException],[Microsoft.BackgroundIntelligentTransfer.Management.NewBitsTransferCommand] {
-    Write-FileNotFound $Source; exit $PAUSE
+    Write-Error_FileNotFound $Source; exit $PAUSE
   }
   
   catch [FileNotFoundException] {
-    Write-FileNotFound $Source; exit $PAUSE
+    Write-Error_FileNotFound $Source; exit $PAUSE
   }
 }
 #>
@@ -35,7 +35,7 @@ function Select-QuickBooksVersion {
     $Version = Read-Host "`nVersion"
 
     switch ($Version) {
-      0 { Write-OperationCancelled; return $CANCEL }
+      0 { Write-Action_OperationCancelled; return $CANCEL }
       "" { break }
       default {
         if ($qbVersionList -notcontains $Version) {
@@ -73,7 +73,7 @@ function Get-InstallerSize($URL) {
     Write-Host "Byte_Size: $size_header"
     Write-Host "MB_Size: ${content}MB"
     Write-Host "`nPlease take a screenshot and send to neuralpain." -ForegroundColor White
-    Write-InfoLink
+    Write-InfoLink -WithFAQs
     exit $PAUSE
   } 
   
@@ -81,8 +81,10 @@ function Get-InstallerSize($URL) {
 }
 
 function Get-QuickBooksInstaller {
-  # receives version from `Select-QuickBooksVersion`
-  param ($Version, $Target = $pwd)
+  param (
+    $Version, # receives version from `Select-QuickBooksVersion`
+    $Target = $pwd
+  )
 
   if ($Version -eq $CANCEL) { return }
 
@@ -116,7 +118,7 @@ function Get-QuickBooksInstaller {
     
     switch ($query) {
       "n" {
-        Write-OperationCancelled
+        Write-Action_OperationCancelled
         Select-QuickBooksVersion
         Get-QuickBooksInstaller -Version (Get-Version)
       }
@@ -126,7 +128,7 @@ function Get-QuickBooksInstaller {
           $query = Read-Host "Are you ready to start the download? (Y/n)"
           
           if ($query -eq "n") {
-            Write-OperationCancelled
+            Write-Action_OperationCancelled
             Select-QuickBooksVersion
             Get-QuickBooksInstaller -Version (Get-Version)
           }
@@ -144,7 +146,7 @@ function Get-QuickBooksInstaller {
     }
   }
   
-  else { Write-NoInternetConnectivity; exit $PAUSE }
+  else { Write-Error_NoInternetConnectivity; exit $PAUSE }
 }
 
 function New-ActivationOnlyRequest {
@@ -161,7 +163,7 @@ function New-ActivationOnlyRequest {
   }
 
   # If nothing is found then the activation will not continue.
-  Write-QuickBooksNotInstalled
+  Write-Error_QuickBooksNotInstalled
   exit $PAUSE
 }
 
@@ -210,7 +212,7 @@ function Invoke-QuickBooksInstaller {
           default {
             $query = Read-Host "Do you want to download an installer? (Y/n)"
             switch ($query) {
-              "n" { Write-OperationCancelled; exit $ERR }
+              "n" { Write-Action_OperationCancelled; exit $ERR }
               default {
                 Select-QuickBooksVersion
                 Get-QuickBooksInstaller -Version (Get-Version)
@@ -229,7 +231,7 @@ function Invoke-QuickBooksInstaller {
   Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_SLOW
   
-  Write-NextOperationMenu
+  Write-MainMenu_NoInstaller
 }
 
 <# --- EXECUTION --- #>
@@ -244,7 +246,7 @@ function Start-Installer {
   Start-Process -FilePath $PosInstaller -Wait
   
   if ($Error) { 
-    Write-CannotStartInstaller
+    Write-Error_CannotStartInstaller
     exit $PAUSE 
   }
   
@@ -255,6 +257,6 @@ function Start-Installer {
     } 
   }
   
-  Write-QuickBooksNotInstalled
+  Write-Error_QuickBooksNotInstalled
   exit $PAUSE
 }

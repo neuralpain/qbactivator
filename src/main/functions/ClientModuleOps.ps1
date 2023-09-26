@@ -13,7 +13,7 @@ function Get-ClientModule {
     Start-BitsTransfer $clientfilehost $CLIENT_MODULE
     Write-Host "Done"
   } else { 
-    Write-NoInternetConnectivity
+    Write-Error_NoInternetConnectivity
     exit $PAUSE 
   }
 }
@@ -21,7 +21,7 @@ function Get-ClientModule {
 function Find-GenuineClientModule {
   # Determine if the client module is present on the system. This is necessary for proper activation.
   if (-not(Test-Path $CLIENT_MODULE -PathType Leaf)) {
-    Write-QuickBooksNotInstalled
+    Write-Error_QuickBooksNotInstalled
     exit $PAUSE
   }
 }
@@ -73,10 +73,10 @@ function Install-ClientModule {
 
 $CLIENT_MODULE_DATA_PATH = "$env:ProgramData\Intuit\Entitlement Client\v8"
 $CLIENT_MODULE_DATA = "$CLIENT_MODULE_DATA_PATH\EntitlementDataStore.ecml"
-$EDS19 = "https://github.com/neuralpain/qbactivator/files/11451420/EDS19.zip"
-$EDS18 = "https://github.com/neuralpain/qbactivator/files/11451419/EDS18.zip"
-$EDS12 = "https://github.com/neuralpain/qbactivator/files/11451418/EDS12.zip"
-$EDS11 = "https://github.com/neuralpain/qbactivator/files/11451417/EDS11.zip"
+# $EDS19 = "https://github.com/neuralpain/qbactivator/files/11451420/EDS19.zip"
+# $EDS18 = "https://github.com/neuralpain/qbactivator/files/11451419/EDS18.zip"
+# $EDS12 = "https://github.com/neuralpain/qbactivator/files/11451418/EDS12.zip"
+# $EDS11 = "https://github.com/neuralpain/qbactivator/files/11451417/EDS11.zip"
 
 function Remove-ClientDataModulePatch {
   Write-Host "---"
@@ -92,40 +92,41 @@ function Remove-ClientDataModulePatch {
     Start-Sleep -Milliseconds $TIME_NORMAL
   }
   
-  Write-NextOperationMenu
+  Write-MainMenu_NoInstaller
 }
 
+<# 
+  # `Install-ClientDataModule` is still in development and is not 
+  # functional enough to be included in an official release
 
-function Install-ClientDataModule {
-  param ($Version)
-  
-  <# 
-    `Install-ClientDataModule` is still in development and is not 
-    functional enough to be included in an official release
-  #>
-  
-  Remove-ClientDataModulePatch # if previously patched
-  
-  if (Test-Path $CLIENT_MODULE_DATA -PathType Leaf) { 
-    Copy-Item $CLIENT_MODULE_DATA "${CLIENT_MODULE_DATA}.bak" 
-  }
-  
-  Write-Host -NoNewline "Testing connectivity... "
-  if (Test-Connection www.google.com -Quiet) {
-    Write-Host "OK"
-    Write-Host -NoNewLine "Installing data module... "
-    if (-not(Test-Path -Path "$CLIENT_MODULE_DATA_PATH" -PathType Leaf)) { mkdir "$CLIENT_MODULE_DATA_PATH" >$null 2>&1 }
+  function Install-ClientDataModule {
+    param ($Version)
     
-    switch ($Version) {
-      19 { Start-BitsTransfer $EDS19 $CLIENT_MODULE_DATA }
-      18 { Start-BitsTransfer $EDS18 $CLIENT_MODULE_DATA }
-      12 { Start-BitsTransfer $EDS12 $CLIENT_MODULE_DATA }
-      11 { Start-BitsTransfer $EDS11 $CLIENT_MODULE_DATA }
+      
+      Remove-ClientDataModulePatch # if previously patched
+      
+      if (Test-Path $CLIENT_MODULE_DATA -PathType Leaf) { 
+        Copy-Item $CLIENT_MODULE_DATA "${CLIENT_MODULE_DATA}.bak" 
+      }
+      
+      Write-Host -NoNewline "Testing connectivity... "
+      if (Test-Connection www.google.com -Quiet) {
+        Write-Host "OK"
+        Write-Host -NoNewLine "Installing data module... "
+        if (-not(Test-Path -Path "$CLIENT_MODULE_DATA_PATH" -PathType Leaf)) { mkdir "$CLIENT_MODULE_DATA_PATH" >$null 2>&1 }
+        
+        switch ($Version) {
+          19 { Start-BitsTransfer $EDS19 $CLIENT_MODULE_DATA }
+          18 { Start-BitsTransfer $EDS18 $CLIENT_MODULE_DATA }
+          12 { Start-BitsTransfer $EDS12 $CLIENT_MODULE_DATA }
+          11 { Start-BitsTransfer $EDS11 $CLIENT_MODULE_DATA }
+        }
+        
+        Write-Host "Done"
+      } else { 
+        Write-Error_NoInternetConnectivity
+        exit $PAUSE 
+      }
     }
-
-    Write-Host "Done"
-  } else { 
-    Write-NoInternetConnectivity
-    exit $PAUSE 
   }
-}
+#>

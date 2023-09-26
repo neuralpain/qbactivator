@@ -1,5 +1,5 @@
 <#
-  Execution Module, Version 5.17
+  Execution Module, Version 5.18
   Copyright (c) 2023, neuralpain
   qbactivator verification and execution
 #>
@@ -18,18 +18,19 @@ $TIME_SLOW = 2000
 
 $BYTE_TO_MEGABYTE = 1048576
 
-$intuit_temp = "$env:TEMP\Intuit"
-
+# quickbooks pos installer names
 $QBPOS11 = "QuickBooksPOSV11.exe"
 $QBPOS12 = "QuickBooksPOSV12.exe"
 $QBPOS18 = "QuickBooksPOSV18.exe"
 $QBPOS19 = "QuickBooksPOSV19.exe"
 
+# quickbooks pos installer hashes
 $QBHASH11 = "A1AF552A49ADFF40E6462A968DD552A4"
 $QBHASH12 = "30FB99C5E98DF6874D438C478314EF9D"
 $QBHASH18 = "DD45AA4EC0DF431243C9836816E2305A"
 $QBHASH19 = "F5C434677270319F9A515210CA916187"
 
+# quickbooks pos installation folder partial paths
 $QBPATH11 = "Intuit\QuickBooks Point of Sale 11.0"
 $QBPATH12 = "Intuit\QuickBooks Point of Sale 12.0"
 $QBPATH18 = "Intuit\QuickBooks Desktop Point of Sale 18.0"
@@ -41,6 +42,7 @@ $qbExeList = $QBPOS19, $QBPOS18, $QBPOS12, $QBPOS11
 $qbHashList = $QBHASH19, $QBHASH18, $QBHASH12, $QBHASH11
 $qbPathList = $QBPATH19, $QBPATH18, $QBPATH12, $QBPATH11
 
+# script variables
 $script:QB_VERSION = $null
 $script:SECOND_STORE = $false
 $script:USER_HAS_OWN_LICENSE = $false
@@ -48,7 +50,7 @@ $script:LICENSE_NUMBER
 $script:PRODUCT_NUMBER
 $script:USER_OWN_LICENSE
 
-# CONFIG
+# download and security level preferences
 $global:ProgressPreference = "SilentlyContinue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -57,3 +59,6 @@ $qbactivator_temp = "$env:TEMP\qbactivator_temp"
 if (-not(Test-Path $qbactivator_temp)) { 
   mkdir $qbactivator_temp >$null 2>&1 
 }
+
+# temp folder for Intuit
+$intuit_temp = "$env:TEMP\Intuit"
