@@ -27,16 +27,22 @@ function Get-SpeedTestResults {
 
   # accept CLI usage license and General Data Protection Regulation (EU) before use
   Invoke-Expression "$qbactivator_temp\speedtest.exe --accept-gdpr --accept-license" >$null 2>&1
-  # start testing the internet speed
-  [int]$speedtestresult = [math]::Round((((Invoke-Expression "$qbactivator_temp\speedtest.exe --format json --progress no"
+
+  # Return JSON formatted results 
+  [int]$speedtestresult = [math]::Round((((Invoke-Expression "$qbactivator_temp\speedtest.exe --format json"
         ) -replace ".*download").Trim(':{"bandwidth":') -replace ",.*") / $BYTE_TO_MEGABYTE, 2)
-  return [int]$speedtestresult
+  
+  $script:BANDWIDTH = $speedtestresult
+
+  return $speedtestresult
 }
 
 function Get-TimeToComplete {
-  param ([int]$DownloadSize, [int]$DownloadSpeed)
+  param ([int]$DownloadSize, [int]$Bandwidth)
 
-  [int]$Time = [math]::Round($DownloadSize / $DownloadSpeed)
+  [int]$Time = [math]::Round($DownloadSize / $Bandwidth)
+
+  $script:RAW_DOWNLOAD_TIME = $Time
 
   if ($Time -gt 60) {
     $Time = [math]::Round($Time / 60)

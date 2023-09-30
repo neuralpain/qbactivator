@@ -52,7 +52,7 @@ compile() {
   cat $functions/InformationDisplay.ps1 >> $pwsh_cache; echo >> $pwsh_cache
   cat $functions/SpeedtestModule.ps1 >> $pwsh_cache; echo >> $pwsh_cache
   cat $functions/LicenseOps.ps1 >> $pwsh_cache; echo >> $pwsh_cache
-  cat $functions/Execution.ps1 >> $pwsh_cache; echo >> $pwsh_cache
+  cat $functions/Exec-Downloader.ps1 >> $pwsh_cache; echo >> $pwsh_cache
   cat $functions/ClientModuleOps.ps1 >> $pwsh_cache; echo >> $pwsh_cache
   cat $main/Main.ps1 >> $pwsh_cache
 

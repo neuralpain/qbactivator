@@ -43,16 +43,22 @@ $qbHashList = $QBHASH19, $QBHASH18, $QBHASH12, $QBHASH11
 $qbPathList = $QBPATH19, $QBPATH18, $QBPATH12, $QBPATH11
 
 # script variables
-$script:QB_VERSION = $null
-$script:SECOND_STORE = $false
-$script:USER_HAS_OWN_LICENSE = $false
-$script:LICENSE_NUMBER
-$script:PRODUCT_NUMBER
-$script:USER_OWN_LICENSE
+[int]$script:QB_VERSION = $null
+[bool]$script:SECOND_STORE = $false
+[bool]$script:USER_HAS_OWN_LICENSE = $false
+$script:LICENSE_NUMBER = ""
+$script:PRODUCT_NUMBER = ""
+$script:USER_OWN_LICENSE = ""
+[int]$script:RAW_DOWNLOAD_TIME = 0
+[int]$script:BANDWIDTH = 0
+[int]$script:INSTALLER_SIZE = 0
 
 # download and security level preferences
 $global:ProgressPreference = "SilentlyContinue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+function Set-Version($v) { $script:QB_VERSION = $v }
+function Get-Version { return $script:QB_VERSION }
 
 # add temp folder for qbactivator
 $qbactivator_temp = "$env:TEMP\qbactivator_temp"
