@@ -1,5 +1,5 @@
 @title QuickBooks POS Activator %uivr%
-@mode 60,16
+@mode 60,18
 
 set "wdir=%~dp0"
 set "pwsh=PowerShell -NoP -C"
