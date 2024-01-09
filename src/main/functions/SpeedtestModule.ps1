@@ -1,4 +1,4 @@
-<#
+<# legacy code
   # add speedtest cli license
   $speedtest_folder = "$env:APPDATA\Ookla\Speedtest CLI"
   $speedtest_license_file = "$env:APPDATA\Ookla\Speedtest CLI\speedtest-cli.ini"
@@ -12,11 +12,11 @@
 
 function Get-SpeedTestResults {
   $speedtest_archive = "https://github.com/neuralpain/qbactivator/files/11450516/speedtest.zip"
-  
-  # don't waste time downloading the cli again if it's available
+
   if (-not(Test-Path "$qbactivator_temp\speedtest.exe")) {
-    # download and extract the cli from the archive
-    Start-BitsTransfer $speedtest_archive "$qbactivator_temp\speedtest.zip"
+    if (-not(Test-Path "$qbactivator_temp\speedtest.zip")) {
+      Start-BitsTransfer $speedtest_archive "$qbactivator_temp\speedtest.zip"
+    }
     Add-Type -Assembly System.IO.Compression.FileSystem
     $_zip = [IO.Compression.ZipFile]::OpenRead("$qbactivator_temp\speedtest.zip")
     [System.IO.Compression.ZipFileExtensions]::ExtractToFile((
@@ -28,11 +28,8 @@ function Get-SpeedTestResults {
   # accept CLI usage license and General Data Protection Regulation (EU) before use
   Invoke-Expression "$qbactivator_temp\speedtest.exe --accept-gdpr --accept-license" >$null 2>&1
 
-  # Return JSON formatted results 
-  [int]$speedtestresult = [math]::Round((((Invoke-Expression "$qbactivator_temp\speedtest.exe --format json"
-        ) -replace ".*download").Trim(':{"bandwidth":') -replace ",.*") / $BYTE_TO_MEGABYTE, 2)
-  
-  $script:BANDWIDTH = $speedtestresult
+  [int]$speedtestresult = (((Invoke-Expression "$qbactivator_temp\speedtest.exe --accept-gdpr --accept-license --format json"
+        ) -replace ".*download").Trim(':{"bandwidth":') -replace ",.*")
 
   return $speedtestresult
 }
@@ -40,9 +37,10 @@ function Get-SpeedTestResults {
 function Get-TimeToComplete {
   param ([int]$DownloadSize, [int]$Bandwidth)
 
-  [int]$Time = [math]::Round($DownloadSize / $Bandwidth)
+  [double]$Time = ($DownloadSize / $Bandwidth)
+  [int]$Time = [math]::Round($Time)
 
-  $script:RAW_DOWNLOAD_TIME = $Time
+  $Script:RAW_DOWNLOAD_TIME = $Time
 
   if ($Time -gt 60) {
     $Time = [math]::Round($Time / 60)

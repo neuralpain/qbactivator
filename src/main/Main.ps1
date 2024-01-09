@@ -1,7 +1,12 @@
 function Compare-Hash {
   param ($Hash, $File)
-  if ((((Get-FileHash $File -Algorithm MD5 | Select-Object Hash) -split " "
-      ).Trim("@{Hash=}")) -ne $Hash) { return $ERR }
+
+  $_hash = ((
+    Get-FileHash $File -Algorithm MD5 | `
+    Select-Object Hash) -split " "
+  ).Trim("@{Hash=}")
+  
+  if ($_hash -ne $Hash) { return $ERR }
   else { return $OK }
 }
 
@@ -51,7 +56,6 @@ function New-ActivationOnlyRequest {
 
   # If nothing is found then the activation will not continue.
   Write-Error_QuickBooksNotInstalled
-  exit $PAUSE
 }
 
 function Invoke-QuickBooksInstaller {
@@ -64,10 +68,10 @@ function Invoke-QuickBooksInstaller {
     if (Test-Path ".\$exe" -PathType Leaf) {
       Write-Host "Found `"$exe`"."
       
-      # quickbooks version retrieved here in the even that
-      # the user's installer is not recognized from the hash, 
+      # quickbooks version retrieved here in the event that
+      # the user's installer is not recognized from the hash
       # but they still want to use it
-      $script:QB_VERSION = ($exe.Trim("QuickBooksPOSV.exe"))
+      Set-Version ($exe.Trim("QuickBooksPOSV.exe"))
       
       Write-Host -NoNewLine "Verifying `"$exe`"... "
 
@@ -91,7 +95,7 @@ function Invoke-QuickBooksInstaller {
         switch ($query) {
           "y" { 
             Write-Host
-            Get-IntuitLicense -Version $QB_VERSION
+            Get-IntuitLicense
             Start-Installer .\$exe >$null 2>&1
             Invoke-Activation
           }
@@ -115,25 +119,22 @@ function Invoke-QuickBooksInstaller {
     }
   }
 
-  Write-Host "QuickBooks installer was not found." -ForegroundColor Yellow
+  Write-Host "A QuickBooks POS installer was not found." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_SLOW
   
   Write-MainMenu_NoInstaller
 }
 
 function Start-Installer {
-  param ($PosInstaller)
+  param ($Installer)
   # clear temporary installation files from previous 
   # installer launch and start a new installation process
   Remove-Item $intuit_temp -Recurse -Force >$null 2>&1
   Write-WaitingScreen
-  $Error.Clear() # reset to catch installer error, if any
-  Start-Process -FilePath $PosInstaller -Wait
+  $Error.Clear() # reset to catch installer errors, if any
+  Start-Process -FilePath $Installer -Wait
   
-  if ($Error) { 
-    Write-Error_CannotStartInstaller
-    exit $PAUSE 
-  }
+  if ($Error) { Write-Error_CannotStartInstaller }
   
   foreach ($path in $qbPathList) { 
     if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { 
@@ -143,9 +144,7 @@ function Start-Installer {
   }
   
   Write-Error_QuickBooksNotInstalled
-  exit $PAUSE
 }
-
 
 function Stop-QuickBooksProcesses {
   Write-Host -NoNewLine "Terminating QuickBooks processes... "
@@ -172,7 +171,9 @@ function Stop-QuickBooksProcesses {
 }
 
 function Remove-TemporaryActvationFiles {
-  if (Test-Path "$qbactivator_temp") { Remove-Item $qbactivator_temp -Recurse -Force }
+  if (Test-Path "$qbactivator_temp") { 
+    Remove-Item $qbactivator_temp -Recurse -Force
+  }
 }
 
 function Invoke-Activation {

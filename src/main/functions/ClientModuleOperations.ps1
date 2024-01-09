@@ -7,22 +7,19 @@ $CLIENT_MODULE = "$env:SystemRoot\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map
 
 function Get-ClientModule {
   Write-Host -NoNewline "Testing connectivity... "
-  if (Test-Connection www.google.com -Quiet) {
+  if (-not(Test-Connection www.google.com -Quiet)) { 
+    Write-Error_NoInternetConnectivity
+  } else { 
     Write-Host "OK"
     Write-Host -NoNewLine "Downloading client module... "
     Start-BitsTransfer $clientfilehost $CLIENT_MODULE
     Write-Host "Done"
-  } else { 
-    Write-Error_NoInternetConnectivity
-    exit $PAUSE 
   }
 }
 
 function Find-GenuineClientModule {
-  # Determine if the client module is present on the system. This is necessary for proper activation.
   if (-not(Test-Path $CLIENT_MODULE -PathType Leaf)) {
     Write-Error_QuickBooksNotInstalled
-    exit $PAUSE
   }
 }
 
@@ -48,7 +45,6 @@ function Install-ClientModule {
   Rename-Item $CLIENT_MODULE "${CLIENT_MODULE}.bak" >$null 2>&1
 
   if (Test-Path "$PATCH_FILE" -PathType Leaf) {
-    # Perform verification for file integrity on the patch file if present
     $result = Compare-Hash -Hash $PATCH_HASH -File $PATCH_FILE
     if ($result -ne $ERR) { Copy-Item $PATCH_FILE $CLIENT_MODULE } 
     else { 
@@ -57,8 +53,7 @@ function Install-ClientModule {
       Write-Host "Patch successful."
       return
     }
-  }
-  else { 
+  } else { 
     Write-Host "`nLocal patch file not found."
     Write-Host "Requesting client module..."
     Get-ClientModule
@@ -124,8 +119,7 @@ function Remove-ClientDataModulePatch {
         
         Write-Host "Done"
       } else { 
-        Write-Error_NoInternetConnectivity
-        exit $PAUSE 
+        Write-Error_NoInternetConnectivity 
       }
     }
   }

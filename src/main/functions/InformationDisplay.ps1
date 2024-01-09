@@ -7,10 +7,11 @@ function Write-HeaderLabel {
 }
 
 function Write-InfoLink {
-  param([Switch]$WithFAQs)
+  param([Switch]$WithFAQs, [Switch]$NoExit)
   Write-Host "`nFor more information, visit:" -ForegroundColor White
   Write-Host "https://github.com/neuralpain/qbactivator" -ForegroundColor Green
   if ($WithFAQs) { Write-Host "https://github.com/neuralpain/qbactivator/wiki/FAQs" -ForegroundColor Green }
+  if (-not($NoExit)) { exit $PAUSE }
 }
 
 function Write-WaitingScreen {
@@ -18,7 +19,7 @@ function Write-WaitingScreen {
   Write-Host "QuickBooks software installation in progress..." -ForegroundColor White
   Write-Host "`nPlease ensure that the QuickBooks software is completely`ninstalled on your system. Activation will proceed after`nthe installation is completed."
   Write-Host "`nIf you need to cancel the installation for any reason,`nplease close this window afterwards." -ForegroundColor Cyan
-  Write-InfoLink
+  Write-InfoLink -NoExit
 }
 
 # --- FUNCTION MSSG --- #
@@ -39,7 +40,7 @@ function Write-MainMenu {
     0 { Write-Action_ExitActivator; exit $NONE }
     1 { Invoke-QuickBooksInstaller }
     2 { 
-      $script:SECOND_STORE = $true
+      $Script:SECOND_STORE = $true
       Invoke-QuickBooksInstaller
     }
     # { Write-Action_OptionUnavailable; Write-MainMenu }
@@ -59,7 +60,7 @@ function Write-LieScolding {
 
   Clear-Host
   Write-Host "`n$Mssg" -ForegroundColor White -BackgroundColor DarkRed
-  Write-InfoLink
+  Write-InfoLink -NoExit
 
   if ($ReadAKey) { Read-Host }
   else { Start-Sleep -Milliseconds $TIME_SLOW }
