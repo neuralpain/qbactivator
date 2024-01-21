@@ -15,3 +15,4 @@ QuickBooks Tool Hub
 # misc
 .history/
 target/
+.DS_Store
