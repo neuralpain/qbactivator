@@ -32,7 +32,7 @@ function Write-MainMenu {
   Write-Host "2 - POS Store 2 (Server/Client)"
   Write-Host "3 - I have my own license :p"
   Write-Host "4 - General QuickBooks activation"
-  Write-Host "    ^^^^ Pro/Enterprise/Other ^^^"
+  # Write-Host "    ^^^^ Pro/Enterprise/Other ^^^"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
@@ -43,13 +43,13 @@ function Write-MainMenu {
       $Script:SECOND_STORE = $true
       Invoke-QuickBooksInstaller
     }
-    # { Write-Action_OptionUnavailable; Write-MainMenu }
     3 { 
       Clear-Host; Write-Host; 
       Write-LieResponse
       Invoke-QuickBooksInstaller
     }
-    4 { Clear-Host; Write-Host; Invoke-Activation -GeneralActivation }
+    4 { Write-Action_OptionUnavailable; Write-MainMenu }
+    # 4 { Clear-Host; Write-Host; Invoke-Activation -GeneralActivation }
     default { Write-MainMenu }
   }
 }
@@ -146,7 +146,7 @@ function Write-Action_OperationCancelled {
 
 function Write-Action_OptionUnavailable {
   Write-Host "---"
-  Write-Host -NoNewline "Unable to perform this action." -ForegroundColor Yellow
+  Write-Host -NoNewline "This function has been temporarily disabled." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_NORMAL
 }
 
