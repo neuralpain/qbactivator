@@ -7,11 +7,9 @@
 
 Activation script for QuickBooks Point of Sale Software on Windows. — [Download Now!][download]
 
-> **Warning**  
->
+> [!CAUTION]  
 > **DO NOT** clone or download this repository in an attempt to run `qbactivator` (Ref: [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way.
->
-> If you are trying to run the script, please [read the Wiki][getstarted] to get started using `qbactivator` or proceed to [download the latest release package][release].
+> If you want to run the script, please [read the Wiki][getstarted] to get started using `qbactivator` or proceed to [download the latest release package][release].
 
 ### Features
 
@@ -21,8 +19,8 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - Optional downloader for installer packages
 - Protection against compromised packages
 
-> **Note**  
-> Protection involves comparing hashes of verified installer packages against the hash of the installer that the user has downloaded or brought from another location. If an installer package has been flagged as compromised and the user trusts the installer (or is too lazy to download an official installer), the user can decide to ignore the warning and use their current installer package.
+> [!NOTE]  
+> Protection involves comparing hashes of verified installer packages against the hash of the installer that the user has downloaded or transferred from another location. If an installer package has been flagged as compromised but the user trusts the installer (or is too lazy to download an official installer), the user can decide to ignore the warning and use their current installer package.
 
 ### Supported Operating Systems
 - Windows 11
@@ -31,7 +29,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - Windows 7 SP1 (requires [Windows Management Framework 4.0][wikiwmf4])
 - Windows Server 2012-2022
 
-> **Note**  
+> [!IMPORTANT]  
 > `qbactivator` **requires** at least PowerShell 4.0 [or later][updatepowershell] to be installed on your Windows machine in order to function as intended. If you are using Windows 10 or above, it is likely that PowerShell 5.1 or a later version is already installed on your machine. You can check your PowerShell version by using the `$PSVersionTable` command in PowerShell if you are unsure.
 
 ### A few things before you start
@@ -44,7 +42,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - [View the instructions][instructions] to run `qbactivator` and activate QuickBooks
 - [Read the FAQs](#faqs) for further information and guidance for any concerns you may have.
 
-> **Warning**  
+> [!WARNING]  
 > `qbactivator` is intended to operate with only one version of QuickBooks POS installed. In the event of multiple installations, the activator may encounter errors. Therefore, before executing qbactivator, it is crucial to remove all other versions of QuickBooks POS.
 
 ## Downloads & Updates
@@ -56,7 +54,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - [QuickBooks Point Of Sale V12 (2015) ⧉](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2015/Latest/QuickBooksPOSV12.exe)
 - [QuickBooks Point Of Sale V11 (2013) ⧉](https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/2013/Latest/QuickBooksPOSV11.exe)
 
-> **Note**  
+> [!TIP]  
 > Browse the QuickBooks [product download page](https://downloads.quickbooks.com/app/qbdt/products) for additional QuickBooks Desktop software that is not included here in this documentation.
 
 ## FAQs
