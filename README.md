@@ -81,6 +81,10 @@ License keys are reviewed regularly to keep `qbactivator` functioning as intende
 
 Licensed under [BSD 2-Clause](LICENSE).
 
+<div align='center'>
+<img src='https://www.websitecounterfree.com/c.php?d=9&id=48433&s=3' alt='qbactivator Visitor Count'>
+</div>
+
 <!-- Links -->
 [wiki]: https://github.com/neuralpain/qbactivator/wiki
 [faqs]: https://github.com/neuralpain/qbactivator/wiki/FAQs
