@@ -26,7 +26,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - Windows 11
 - Windows 10
 - Windows 8.1
-- Windows 7 SP1 (requires [Windows Management Framework 4.0][wikiwmf4])
+- Windows 7 SP1 (requires [Windows Management Framework 4.0][wikiwmf4])
 - Windows Server 2012-2022
 
 > [!IMPORTANT]  
@@ -81,9 +81,11 @@ License keys are reviewed regularly to keep `qbactivator` functioning as intende
 
 Licensed under [BSD 2-Clause](LICENSE).
 
-<div align='center'>
-<img src='https://www.websitecounterfree.com/c.php?d=9&id=48433&s=3' alt='qbactivator Visitor Count'>
-</div>
+<p align='center'>
+  <picture>
+    <img src='https://www.websitecounterfree.com/c.php?d=9&id=48433&s=3' alt='qbactivator Visitor Count'>
+  </picture>
+</p>
 
 <!-- Links -->
 [wiki]: https://github.com/neuralpain/qbactivator/wiki
