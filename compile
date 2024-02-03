@@ -29,6 +29,9 @@ compile() {
 
   echo "<# :# DO NOT REMOVE THIS LINE" > $cmd_cache
   echo >> $cmd_cache
+  echo :: █▀█ █▄▄ ▄▀█ █▀▀ ▀█▀ █ █░█ ▄▀█ ▀█▀ █▀█ █▀█ >> $cmd_cache
+  echo :: ▀▀█ █▄█ █▀█ █▄▄ ░█░ █ ▀▄▀ █▀█ ░█░ █▄█ █▀▄ >> $cmd_cache
+  echo >> $cmd_cache
   echo ":: qbactivator.cmd, Version $version" >> $cmd_cache
   echo ":: Copyright (c) 2023, neuralpain" >> $cmd_cache
   echo ":: https://github.com/neuralpain/qbactivator" >> $cmd_cache
