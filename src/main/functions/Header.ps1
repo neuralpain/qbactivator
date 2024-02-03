@@ -1,5 +1,5 @@
 <#
-  Activation Module, Version 8.3
+  Activation Module, Version 8.4
   Copyright (c) 2023, neuralpain
   Module for activation of QuickBooks Point of Sale
 #>
@@ -45,9 +45,6 @@ $POS11InstObj = [Installer]@{
   XByte = 20583243
   Size = '157.03'
 }
-
-164665944
-1741119
 
 $POS12InstObj = [Installer]@{
   Name = 'QuickBooksPOSV12.exe'
