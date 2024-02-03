@@ -3,6 +3,7 @@
 ## v0.21.0
 - Add progress bar for Point of Sale installer while downloading ✨
 - Add option to install custom licenses from the user
+- Temporarily drop support for activation of other QuickBooks Desktop products
 - Code refactoring
 - Minor bug fixes
 
