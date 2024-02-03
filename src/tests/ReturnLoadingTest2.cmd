@@ -1,14 +1,11 @@
 <# :# PowerShell comment protecting the Batch section
-
 @echo off
 setlocal EnableExtensions DisableDelayedExpansion
 set ARGS=%*
 if defined ARGS set ARGS=%ARGS:"=\"%
 if defined ARGS set ARGS=%ARGS:'=''%
-
 PowerShell -c ^"Invoke-Expression ('^& {' + (get-content -raw '%~f0') + '} %ARGS%')"
 exit /b
-
 #>
 
 if (-not(Test-Connection "www.google.com" -Quiet)) { 
