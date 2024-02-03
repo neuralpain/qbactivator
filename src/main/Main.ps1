@@ -131,15 +131,14 @@ function Start-Installer {
   # installer launch and start a new installation process
   Remove-Item $intuit_temp -Recurse -Force >$null 2>&1
   Write-WaitingScreen
-  $Error.Clear() # reset to catch installer errors, if any
-  Start-Process -FilePath $Installer -Wait
   
-  if ($Error) { Write-Error_CannotStartInstaller }
+  try { Start-Process -FilePath $Installer -Wait }
+  catch { Write-Error_CannotStartInstaller }
   
   foreach ($path in $qbPathList) { 
     if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { 
       Clear-Host; Write-Host
-      return 
+      return
     } 
   }
   
