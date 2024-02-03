@@ -1,7 +1,7 @@
 <#
-  Execution Module, Version 8.0
+  Activation Module, Version 8.3
   Copyright (c) 2023, neuralpain
-  qbactivator verification and execution
+  Module for activation of QuickBooks Point of Sale
 #>
 
 $OK = 0x0
@@ -45,6 +45,9 @@ $POS11InstObj = [Installer]@{
   XByte = 20583243
   Size = '157.03'
 }
+
+164665944
+1741119
 
 $POS12InstObj = [Installer]@{
   Name = 'QuickBooksPOSV12.exe'
@@ -95,14 +98,17 @@ $qbHashList = $POS19InstObj.Hash, $POS18InstObj.Hash, $POS12InstObj.Hash, $POS11
 $qbPathList = $POS19InstObj.Path, $POS18InstObj.Path, $POS12InstObj.Path, $POS11InstObj.Path
 
 # script variables
-[int]$Script:QB_VERSION = $null
-[bool]$Script:SECOND_STORE = $false
-[bool]$Script:USER_HAS_OWN_LICENSE = $false
-[int]$Script:RAW_DOWNLOAD_TIME = 0
-$Script:BANDWIDTH = 0
-[int]$Script:INSTALLER_BYTES = 0
 $Script:LICENSE_KEY = ""
 $Script:INSTALLER_SIZE = 0
+[int]$Script:QB_VERSION = $null
+[int]$Script:RAW_DOWNLOAD_TIME = 0
+[int]$Script:INSTALLER_BYTES = 0
+[int]$Script:INSTALLER_BITS = 0
+[int]$Script:BANDWIDTH_BITS = 0
+[bool]$Script:SECOND_STORE = $false
+[bool]$Script:USER_HAS_OWN_LICENSE = $false
+[bool]$Script:BANDWIDTH_UNKNOWN = $false
+[double]$Script:BANDWIDTH = 0
 
 # download and security level preferences
 $global:ProgressPreference = "SilentlyContinue"
