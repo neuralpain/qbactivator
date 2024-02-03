@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# compile, Version 1.8.7
+# compile, Version 1.8.8
 # Copyright (c) 2023, neuralpain 
 # https://github.com/neuralpain/qbactivator
 # Compile script for qbactivator
@@ -22,12 +22,15 @@ patchfile=$bin/ecc/$patchfilename
 helpfile=$res/doc/readme.txt
 
 return=compile:
-v="1.8.7"
+v="1.8.8"
 
 compile() {
   [[ ! -d "./cache" ]] && mkdir cache || rm ./cache/*;
 
   echo "<# :# DO NOT REMOVE THIS LINE" > $cmd_cache
+  echo >> $cmd_cache
+  echo :: █▀█ █▄▄ ▄▀█ █▀▀ ▀█▀ █ █░█ ▄▀█ ▀█▀ █▀█ █▀█ >> $cmd_cache
+  echo :: ▀▀█ █▄█ █▀█ █▄▄ ░█░ █ ▀▄▀ █▀█ ░█░ █▄█ █▀▄ >> $cmd_cache
   echo >> $cmd_cache
   echo ":: qbactivator.cmd, Version $version" >> $cmd_cache
   echo ":: Copyright (c) 2023, neuralpain" >> $cmd_cache
@@ -48,12 +51,18 @@ compile() {
   echo >> $cmd_cache
 
   # add powershell functions
-  cat $functions/Header.ps1 > $pwsh_cache; echo >> $pwsh_cache
-  cat $functions/InformationDisplay.ps1 >> $pwsh_cache; echo >> $pwsh_cache
-  cat $functions/SpeedtestModule.ps1 >> $pwsh_cache; echo >> $pwsh_cache
-  cat $functions/LicenseOps.ps1 >> $pwsh_cache; echo >> $pwsh_cache
-  cat $functions/Execution.ps1 >> $pwsh_cache; echo >> $pwsh_cache
-  cat $functions/ClientModuleOps.ps1 >> $pwsh_cache; echo >> $pwsh_cache
+  cat $functions/Header.ps1 > $pwsh_cache
+  echo >> $pwsh_cache
+  cat $functions/InformationDisplay.ps1 >> $pwsh_cache
+  echo >> $pwsh_cache
+  cat $functions/SpeedTestModule.ps1 >> $pwsh_cache
+  echo >> $pwsh_cache
+  cat $functions/Licensing.ps1 >> $pwsh_cache
+  echo >> $pwsh_cache
+  cat $functions/Downloader.ps1 >> $pwsh_cache
+  echo >> $pwsh_cache
+  cat $functions/ClientModuleOperations.ps1 >> $pwsh_cache
+  echo >> $pwsh_cache
   cat $main/Main.ps1 >> $pwsh_cache
 
   # final compile

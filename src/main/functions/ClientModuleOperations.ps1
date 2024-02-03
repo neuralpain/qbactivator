@@ -7,20 +7,19 @@ $CLIENT_MODULE = "$env:SystemRoot\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map
 
 function Get-ClientModule {
   Write-Host -NoNewline "Testing connectivity... "
-  if (Test-Connection www.google.com -Quiet) {
+  if (-not(Test-Connection www.google.com -Quiet)) { 
+    Write-Error_NoInternetConnectivity
+  } else { 
     Write-Host "OK"
     Write-Host -NoNewLine "Downloading client module... "
     Start-BitsTransfer $clientfilehost $CLIENT_MODULE
     Write-Host "Done"
   }
-  else { Write-NoInternetConnectivity; exit $PAUSE }
 }
 
 function Find-GenuineClientModule {
-  # Determine if the client module is present on the system. This is necessary for proper activation.
   if (-not(Test-Path $CLIENT_MODULE -PathType Leaf)) {
-    Write-QuickBooksNotInstalled
-    exit $PAUSE
+    Write-Error_QuickBooksNotInstalled
   }
 }
 
@@ -32,7 +31,11 @@ function Repair-GenuineClientModule {
     Write-Host "Done"
 
     $query = Read-Host "Continue to patch QuickBooks POS? (Y/n)"
-    switch ($query) { "n" { exit $NONE } default { break } }
+    
+    switch ($query) { 
+      "n" { exit $NONE } 
+      default { break } 
+    }
   }
 }
 
@@ -42,7 +45,6 @@ function Install-ClientModule {
   Rename-Item $CLIENT_MODULE "${CLIENT_MODULE}.bak" >$null 2>&1
 
   if (Test-Path "$PATCH_FILE" -PathType Leaf) {
-    # Perform verification for file integrity on the patch file if present
     $result = Compare-Hash -Hash $PATCH_HASH -File $PATCH_FILE
     if ($result -ne $ERR) { Copy-Item $PATCH_FILE $CLIENT_MODULE } 
     else { 
@@ -51,8 +53,7 @@ function Install-ClientModule {
       Write-Host "Patch successful."
       return
     }
-  }
-  else { 
+  } else { 
     Write-Host "`nLocal patch file not found."
     Write-Host "Requesting client module..."
     Get-ClientModule
@@ -67,10 +68,10 @@ function Install-ClientModule {
 
 $CLIENT_MODULE_DATA_PATH = "$env:ProgramData\Intuit\Entitlement Client\v8"
 $CLIENT_MODULE_DATA = "$CLIENT_MODULE_DATA_PATH\EntitlementDataStore.ecml"
-$EDS19 = "https://github.com/neuralpain/qbactivator/files/11451420/EDS19.zip"
-$EDS18 = "https://github.com/neuralpain/qbactivator/files/11451419/EDS18.zip"
-$EDS12 = "https://github.com/neuralpain/qbactivator/files/11451418/EDS12.zip"
-$EDS11 = "https://github.com/neuralpain/qbactivator/files/11451417/EDS11.zip"
+# $EDS19 = "https://github.com/neuralpain/qbactivator/files/11451420/EDS19.zip"
+# $EDS18 = "https://github.com/neuralpain/qbactivator/files/11451419/EDS18.zip"
+# $EDS12 = "https://github.com/neuralpain/qbactivator/files/11451418/EDS12.zip"
+# $EDS11 = "https://github.com/neuralpain/qbactivator/files/11451417/EDS11.zip"
 
 function Remove-ClientDataModulePatch {
   Write-Host "---"
@@ -86,35 +87,40 @@ function Remove-ClientDataModulePatch {
     Start-Sleep -Milliseconds $TIME_NORMAL
   }
   
-  Write-NextOperationMenu
+  Write-MainMenu_NoInstaller
 }
 
+<# 
+  # `Install-ClientDataModule` is still in development and is not 
+  # functional enough to be included in an official release
 
-function Install-ClientDataModule {
-  param ($Version)
-  
-  <# 
-    `Install-ClientDataModule` is still in development and is not 
-    functional enough to be included in an official release
-  #>
-  
-  Remove-ClientDataModulePatch # if previously patched
-  if (Test-Path $CLIENT_MODULE_DATA -PathType Leaf) { Copy-Item $CLIENT_MODULE_DATA "${CLIENT_MODULE_DATA}.bak" }
-  
-  Write-Host -NoNewline "Testing connectivity... "
-  if (Test-Connection www.google.com -Quiet) {
-    Write-Host "OK"
-    Write-Host -NoNewLine "Installing data module... "
-    if (-not(Test-Path -Path "$CLIENT_MODULE_DATA_PATH" -PathType Leaf)) { mkdir "$CLIENT_MODULE_DATA_PATH" >$null 2>&1 }
+  function Install-ClientDataModule {
+    param ($Version)
     
-    switch ($Version) {
-      19 { Start-BitsTransfer $EDS19 $CLIENT_MODULE_DATA }
-      18 { Start-BitsTransfer $EDS18 $CLIENT_MODULE_DATA }
-      12 { Start-BitsTransfer $EDS12 $CLIENT_MODULE_DATA }
-      11 { Start-BitsTransfer $EDS11 $CLIENT_MODULE_DATA }
+      
+      Remove-ClientDataModulePatch # if previously patched
+      
+      if (Test-Path $CLIENT_MODULE_DATA -PathType Leaf) { 
+        Copy-Item $CLIENT_MODULE_DATA "${CLIENT_MODULE_DATA}.bak" 
+      }
+      
+      Write-Host -NoNewline "Testing connectivity... "
+      if (Test-Connection www.google.com -Quiet) {
+        Write-Host "OK"
+        Write-Host -NoNewLine "Installing data module... "
+        if (-not(Test-Path -Path "$CLIENT_MODULE_DATA_PATH" -PathType Leaf)) { mkdir "$CLIENT_MODULE_DATA_PATH" >$null 2>&1 }
+        
+        switch ($Version) {
+          19 { Start-BitsTransfer $EDS19 $CLIENT_MODULE_DATA }
+          18 { Start-BitsTransfer $EDS18 $CLIENT_MODULE_DATA }
+          12 { Start-BitsTransfer $EDS12 $CLIENT_MODULE_DATA }
+          11 { Start-BitsTransfer $EDS11 $CLIENT_MODULE_DATA }
+        }
+        
+        Write-Host "Done"
+      } else { 
+        Write-Error_NoInternetConnectivity 
+      }
     }
-
-    Write-Host "Done"
   }
-  else { Write-NoInternetConnectivity; exit $PAUSE }
-}
+#>

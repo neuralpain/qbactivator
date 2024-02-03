@@ -1,5 +1,5 @@
 @title QuickBooks POS Activator %uivr%
-@mode 60,16
+@mode 60,18
 
 set "wdir=%~dp0"
 set "pwsh=PowerShell -NoP -C"
@@ -18,7 +18,7 @@ fsutil dirty query %systemdrive% >nul
 :: if error, we do not have admin
 cls & echo.
 if %ERRORLEVEL% NEQ 0 (
-  echo This script requires administrative priviledges.
+  echo qbactivator requires administrative priviledges.
   echo Attempting to elevate...
   goto UAC_Prompt
 ) else ( goto :init )
@@ -146,8 +146,8 @@ if %ERRORLEVEL% EQU 1 (
   echo The script ran into a problem while attempting to restore
   echo the client.
   echo.
-  echo Restart the script and request activation to resolve the 
-  echo error. You may choose to exit afterwards.
+  echo Restart the script and request activation to automatically
+  echo resolve the error. You may choose to exit afterwards.
   echo. & pause
   goto :exitQBA
 ) else (
