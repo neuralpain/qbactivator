@@ -3,6 +3,7 @@
 ## v0.21.0
 - Add progress bar for Point of Sale installer while downloading ✨
 - Add option to install custom licenses from the user
+- Add preventative measure for users who manually run qbactivator as administrator
 - Temporarily drop support for activation of other QuickBooks Desktop products
 - Code refactoring
 - Minor bug fixes
@@ -25,12 +26,12 @@
 - Now deletes specific Point of Sale installation folder instead of entire Intuit directory
 - Bug fixes and improvements
 
-#### v0.19.0 🎊
+#### v0.19.0
 
-- Previous client errors are fixed during activation request ✨
-- Add menu to download POS software if unavailable locally ✨
-- Add bypass for installer verification if user trusts their own installer ✨
-- Add automatic download of patch if unavailable or an error occurred with local copy ✨
+- Previous client errors are fixed during activation request
+- Add menu to download POS software if unavailable locally
+- Add bypass for installer verification if user trusts their own installer
+- Add automatic download of patch if unavailable or an error occurred with local copy
 - Removed 4 steps from instructions
 - Code optimization and error handling improvements
 
