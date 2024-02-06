@@ -201,6 +201,11 @@ function Invoke-Activation {
 
 # ---------------------------------- start powershell execution ---------------------------------- #
 
-Write-MainMenu
-Remove-TemporaryActvationFiles
+if ("C:\Windows\system32" -eq $pwd) {
+  Write-Error_IsManualAdministrator
+} else {
+  Write-MainMenu
+  Remove-TemporaryActvationFiles
+}
+
 exit

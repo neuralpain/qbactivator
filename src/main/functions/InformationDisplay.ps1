@@ -152,24 +152,30 @@ function Write-Action_OptionUnavailable {
 
 # --- ERROR MSSG --- #
 
+function Write-Error_IsManualAdministrator {
+  Clear-Host
+  Write-Host "`nUser started as Administrator" -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nDo not manually (right-click) run qbactivator as`nadministrator. This will result in errors during`ninstallation. Please restart the script." -ForegroundColor White
+  Write-InfoLink
+}
+
 function Write-Error_CannotStartInstaller {
   Clear-Host
-  Write-Host "`nUnable to execute the installer." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nUnable to execute the installer" -ForegroundColor White -BackgroundColor DarkRed
   Write-Host "`nPlease ensure that you are using a genuine installer`ndownloaded from Intuit." -ForegroundColor White
   Write-InfoLink
 }
 
 function Write-Error_NoInternetConnectivity {
   Clear-Host
-  Write-Host "`nUnable to start the download." -ForegroundColor White -BackgroundColor DarkRed
-  Write-Host "`nThere is no internet connectivity at this time." -ForegroundColor White
-  Write-Host "Please check the connection and try again." -ForegroundColor White
+  Write-Host "`nUnable to start the download" -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nThere is no internet connectivity at this time.`nPlease check the connection and try again." -ForegroundColor White
   Write-InfoLink
 }  
 
 function Write-Error_QuickBooksIsInstalled {
   Clear-Host
-  Write-Host "`nA version of QuickBooks is already installed." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nA version of QuickBooks is already installed" -ForegroundColor White -BackgroundColor DarkRed
   Write-Host "`nAll previous versions must be removed before installation." -ForegroundColor Yellow
   Write-Host "`nIf you are requesting activation-only, remove the installer`nfrom this location and restart the activator. The activator`nimmediately checks for a QuickBooks installation executable`nand runs it if one is available." -ForegroundColor White
   Write-InfoLink
@@ -177,7 +183,7 @@ function Write-Error_QuickBooksIsInstalled {
 
 function Write-Error_QuickBooksNotInstalled {
   Clear-Host
-  Write-Host "`nQuickBooks is not installed on the system." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nQuickBooks is not installed on the system" -ForegroundColor White -BackgroundColor DarkRed
   Write-Host "`nThe activation cannot be completed." -ForegroundColor Yellow
   Write-Host "`nPlease ensure that a QuickBooks product is correctly and`ncompletely installed before requesting activation." -ForegroundColor White
   Write-InfoLink
@@ -185,7 +191,7 @@ function Write-Error_QuickBooksNotInstalled {
 
 function Write-Error_FileNotFound($File) {
   Clear-Host
-  Write-Host "`nThe requested file could not be downloaded." -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nThe requested file could not be downloaded" -ForegroundColor White -BackgroundColor DarkRed
   Write-Host "`nThe file was not found on the server at `"$File`"" -ForegroundColor White
   Write-Host "Please submit this issue to @neuralpain. Thank you." -ForegroundColor White
   Write-InfoLink

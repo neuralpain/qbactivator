@@ -1,5 +1,5 @@
 <#
-  Activation Module, Version 8.4
+  Activation Module, Version 8.5
   Copyright (c) 2023, neuralpain
   Module for activation of QuickBooks Point of Sale
 #>
