@@ -115,9 +115,9 @@ function Get-IntuitLicense {
       $Script:INSTALLER_BYTES = $POS19InstObj.XByte
 
       if ($Script:SECOND_STORE) { 
-        Set-License (Write-License -LNumber $POS19InstObj.LNum2 -PNumber $POS11InstObj.PNum)
       } else { 
-        Set-License (Write-License -LNumber $POS19InstObj.LNum1 -PNumber $POS11InstObj.PNum)
+        Set-License (Write-License -LNumber $POS19InstObj.LNum2 -PNumber $POS19InstObj.PNum)
+        Set-License (Write-License -LNumber $POS19InstObj.LNum1 -PNumber $POS19InstObj.PNum)
       }
     } 
 
