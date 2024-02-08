@@ -3,7 +3,7 @@ function Clear-IntuitData {
   Write-Host -NoNewLine "Removing junk files... "
   
   foreach ($path in $qbPathList) {
-    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { 
+    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) {
       Write-Error_QuickBooksIsInstalled 
     } else {
       # remove quickbooks pos program data folder
@@ -22,14 +22,7 @@ function Clear-IntuitData {
 
 function Write-License {
   param([String]$LNumber, [String]$PNumber)
-  
-  # Write-Host $LNumber # Debug
-  # Write-Host $PNumber # Debug
-  # Pause # Debug
-
-  return `
-    '<Registration InstallDate="" LicenseNumber="', $LNumber, `
-    '" ProductNumber="', $PNumber, '"/>' -join ''
+  return '<Registration InstallDate="" LicenseNumber="', $LNumber, '" ProductNumber="', $PNumber, '"/>' -join ''
 }
 
 function Get-UserOwnLicense {
@@ -52,13 +45,12 @@ function Get-UserOwnLicense {
 
   if ($custom_license_number.Length -lt 18 -or $custom_license_number.Length -gt 18) { Write-Error_IncorrectLicense -LicenseNumber }
   if ($custom_product_number.Length -lt 7 -or $custom_product_number.Length -gt 7) { Write-Error_IncorrectLicense -ProductNumber }
-
   Set-License (Write-License $custom_license_number $custom_product_number)
-  $Script:USER_HAS_OWN_LICENSE = $true
+  $Script:CUSTOM_LICENSING = $true
 }
 
 function Install-IntuitLicense {
-  
+  Clear-IntuitData
   Write-Host -NoNewLine "Installing registration keys... "
   
   switch (Get-Version) {
@@ -105,62 +97,62 @@ function Install-IntuitLicense {
 
 function Get-IntuitLicense {
   param ($Hash)
-
-  Clear-IntuitData
   
   switch ($Hash) {
-    $POS19InstObj.Hash { 
+    $POS19InstObj.Hash {
       Set-Version $POS19InstObj.VerNum
       $Script:INSTALLER_SIZE = $POS19InstObj.Size
       $Script:INSTALLER_BYTES = $POS19InstObj.XByte
-
-      if ($Script:SECOND_STORE) { 
-        Set-License (Write-License -LNumber $POS19InstObj.LNum2 -PNumber $POS11InstObj.PNum)
-      } else { 
-        Set-License (Write-License -LNumber $POS19InstObj.LNum1 -PNumber $POS11InstObj.PNum)
+      
+      if ($Script:CUSTOM_LICENSING) {
+        return
+      } elseif ($Script:SECOND_STORE) {
+        Set-License (Write-License -LNumber $POS19InstObj.LNum2 -PNumber $POS19InstObj.PNum)
+      } else {
+        Set-License (Write-License -LNumber $POS19InstObj.LNum1 -PNumber $POS19InstObj.PNum)
       }
     } 
 
-    $POS18InstObj.Hash { 
+    $POS18InstObj.Hash {
       Set-Version $POS18InstObj.VerNum
       $Script:INSTALLER_SIZE = $POS18InstObj.Size
       $Script:INSTALLER_BYTES = $POS18InstObj.XByte
 
-      if ($Script:SECOND_STORE) { 
+      if ($Script:CUSTOM_LICENSING) {
+        return
+      } elseif ($Script:SECOND_STORE) {
         Set-License (Write-License -LNumber $POS18InstObj.LNum2 -PNumber $POS18InstObj.PNum)
-      } else { 
+      } else {
         Set-License (Write-License -LNumber $POS18InstObj.LNum1 -PNumber $POS18InstObj.PNum)
       }
     } 
 
-    $POS12InstObj.Hash { 
+    $POS12InstObj.Hash {
       Set-Version $POS12InstObj.VerNum
       $Script:INSTALLER_SIZE = $POS12InstObj.Size
       $Script:INSTALLER_BYTES = $POS12InstObj.XByte
 
-      if ($Script:SECOND_STORE) { 
+      if ($Script:CUSTOM_LICENSING) {
+        return
+      } elseif ($Script:SECOND_STORE) {
         Set-License (Write-License -LNumber $POS12InstObj.LNum2 -PNumber $POS12InstObj.PNum)
-      } else { 
+      } else {
         Set-License (Write-License -LNumber $POS12InstObj.LNum1 -PNumber $POS12InstObj.PNum)
       }
     } 
     
-    $POS11InstObj.Hash { 
+    $POS11InstObj.Hash {
       Set-Version $POS11InstObj.VerNum
       $Script:INSTALLER_SIZE = $POS11InstObj.Size
       $Script:INSTALLER_BYTES = $POS11InstObj.XByte
 
-      if ($Script:SECOND_STORE) { 
+      if ($Script:CUSTOM_LICENSING) {
+        return
+      } elseif ($Script:SECOND_STORE) {
         Set-License (Write-License -LNumber $POS11InstObj.LNum2 -PNumber $POS11InstObj.PNum)
-      } else { 
+      } else {
         Set-License (Write-License -LNumber $POS11InstObj.LNum1 -PNumber $POS11InstObj.PNum)
       }
     } 
-  }
-
-  if ($Script:USER_HAS_OWN_LICENSE) { 
-    Install-IntuitLicense (Get-Version) $custom_user_license 
-  } else { 
-    Install-IntuitLicense (Get-Version) (Get-License) 
   }
 }

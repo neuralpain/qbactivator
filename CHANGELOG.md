@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.21.0
+## v0.21.1
+- Fix licensing issues for POS v19 ([#30](https://github.com/neuralpain/qbactivator/issues/30)) and custom licenses ([#31](https://github.com/neuralpain/qbactivator/issues/31))
+- Code refactoring
+
+#### v0.21.0
 - Add progress bar for Point of Sale installer while downloading ✨
 - Add option to install custom licenses from the user
 - Add preventative measure for users who manually run qbactivator as administrator

@@ -1,43 +1,34 @@
-function Compare-Hash {
+function Compare-IsValidHash {
   param ($Hash, $File)
-
-  $_hash = ((
-    Get-FileHash $File -Algorithm MD5 | `
-    Select-Object Hash) -split " "
-  ).Trim("@{Hash=}")
-  
-  if ($_hash -ne $Hash) { return $ERR }
-  else { return $OK }
+  $_hash = ((Get-FileHash $File -Algorithm MD5 | 
+      Select-Object Hash) -split " ").Trim("@{Hash=}")
+  if ($_hash -ne $Hash) { return $false }
+  else { return $true }
 }
 
 function Select-QuickBooksVersion {
-  $Version = $null
-
-  while ($null -eq $Version) {
+  while ($null -eq $Script:QB_VERSION) {
     Write-VersionSelectionMenu
-    $Version = Read-Host "`nVersion"
+    $version = Read-Host "`nVersion"
 
-    switch ($Version) {
+    switch ($version) {
+      "" { break }
       0 { 
         Write-Action_OperationCancelled
         Set-Version $CANCEL
         return 
       }
-      "" { break }
       default {
-        if ($qbVersionList -notcontains $Version) {
-          Write-Host "Invalid option `"${Version}`"" -ForegroundColor Red
+        if ($qbVersionList -notcontains $version) {
+          Write-Host "Invalid option `"${version}`"" -ForegroundColor Red
           Start-Sleep -Milliseconds $TIME_BLINK
           break
-        }
-        else {
-          Set-Version $Version 
-          return
+        } else { 
+          Set-Version $version
+          return 
         }
       }
     }
-
-    $Version = $null
   }
 }
 
@@ -76,16 +67,17 @@ function Invoke-QuickBooksInstaller {
       Write-Host -NoNewLine "Verifying `"$exe`"... "
 
       foreach ($hash in $qbHashList) {
-        $result = (Compare-Hash -Hash $hash -File .\$exe)
-        if ($result -eq $OK) {
+        $isValid = (Compare-IsValidHash -Hash $hash -File .\$exe)
+        if ($isValid) {
           Write-Host "OK"
           Get-IntuitLicense -Hash $hash
+          Install-IntuitLicense
           break 
         }
       }
       
       # throw error if hashes do not match at any in the list
-      if ($result -eq $ERR) {
+      if (-not($isValid)) {
         Clear-Host
         Write-Host "`nFailed to verify the installer." -ForegroundColor White -BackgroundColor DarkRed
         Write-Host "`nThe installer `"$exe`" may be corrupted." -ForegroundColor Yellow
@@ -96,6 +88,7 @@ function Invoke-QuickBooksInstaller {
           "y" { 
             Write-Host
             Get-IntuitLicense
+            Install-IntuitLicense
             Start-Installer .\$exe >$null 2>&1
             Invoke-Activation
           }
@@ -121,8 +114,7 @@ function Invoke-QuickBooksInstaller {
 
   Write-Host "A QuickBooks POS installer was not found." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_SLOW
-  
-  Write-MainMenu_NoInstaller
+  Write-SubMenu_NoInstallerFound
 }
 
 function Start-Installer {
@@ -199,7 +191,7 @@ function Invoke-Activation {
   else { exit $OK }
 }
 
-# ---------------------------------- start powershell execution ---------------------------------- #
+# -------- start PowerShell execution -------- #
 
 if ("C:\Windows\system32" -eq $pwd) {
   Write-Error_IsManualAdministrator

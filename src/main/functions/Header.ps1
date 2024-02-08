@@ -1,5 +1,5 @@
 <#
-  Activation Module, Version 8.5
+  Activation Module, Version 8.6
   Copyright (c) 2023, neuralpain
   Module for activation of QuickBooks Point of Sale
 #>
@@ -97,13 +97,14 @@ $qbPathList = $POS19InstObj.Path, $POS18InstObj.Path, $POS12InstObj.Path, $POS11
 # script variables
 $Script:LICENSE_KEY = ""
 $Script:INSTALLER_SIZE = 0
-[int]$Script:QB_VERSION = $null
+$Script:QB_VERSION = $null
+$Script:SELECTED_QB_VERSION = $null
 [int]$Script:RAW_DOWNLOAD_TIME = 0
 [int]$Script:INSTALLER_BYTES = 0
 [int]$Script:INSTALLER_BITS = 0
 [int]$Script:BANDWIDTH_BITS = 0
 [bool]$Script:SECOND_STORE = $false
-[bool]$Script:USER_HAS_OWN_LICENSE = $false
+[bool]$Script:CUSTOM_LICENSING = $false
 [bool]$Script:BANDWIDTH_UNKNOWN = $false
 [double]$Script:BANDWIDTH = 0
 

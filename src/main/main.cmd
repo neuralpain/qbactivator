@@ -1,14 +1,7 @@
-@title QuickBooks POS Activator %uivr%
+@title "QuickBooks POS Activator v%uivr%"
 @mode 60,18
-
 set "wdir=%~dp0"
 set "pwsh=PowerShell -NoP -C"
-
-:: PowerShell config
-:# Disabling argument expansion avoids issues with ! in arguments.
-setlocal EnableExtensions DisableDelayedExpansion
-
-:# Prepare the batch arguments, so that PowerShell parses them correctly
 set ARGS=%*
 if defined ARGS set ARGS=%ARGS:"=\"%
 if defined ARGS set ARGS=%ARGS:'=''%
@@ -21,7 +14,7 @@ if %ERRORLEVEL% NEQ 0 (
   echo qbactivator requires administrative priviledges.
   echo Attempting to elevate...
   goto UAC_Prompt
-) else ( goto :init )
+) else goto :init
 
 :UAC_Prompt
 set n=%0 %*
@@ -35,25 +28,23 @@ goto :eof
 :init
 cls & echo.
 echo Initializing. Please wait...
-
 %pwsh% ^"Invoke-Expression ('^& {' + (Get-Content -Raw '%~f0') + '} %ARGS%')"
 
-if %ERRORLEVEL% EQU 3 (
+if %ERRORLEVEL% EQU 0 (
+  echo Starting services...
+  net start "Intuit Entitlement Service v8" >nul 2>&1
+  goto :pos_activation
+) else if %ERRORLEVEL% EQU 3 (
   echo. & pause
   goto exitQBA
 ) else if %ERRORLEVEL% EQU 5 (
   echo Starting services...
   net start "Intuit Entitlement Service v8" >nul 2>&1
   goto :standard_activation
-) else if %ERRORLEVEL% EQU 0 (
-  echo Starting services...
-  net start "Intuit Entitlement Service v8" >nul 2>&1
-  goto :pos_activation
-) else ( goto exitQBA ) 
+) else goto exitQBA
 
 :pos_activation
 net start "QBPOSDBServiceV11" >nul 2>&1
-
 set "QBPOSDIR11=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 11.0\QBPOSShell.exe"
 set "QBPOSDIR12=C:\Program Files (x86)\Intuit\QuickBooks Point of Sale 12.0\QBPOSShell.exe"
 set "QBPOSDIR18=C:\Program Files (x86)\Intuit\QuickBooks Desktop Point of Sale 18.0\QBPOSShell.exe"
@@ -62,15 +53,10 @@ set "CLIENT_MODULE=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.E
 
 :: start quickbooks
 echo Starting QuickBooks...
-if exist "%QBPOSDIR19%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%'"
-) else if exist "%QBPOSDIR18%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%'"
-) else if exist "%QBPOSDIR12%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%'"
-) else if exist "%QBPOSDIR11%" (
-  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%'"
-)
+if exist "%QBPOSDIR19%" ( %pwsh% "Start-Process -FilePath '%QBPOSDIR19%'") 
+else if exist "%QBPOSDIR18%" ( %pwsh% "Start-Process -FilePath '%QBPOSDIR18%'") 
+else if exist "%QBPOSDIR12%" ( %pwsh% "Start-Process -FilePath '%QBPOSDIR12%'") 
+else if exist "%QBPOSDIR11%" ( %pwsh% "Start-Process -FilePath '%QBPOSDIR11%'")
 
 :: export and open minified readme
 pushd "%wdir%"
