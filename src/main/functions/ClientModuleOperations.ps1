@@ -45,7 +45,7 @@ function Install-ClientModule {
   Rename-Item $CLIENT_MODULE "${CLIENT_MODULE}.bak" >$null 2>&1
 
   if (Test-Path "$PATCH_FILE" -PathType Leaf) {
-    $result = Compare-Hash -Hash $PATCH_HASH -File $PATCH_FILE
+    $result = Compare-IsValidHash -Hash $PATCH_HASH -File $PATCH_FILE
     if ($result -ne $ERR) { Copy-Item $PATCH_FILE $CLIENT_MODULE } 
     else { 
       Write-Host "`nPatch file may be corrupted."
@@ -87,7 +87,7 @@ function Remove-ClientDataModulePatch {
     Start-Sleep -Milliseconds $TIME_NORMAL
   }
   
-  Write-MainMenu_NoInstaller
+  Write-SubMenu_NoInstallerFound
 }
 
 <# 

@@ -5,7 +5,7 @@ function Get-QuickBooksInstaller {
   )
 
   if ($Version -eq $CANCEL) { 
-    Write-MainMenu_NoInstaller 
+    Write-SubMenu_NoInstallerFound
   } else {
     switch ($Version) {
       $POS19InstObj.VerNum {
@@ -13,24 +13,28 @@ function Get-QuickBooksInstaller {
         $Script:INSTALLER_SIZE = $POS19InstObj.Size
         $Script:INSTALLER_BYTES = $POS19InstObj.XByte
         $Script:INSTALLER_BITS = $POS19InstObj.XBits
+        $Script:SELECTED_QB_VERSION = $POS19InstObj
       }
       $POS18InstObj.VerNum {
         $ReleaseYear = $POS18InstObj.Year
         $Script:INSTALLER_SIZE = $POS18InstObj.Size
         $Script:INSTALLER_BYTES = $POS18InstObj.XByte
         $Script:INSTALLER_BITS = $POS18InstObj.XBits
+        $Script:SELECTED_QB_VERSION = $POS18InstObj
       }
       $POS12InstObj.VerNum {
         $ReleaseYear = $POS12InstObj.Year
         $Script:INSTALLER_SIZE = $POS12InstObj.Size
         $Script:INSTALLER_BYTES = $POS12InstObj.XByte
         $Script:INSTALLER_BITS = $POS12InstObj.XBits
+        $Script:SELECTED_QB_VERSION = $POS12InstObj
       }
       $POS11InstObj.VerNum {
         $ReleaseYear = $POS11InstObj.Year
         $Script:INSTALLER_SIZE = $POS11InstObj.Size
         $Script:INSTALLER_BYTES = $POS11InstObj.XByte
         $Script:INSTALLER_BITS = $POS11InstObj.XBits
+        $Script:SELECTED_QB_VERSION = $POS11InstObj
       }
     }
   }
@@ -83,20 +87,6 @@ function Get-QuickBooksInstaller {
   }
 }
 
-function Compare-BandwidthSpeedToTime {
-  param($Version, $Bandwidth)
-  if ($Version -gt 12 -and $Bandwidth -le 2) {
-    Write-Host "Download may take more than 5 minutes to complete`nover your current network." -ForegroundColor Yellow
-    $query = Read-Host "Are you ready to start the download? (Y/n)"
-    
-    if ($query -eq "n") {
-      Write-Action_OperationCancelled
-      Select-QuickBooksVersion
-      Get-QuickBooksInstaller -Version (Get-Version)
-    }
-  }
-}
-
 function Start-InstallerDownload {
   param($Version, $Year)
   Clear-Host
@@ -117,8 +107,11 @@ function Start-InstallerDownload {
 
   $installer_download_job = Start-Job -ScriptBlock {
     param($url, $installer_download_path)
-    Invoke-WebRequest -Uri $url -OutFile $installer_download_path
-    # Start-BitsTransfer $url $installer_download_path
+    try {
+      Invoke-WebRequest -Uri $url -OutFile $installer_download_path
+      # Start-BitsTransfer $url $installer_download_path
+    }
+    finally { Compare-InstallerDownloadSize }
   } -ArgumentList $installer_download_url, $installer_download_path
   
   if (-not($Script:BANDWIDTH_UNKNOWN)) {
@@ -144,7 +137,6 @@ function Start-Progress {
   $sleep = 1000 / [math]::Pow(2, $smoothing) # ~62.5ms -> 75ms
   # Write-Host "$sleep (milliseconds)"                       # Debug
   $download_duration = $Script:RAW_DOWNLOAD_TIME * [math]::Pow(2, $smoothing) # x16+n
-
   # Write-Host "$download_duration (steps)"                  # Debug
 
   for ($i = 0; $i -le $download_duration; $i++) {
@@ -158,6 +150,28 @@ function Start-Progress {
       'Failed' { Write-Host ":: Download encountered an error." -ForegroundColor DarkYellow; Pause }
       'Stopped' { Write-Host ":: Download was manually stopped." -ForegroundColor DarkYellow; Pause }
       default { Write-Host ":: Unknown job state: $($DownloadJob.State)" -ForegroundColor DarkYellow; Pause }
+    }
+  }
+}
+
+function Compare-InstallerDownloadSize {  
+  # clean up uncompleted donwnload
+  if (-not(Compare-IsValidHash -File $Script:SELECTED_QB_VERSION.Name -Hash $Script:SELECTED_QB_VERSION.Hash)) {
+    Remove-Item $Script:SELECTED_QB_VERSION.Name
+    # Write-Host $Script:SELECTED_QB_VERSION.Name            # Debug
+  }
+}
+
+function Compare-BandwidthSpeedToTime {
+  param($Version, $Bandwidth)
+  if ($Version -gt 12 -and $Bandwidth -le 2) {
+    Write-Host "Download may take more than 5 minutes to complete`nover your current network." -ForegroundColor Yellow
+    $query = Read-Host "Are you ready to start the download? (Y/n)"
+    
+    if ($query -eq "n") {
+      Write-Action_OperationCancelled
+      Select-QuickBooksVersion
+      Get-QuickBooksInstaller -Version (Get-Version)
     }
   }
 }

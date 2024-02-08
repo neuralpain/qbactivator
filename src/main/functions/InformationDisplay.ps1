@@ -91,7 +91,7 @@ function Write-LieResponse {
   }
 }
 
-function Write-MainMenu_NoInstaller {
+function Write-SubMenu_NoInstallerFound {
   Write-HeaderLabel
   Write-Host "Select next operation"
   Write-Host "---------------------"
@@ -112,7 +112,7 @@ function Write-MainMenu_NoInstaller {
     }
     3 { break }
     4 { Remove-ClientDataModulePatch; break }
-    default { Write-MainMenu_NoInstaller }
+    default { Write-SubMenu_NoInstallerFound }
   }   
   
   Invoke-QuickBooksInstaller
