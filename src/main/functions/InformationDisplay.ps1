@@ -33,6 +33,7 @@ function Write-MainMenu {
   Write-Host "3 - I have my own license :p"
   Write-Host "4 - General QuickBooks activation"
   # Write-Host "    ^^^^ Pro/Enterprise/Other ^^^"
+  Write-Host "5 - Terminate QuickBooks Processes"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
@@ -44,12 +45,22 @@ function Write-MainMenu {
       Invoke-QuickBooksInstaller
     }
     3 { 
-      Clear-Host; Write-Host; 
       Write-LieResponse
       Invoke-QuickBooksInstaller
     }
-    4 { Write-Action_OptionUnavailable; Write-MainMenu }
-    # 4 { Clear-Host; Write-Host; Invoke-Activation -GeneralActivation }
+    4 { 
+      Write-Action_OptionUnavailable
+      Write-MainMenu 
+    }
+    40 { 
+      Clear-Host; Write-Host
+      Invoke-Activation -GeneralActivation 
+    }
+    5 { 
+      Clear-Host; Write-Host
+      Stop-QuickBooksProcesses
+      Write-MainMenu 
+    }
     default { Write-MainMenu }
   }
 }

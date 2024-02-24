@@ -8,7 +8,7 @@
 Activation script for QuickBooks Point of Sale Software on Windows. — [Download Now!][download]
 
 > [!CAUTION]  
-> **DO NOT** clone or download this repository in an attempt to run `qbactivator` (Ref: [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way.
+> **Do not** clone or download this repository in an attempt to run `qbactivator` (Ref: [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way.
 > If you want to run the script, please [read the Wiki][getstarted] to get started using `qbactivator` or proceed to [download the latest release package][release].
 
 ### Features
@@ -93,7 +93,7 @@ Licensed under [BSD 2-Clause](LICENSE).
 [getstarted]: https://github.com/neuralpain/qbactivator/wiki#getting-started
 [update]: https://github.com/neuralpain/qbactivator/wiki#downloads--updates
 [instructions]: https://github.com/neuralpain/qbactivator/wiki/How-to-Use
-[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.21.1/qbactivator-0.21.1.min.zip
+[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.21.2/qbactivator-0.21.2.min.zip
 [release]: https://github.com/neuralpain/qbactivator/releases/latest
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell

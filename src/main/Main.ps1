@@ -67,10 +67,10 @@ function Invoke-QuickBooksInstaller {
       Write-Host -NoNewLine "Verifying `"$exe`"... "
 
       foreach ($hash in $qbHashList) {
-        $isValid = (Compare-IsValidHash -Hash $hash -File .\$exe)
+        $isValid = (Compare-IsValidHash $hash .\$exe)
         if ($isValid) {
           Write-Host "OK"
-          Get-IntuitLicense -Hash $hash
+          Get-IntuitLicense $hash
           Install-IntuitLicense
           break 
         }

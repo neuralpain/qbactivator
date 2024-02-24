@@ -1,7 +1,7 @@
 # testing
 *.exe
 *.zip
-log.txt
+˜log.txt
 
 # build files
 build/
@@ -13,6 +13,7 @@ intuit
 QuickBooks Tool Hub
 
 # misc
+.DS_Store
 .history/
 target/
-.DS_Store
+earlier_releases/

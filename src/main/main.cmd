@@ -1,4 +1,4 @@
-@title "QuickBooks POS Activator v%uivr%"
+@title QuickBooks POS Activator v%uivr%
 @mode 60,18
 set "wdir=%~dp0"
 set "pwsh=PowerShell -NoP -C"
@@ -53,10 +53,15 @@ set "CLIENT_MODULE=%SystemRoot%\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.E
 
 :: start quickbooks
 echo Starting QuickBooks...
-if exist "%QBPOSDIR19%" ( %pwsh% "Start-Process -FilePath '%QBPOSDIR19%'") 
-else if exist "%QBPOSDIR18%" ( %pwsh% "Start-Process -FilePath '%QBPOSDIR18%'") 
-else if exist "%QBPOSDIR12%" ( %pwsh% "Start-Process -FilePath '%QBPOSDIR12%'") 
-else if exist "%QBPOSDIR11%" ( %pwsh% "Start-Process -FilePath '%QBPOSDIR11%'")
+if exist "%QBPOSDIR19%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR19%'"
+) else if exist "%QBPOSDIR18%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR18%'"
+) else if exist "%QBPOSDIR12%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR12%'"
+) else if exist "%QBPOSDIR11%" (
+  %pwsh% "Start-Process -FilePath '%QBPOSDIR11%'"
+)
 
 :: export and open minified readme
 pushd "%wdir%"
