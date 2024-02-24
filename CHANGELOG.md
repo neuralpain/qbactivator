@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.21.1
+## v0.21.2
+- Fix validation bug on local patch files
+- Fix bug preventing launch of QuickBooks POS application after installation
+- Minor bug fixes
+
+#### v0.21.1
 - Fix licensing issues for POS v19 ([#30](https://github.com/neuralpain/qbactivator/issues/30)) and custom licenses ([#31](https://github.com/neuralpain/qbactivator/issues/31))
 - Code refactoring
 
