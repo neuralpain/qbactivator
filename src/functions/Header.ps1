@@ -105,6 +105,7 @@ $Script:SELECTED_QB_VERSION = $null
 [int]$Script:BANDWIDTH_BITS = 0
 [bool]$Script:SECOND_STORE = $false
 [bool]$Script:CUSTOM_LICENSING = $false
+# [bool]$Script:DOWNLOAD_PATCH = $false
 [bool]$Script:BANDWIDTH_UNKNOWN = $false
 [double]$Script:BANDWIDTH = 0
 

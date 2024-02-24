@@ -2,7 +2,7 @@
           █▀█ █▄▄ ▄▀█ █▀▀ ▀█▀ █ █░█ ▄▀█ ▀█▀ █▀█ █▀█
           ▀▀█ █▄█ █▀█ █▄▄ ░█░ █ ▀▄▀ █▀█ ░█░ █▄█ █▀▄
 
-                   Simplified README v2.7         
+                   Simplified README v2.7
 
 Activation script for QuickBooks Point Of Sale Software on Windows.
 
