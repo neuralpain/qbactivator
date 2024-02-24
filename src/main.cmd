@@ -1,35 +1,3 @@
-@title QuickBooks POS Activator v%uivr%
-@mode 60,18
-set "wdir=%~dp0"
-set "pwsh=PowerShell -NoP -C"
-set ARGS=%*
-if defined ARGS set ARGS=%ARGS:"=\"%
-if defined ARGS set ARGS=%ARGS:'=''%
-
-:: check admin permissions
-fsutil dirty query %systemdrive% >nul
-:: if error, we do not have admin
-cls & echo.
-if %ERRORLEVEL% NEQ 0 (
-  echo qbactivator requires administrative priviledges.
-  echo Attempting to elevate...
-  goto UAC_Prompt
-) else goto :init
-
-:UAC_Prompt
-set n=%0 %*
-set n=%n:"=" ^& Chr(34) ^& "%
-echo Set objShell = CreateObject("Shell.Application")>"%tmp%\cmdUAC.vbs"
-echo objShell.ShellExecute "cmd.exe", "/c start " ^& Chr(34) ^& "." ^& Chr(34) ^& " /d " ^& Chr(34) ^& "%CD%" ^& Chr(34) ^& " cmd /c %n%", "", "runas", ^1>>"%tmp%\cmdUAC.vbs"
-cscript "%tmp%\cmdUAC.vbs" //Nologo
-del "%tmp%\cmdUAC.vbs"
-goto :eof
-
-:init
-cls & echo.
-echo Initializing. Please wait...
-%pwsh% ^"Invoke-Expression ('^& {' + (Get-Content -Raw '%~f0') + '} %ARGS%')"
-
 if %ERRORLEVEL% EQU 0 (
   echo Starting services...
   net start "Intuit Entitlement Service v8" >nul 2>&1
