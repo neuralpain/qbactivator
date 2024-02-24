@@ -96,11 +96,11 @@ function Start-InstallerDownload {
     $estimated_download_time = Get-TimeToComplete $Script:INSTALLER_BITS $Script:BANDWIDTH_BITS
     Write-Host "`nDST: $Target`nETC: $estimated_download_time @ $($Script:BANDWIDTH) Mbps" -ForegroundColor White
   } else {
-    Write-Host "`nDST: $Target`nETC: UNKNOWN @ >0.01 Mbps" -ForegroundColor White
+    Write-Host "`nDST: $Target`nETC: UNKNOWN_DURATION @ >0.01 Mbps" -ForegroundColor White
   }
   
   Write-Host "`nEstimated time is calculated from the point that your`ninternet speed was tested. This is just an estimation and`nmay not reflect the actual time that it would take for the`ndownload to complete on your system. This is subject to`nchange as your internet speed fluctuates."
-  Write-Host "`nPlease wait while the installer is being downloaded.`nThe installer will be satrted automatically after the`ndownload is complete.`n" -ForegroundColor Yellow
+  Write-Host "`nPlease wait while the installer is being downloaded.`nThe installer will be started automatically after the`ndownload is complete.`n" -ForegroundColor Yellow
   
   $installer_download_path = "$Target\QuickBooksPOSV${Version}.exe"
   $installer_download_url = "https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/${Year}/Latest/QuickBooksPOSV${Version}.exe"
