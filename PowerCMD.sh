@@ -58,12 +58,12 @@ remove_files=(
 )
 # declare a list of your PowerShell functions here
 powershell_functions=(
-  "$functions/Header.ps1"
-  "$functions/InformationDisplay.ps1"
-  "$functions/SpeedTestModule.ps1"
-  "$functions/Licensing.ps1"
-  "$functions/Downloader.ps1"
-  "$functions/ClientModuleOperations.ps1"
+  "$functions/Initialize-ObjectsAndVariables.ps1"
+  "$functions/Write-InformationToDisplay.ps1"
+  "$functions/Measure-UserBandwidth.ps1"
+  "$functions/Add-PosLicense.ps1"
+  "$functions/Get-QuickBooksInstaller.ps1"
+  "$functions/Add-ClientPatchModule.ps1"
   "$src/Main.ps1"
 )
 
