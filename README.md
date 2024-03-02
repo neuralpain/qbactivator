@@ -8,8 +8,7 @@
 Activation script for QuickBooks Point of Sale Software on Windows. — [Download Now!][download]
 
 > [!CAUTION]  
-> **Do not** clone or download this repository in an attempt to run `qbactivator` (Ref: [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way.
-> If you want to run the script, please [read the Wiki][getstarted] to get started using `qbactivator` or proceed to [download the latest release package][release].
+> **Do not** clone or download this *repository* in an attempt to run `qbactivator` (ref. [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way. If you want to run the script, [download the latest release][release] package and [read the Wiki][getstarted] to get started using `qbactivator`.
 
 ### Features
 
@@ -36,8 +35,8 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 - An internet connection is **required** for activation and adding users. It needs that one free phone call to let Intuit know that it's safe.
 - Manually running the QuickBooks POS installer or entering any keys into the installer **is not required** as the script will handle these tasks. You only need to click on the "Next" and "Finish" buttons.
-- Remember that you **should not** launch QuickBooks Point of Sale after installation. Ensure that you uncheck the "Launch QuickBooks" option before clicking on "Finish" and proceeding with the activation process. If QuickBooks is launched, the activator will close it automatically.
-- It is recommended to **avoid** installing updates through the application due to some of the features being blocked ([ref #27](https://github.com/neuralpain/qbactivator/issues/27#issuecomment-1913171241)), though they are available here if you want to [download them yourself](https://github.com/neuralpain/qbactivator/wiki#optional-updates-for-quickbooks-pos-software-from-intuit).
+- Remember that you **should not** launch QuickBooks Point of Sale after installation. Ensure that you uncheck the "Launch QuickBooks" option before clicking on "Finish" and proceeding with the activation process. If QuickBooks is launched, however, the activator should close it automatically.
+- It is recommended to **avoid** installing updates through the application due to some of the features being blocked (ref. [#27][issue_27]), though they are available here if you want to [download them yourself](https://github.com/neuralpain/qbactivator/wiki#optional-updates-for-quickbooks-pos-software-from-intuit).
 - All versions of QuickBooks Desktop Point of Sale, including v12, v18, and v19, are licensed as `Pro Multistore Level`. The only exception is POS v11, which is licensed as `Pro Level`.
 - [View the instructions][instructions] to run `qbactivator` and activate QuickBooks
 - [Read the FAQs](#faqs) for further information and guidance for any concerns you may have.
@@ -69,7 +68,7 @@ You don't have to, but it's the only activator that fully supports [all versions
 
 ### Where are the license keys?
 
-License keys are not provided to the user beforehand. `qbactivator` will automatically install the appropriate license keys for the version of QuickBooks Point of Sale being installed on the system. This is to ensure stability during activation and avoid any potential issues that may arise from using invalid or incorrect license keys.
+License keys are not provided to the user beforehand. `qbactivator` will automatically install the appropriate license keys for the version of QuickBooks Point of Sale being installed on the system. This is to ensure stability during activation and avoid any potential issues that may arise from using invalid or incorrect license keys. However, if you have your own license keys, you are able to use them with `qbactivator` through the "I have my own license" menu option.
 
 License keys are reviewed regularly to keep `qbactivator` functioning as intended.
 
@@ -98,8 +97,8 @@ Licensed under [BSD 2-Clause](LICENSE).
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell
 [wikiwmf4]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell#3-windows-management-framework-40
-
 <!-- Issues -->
-[issue_12]: https://github.com/neuralpain/qbactivator/issues/12#issuecomment-1478727716
 [issue_10]: https://github.com/neuralpain/qbactivator/issues/10#issuecomment-1416758671
+[issue_12]: https://github.com/neuralpain/qbactivator/issues/12#issuecomment-1478727716
+[issue_27]: https://github.com/neuralpain/qbactivator/issues/27#issuecomment-1913171241
 <!-- End Links -->
