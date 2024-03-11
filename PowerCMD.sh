@@ -133,6 +133,10 @@ bundle() {
   # -- add batch code | this is optional -- #
   cat $src/main.cmd >> $cmd_cache
   echo >> $cmd_cache
+  echo ":qbreadme:" >> $cmd_cache
+  cat $res/doc/instructions.txt >> $cmd_cache
+  echo ":qbreadme:" >> $cmd_cache
+  echo >> $cmd_cache
   # -- end batch code -- #
   echo "# ---------- PowerShell Script ---------- #>" >> $cmd_cache
 
