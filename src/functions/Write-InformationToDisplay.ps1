@@ -31,9 +31,7 @@ function Write-MainMenu {
   Write-Host "1 - POS Store 1 (Server/Client)"
   Write-Host "2 - POS Store 2 (Server/Client)"
   Write-Host "3 - I have my own license :p"
-  Write-Host "4 - General QuickBooks activation"
-  # Write-Host "    ^^^^ Pro/Enterprise/Other ^^^"
-  Write-Host "5 - Terminate QuickBooks Processes"
+  Write-Host "4 - Troubleshooting"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
@@ -48,20 +46,56 @@ function Write-MainMenu {
       Write-LieResponse
       Invoke-QuickBooksInstaller
     }
-    4 { 
-      Write-Action_OptionUnavailable
-      Write-MainMenu 
+    4 { Write-TroubleshootingMenu }
+    default { Write-MainMenu }
+  }
+}
+
+function Write-TroubleshootingMenu {
+  Write-HeaderLabel
+  Write-Host "Select troubleshooting option"
+  Write-Host "-----------------------------"
+  Write-Host "1 - General QuickBooks activation"
+  Write-Host "2 - Lv0 Terminate QuickBooks Processes"
+  Write-Host "3 - Lv1 Client module: Restore"
+  Write-Host "4 - Lv2 Client module: Repair"
+  Write-Host "5 - Lv3 Client module: Re-activation"
+  Write-Host "6 - Lv4 Re-install QuickBooks" 
+  Write-Host "0 - Back"
+  $query = Read-Host "`n#"
+  switch ($query) {
+    1 {
+      Write-Action_OptionUnavailable 
+      Write-TroubleshootingMenu
     }
-    40 { 
+    10 {
       Clear-Host; Write-Host
-      Invoke-Activation -GeneralActivation 
+      Invoke-Activation -GeneralActivation
     }
-    5 { 
+    2 { 
       Clear-Host; Write-Host
       Stop-QuickBooksProcesses
-      Write-MainMenu 
+      Write-TroubleshootingMenu
     }
-    default { Write-MainMenu }
+    3 {
+      Repair-ClientDataModulePatch
+      Write-TroubleshootingMenu
+    }
+    4 {
+      Repair-GenuineClientModule -SanityCheck
+      Write-TroubleshootingMenu 
+    }
+    5 {
+      Clear-ClientActivationFolder
+      Write-Host "Starting reactivation process..."
+      Invoke-Activation -ActivationOnly
+    }
+    6 { 
+      Write-Error_UninstallUnsupported
+      Write-TroubleshootingMenu
+    }
+    0 { Write-MainMenu }
+    default { Write-TroubleshootingMenu }
   }
 }
 
@@ -109,7 +143,6 @@ function Write-SubMenu_NoInstallerFound {
   Write-Host "1 - Request software activation"
   Write-Host "2 - Download and install QuickBooks POS"
   Write-Host "3 - Locate installer"
-  Write-Host "4 - Restore entitlement data"
   Write-Host "0 - Cancel"
   $query = Read-Host "`n#"
   
@@ -122,7 +155,6 @@ function Write-SubMenu_NoInstallerFound {
       break 
     }
     3 { break }
-    4 { Remove-ClientDataModulePatch; break }
     default { Write-SubMenu_NoInstallerFound }
   }   
   
@@ -163,6 +195,13 @@ function Write-Action_OptionUnavailable {
 
 # --- ERROR MSSG --- #
 
+function Write-Error_UninstallUnsupported {
+  Clear-Host
+  Write-Host "`nThis operation is currently unsupported" -ForegroundColor White -BackgroundColor DarkRed
+  Write-Host "`nUnfortunately, uninstallation of QuickBooks software`na manual process and is not currently supported by`nqbactivator. After uninstalling the software, you`ncan use qbactivator to install and activate again." -ForegroundColor White
+  Write-InfoLink -NoExit
+  Write-Host; Pause
+}
 function Write-Error_IsManualAdministrator {
   Clear-Host
   Write-Host "`nUser started as Administrator" -ForegroundColor White -BackgroundColor DarkRed
