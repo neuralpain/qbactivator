@@ -130,7 +130,7 @@ bundle() {
   echo "@title $script_title v$version" >> $cmd_cache
   add_pwsh
   echo >> $cmd_cache
-  # -- add batch code | this is optional -- #
+  # -- add batch code -- #
   cat $src/main.cmd >> $cmd_cache
   echo >> $cmd_cache
   echo ":qbreadme:" >> $cmd_cache
