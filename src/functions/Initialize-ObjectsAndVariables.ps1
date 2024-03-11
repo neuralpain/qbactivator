@@ -1,5 +1,5 @@
 <#
-  Activation Module, Version 8.6
+  qbactivator Activation Module
   Copyright (c) 2023, neuralpain
   Module for activation of QuickBooks Point of Sale
 #>
@@ -118,11 +118,10 @@ function Set-License($l) { $Script:LICENSE_KEY = $l }
 function Get-Version { return $Script:QB_VERSION }
 function Get-License { return $Script:LICENSE_KEY }
 
+# log file
+$LOG = "C:\Windows\Logs\qbactivator\QuickBooksActivation_Log_$(Get-Date -Format "yyyyMMdd_HHmmss").txt"
 # add temp folder for qbactivator
 $qbactivator_temp = "$env:TEMP\qbactivator_temp"
-if (-not(Test-Path $qbactivator_temp)) { 
-  mkdir $qbactivator_temp >$null 2>&1 
-}
-
+if (-not(Test-Path $qbactivator_temp)) { mkdir $qbactivator_temp >$null 2>&1 }
 # temp folder for Intuit
 $intuit_temp = "$env:TEMP\Intuit"

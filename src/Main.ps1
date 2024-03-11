@@ -193,6 +193,8 @@ function Invoke-Activation {
 
 # -------- start PowerShell execution -------- #
 
+Start-Transcript $LOG
+
 if ("C:\Windows\system32" -eq $pwd) {
   Write-Error_IsManualAdministrator
 } else {
