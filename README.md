@@ -8,7 +8,7 @@
 Activation script for QuickBooks Point of Sale Software on Windows. — [Download Now!][download_min]
 
 > [!CAUTION]  
-> **Do not** clone or download this *repository* in an attempt to run `qbactivator` (ref. [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way. If you want to run the script, [download the latest release][release] package and [read the Wiki][getstarted] to get started using `qbactivator`.
+> **Do not** clone or download *this* repository in an attempt to run `qbactivator` (ref. [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way. If you want to run the script, [download the latest release][release] package and [read the Wiki][getstarted] to get started using `qbactivator`.
 
 ### Features
 
@@ -56,7 +56,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 ### Release Breakdown
 
-Each qbactivator release comes with 3 packages:
+Each release of qbactivator comes with 3 packages:
 
 - [`qbactivator-[version].zip`][download] – a regular release which contains all the files necessary to install and activate the QuickBooks POS software **offline**. Also contains the LICENSE and README.
 - [`qbactivator-[version].min.zip`][download_min] – a lightweight release ZIP package (take note of the `.min` in the name) which does not contain any of the larger files which can be downloaded online, e.g. the patch file. Contains the LICENSE and README.
