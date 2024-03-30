@@ -44,26 +44,41 @@ pwsh_cache=./cache/pwsh.build.ps1
 # [ FILES LIST ]
 # add additional files here
 additional_files=(
-  "$bin/ecc/EntClient.dll"
   "$res/doc/instructions.txt"
+  "$bin/ecc/EntClient.dll"
+  "$bin/ecc/EntClientGenuine.dll"
 )
 # files to exclude in *.min.zip
 exclude_files=(
   "EntClient.dll"
+  "EntClientGenuine.dll"
 )
 # files to exclude in *.min.zip
 remove_files=(
   "instructions.txt"
   "EntClient.dll"
+  "EntClientGenuine.dll"
 )
 # declare a list of your PowerShell functions here
 powershell_functions=(
   "$functions/Initialize-ObjectsAndVariables.ps1"
-  "$functions/Write-InformationToDisplay.ps1"
-  "$functions/Measure-UserBandwidth.ps1"
+  "$functions/BasicStuff.ps1"
+  # -- add utility scripts -- #
+  "$functions/utility/Format-Text.ps1"
+  # "$functions/utility/Compare-IsHashMatch.ps1"
+  "$functions/utility/Invoke-URLInDefaultBrowser.ps1"
+  "$functions/utility/Measure-UserBandwidth.ps1"
+  "$functions/utility/Show-WebRequestDownloadJobState.ps1"
+  # ------------------------------ #
+  # -- add setup scripts -- #
   "$functions/Add-PosLicense.ps1"
   "$functions/Get-QuickBooksInstaller.ps1"
   "$functions/Add-ClientPatchModule.ps1"
+  # ------------------------------ #
+  # -- add repair scripts -- #
+  "$functions/repair/Repair-GenuineClientModule.ps1"
+  # ------------------------------ #
+  "$functions/Write-InformationToDisplay.ps1"
   "$src/Main.ps1"
 )
 
@@ -81,7 +96,7 @@ add_pwsh() {
   echo "if defined ARGS set ARGS=%ARGS:'=''%" >> $cmd_cache
   echo >> $cmd_cache
 
-  # uses neuralpain/cmdUAC.cmd <https://gist.github.com/neuralpain/4bcc08065fe79e4597eb65ed707be90d>
+  # using neuralpain/cmdUAC.cmd <https://gist.github.com/neuralpain/4bcc08065fe79e4597eb65ed707be90d>
   if [[ $with_admin == true ]]; then
     echo ":: check admin permissions" >> $cmd_cache
     echo "fsutil dirty query %systemdrive% >nul" >> $cmd_cache
@@ -112,7 +127,7 @@ add_pwsh() {
 
 bundle() {
   [[ ! -d "./cache" ]] && mkdir cache || rm -r ./cache/*;
-  # uses neuralpain/PwshBatch.cmd <https://gist.github.com/neuralpain/4ca8a6c9aca4f0a1af2440f474e92d05>
+  # using neuralpain/PwshBatch.cmd <https://gist.github.com/neuralpain/4ca8a6c9aca4f0a1af2440f474e92d05>
   echo "<# :# DO NOT REMOVE THIS LINE" > $cmd_cache
   echo >> $cmd_cache
   echo :: █▀█ █▄▄ ▄▀█ █▀▀ ▀█▀ █ █░█ ▄▀█ ▀█▀ █▀█ █▀█ >> $cmd_cache
