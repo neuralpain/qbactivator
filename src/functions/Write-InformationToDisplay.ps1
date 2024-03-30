@@ -32,12 +32,13 @@ function Write-WaitingScreen {
 
 function Write-MainMenu {
   Write-HeaderLabel
-  Write-Host "Select QuickBooks product"
-  Write-Host "-------------------------"
-  Write-Host "1 - POS Store 1 (Server/Client)"
-  Write-Host "2 - POS Store 2 (Server/Client)"
-  Write-Host "3 - I have my own license :p"
-  Write-Host "4 - Troubleshooting"
+  Write-Host "Select activation option"
+  Write-Host "------------------------"
+  Write-Host "1 - POS Main Server/Workstation"
+  Write-Host "2 - POS Second Server/Workstation"
+  Write-Host "3 - POS Client Workstations"
+  Write-Host "4 - I have my own license :p"
+  Write-Host "5 - Troubleshooting"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
@@ -48,11 +49,15 @@ function Write-MainMenu {
       $Script:SECOND_STORE = $true
       Invoke-QuickBooksInstaller
     }
-    3 { 
+    3 {
+      $Script:ADDITIONAL_CLIENTS = $true
+      Invoke-QuickBooksInstaller
+    }
+    4 { 
       Write-LieResponse
       Invoke-QuickBooksInstaller
     }
-    4 { Write-TroubleshootingMenu }
+    5 { Write-TroubleshootingMenu }
     default { Write-MainMenu }
   }
 }
@@ -61,47 +66,72 @@ function Write-TroubleshootingMenu {
   Write-HeaderLabel
   Write-Host "Select troubleshooting option"
   Write-Host "-----------------------------"
-  Write-Host "1 - General QuickBooks activation"
-  Write-Host "2 - Lv0 Terminate QuickBooks Processes"
-  Write-Host "3 - Lv1 Client module: Restore"
-  Write-Host "4 - Lv2 Client module: Repair"
-  Write-Host "5 - Lv3 Client module: Re-activation"
-  Write-Host "6 - Lv4 Re-install QuickBooks" 
+  Write-Host "1 - View the qbactivator Wiki"
+  Write-Host "2 - Terminate QuickBooks processes"
+  Write-Host "3 - View qbactivator logs"
+  Write-Host "  --- Repair/Test ---"
+  Write-Host "4 - Lv1 Client module: Restore"
+  Write-Host "5 - Lv2 Client module: Repair"
+  Write-Host "6 - Lv3 Client module: Re-activation"
+  Write-Host "7 - Lv4 Re-install QuickBooks"
+  Write-Host "8 - QuickBooks Patch Test"
   Write-Host "0 - Back"
   $query = Read-Host "`n#"
+  Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
+  Write-Host "---"
   switch ($query) {
+    0 { Write-MainMenu; break }
     1 {
-      Write-Action_OptionUnavailable 
+      Write-Host "Opening qbactivator Wiki..."
+      Invoke-URLInDefaultBrowser -URL "https://github.com/neuralpain/qbactivator/wiki" 
       Write-TroubleshootingMenu
+      break
     }
     10 {
-      Clear-Host; Write-Host
-      Invoke-Activation -GeneralActivation
+      Clear-Terminal
+      Invoke-PosActivation -GeneralActivation
+      break
     }
     2 { 
-      Clear-Host; Write-Host
       Stop-QuickBooksProcesses
       Write-TroubleshootingMenu
+      break
     }
     3 {
-      Repair-ClientDataModulePatch
+      explorer.exe "C:\Windows\Logs\qbactivator"
       Write-TroubleshootingMenu
+      break
     }
     4 {
-      Repair-GenuineClientModule -SanityCheck
-      Write-TroubleshootingMenu 
+      Stop-QuickBooksProcesses
+      Repair-GenuineClientModule_LevelOne
+      Write-TroubleshootingMenu
+      break
     }
     5 {
+      Stop-QuickBooksProcesses
+      Repair-GenuineClientModule_LevelTwo_SanityCheck
+      Write-TroubleshootingMenu 
+      break
+    }
+    6 {
       Clear-ClientActivationFolder
       Write-Host "Starting reactivation process..."
-      Invoke-Activation -ActivationOnly
+      Invoke-PosActivation -ActivationOnly
+      break
     }
-    6 { 
+    7 { 
       Write-Error_UninstallUnsupported
       Write-TroubleshootingMenu
+      break
     }
-    0 { Write-MainMenu }
-    default { Write-TroubleshootingMenu }
+    8 {
+      Stop-QuickBooksProcesses
+      Install-ClientModulePatch
+      Write-TroubleshootingMenu
+      break
+    }
+    default { Write-TroubleshootingMenu; break }
   }
 }
 
