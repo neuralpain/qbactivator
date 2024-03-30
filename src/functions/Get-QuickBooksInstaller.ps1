@@ -1,12 +1,60 @@
+function Get-SpeedTestResults {
+  $Script:BANDWIDTH_BITS = (Measure-UserBandwidth -Type Download -Unit Bits)
+  # $Script:BANDWIDTH_BITS = 0                        # Debug
+  if ($Script:BANDWIDTH_BITS -eq 0) {
+    Write-Host "Proceeding without an estimated time..."
+    # Write-Host "[DEBUG] Proceeding without an estimated time..." # Debug
+    $Script:BANDWIDTH_UNKNOWN = $true
+    return
+  }
+  else {
+    if ($Script:BANDWIDTH -le 80000) { # 0.01 MB
+      $Script:BANDWIDTH_UNKNOWN = $true
+    } else {
+      $Script:BANDWIDTH = (Convert-UserBandwidth -InputUnit Bits -Value $Script:BANDWIDTH_BITS -OutputUnit Megabytes)
+    }
+    Write-Host " Done."
+  }
+}
+
+function Get-TimeToComplete {
+  param ([int]$DownloadSize, [int]$Bandwidth)
+    
+  [double]$time = ($DownloadSize / $Bandwidth)
+  [int]$time = [math]::Round($time)
+  
+  $Script:RAW_DOWNLOAD_TIME = $time
+  
+  if ($time -gt 60) {
+    [int]$time_m = $time / 60
+    [int]$time_s = $time % 60
+    return "${time_m}m${time_s}s"
+  }
+  
+  return "$time seconds"
+}
+
 function Get-QuickBooksInstaller {
+  <#
+  .SYNOPSIS
+  Downloads the QuickBooks POS installer from the internet.
+  
+  .DESCRIPTION
+  This function is the first function called by the Install-QuickBooksPOS function.
+  It gets the QuickBooks POS installer from the internet.
+  
+  .NOTES
+  Linked to Install-QuickBooksPOS
+  #>
   param (
-    $Version, # receives version number from `Select-QuickBooksVersion`
-    $Target = "$pwd"
+    [String]$Version, # receives version number from `Select-QuickBooksVersion`
+    [String]$Target = "$pwd"
   )
 
   if ($Version -eq $CANCEL) { 
     Write-SubMenu_NoInstallerFound
-  } else {
+  }
+  else {
     switch ($Version) {
       $POS19InstObj.VerNum {
         $ReleaseYear = $POS19InstObj.Year
@@ -46,7 +94,8 @@ function Get-QuickBooksInstaller {
   
   if (-not(Test-Connection www.google.com -Quiet)) { 
     Write-Error_NoInternetConnectivity
-  } else {
+  }
+  else {
     Write-Host "OK"
 
     # Test network connection
@@ -72,6 +121,7 @@ function Get-QuickBooksInstaller {
     
     Write-Host "Need to download $($Script:INSTALLER_SIZE)MB installer."
     $query = Read-Host "Do you want to continue? (Y/n)"
+    Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
     
     switch ($query) {
       "n" {
@@ -88,14 +138,31 @@ function Get-QuickBooksInstaller {
 }
 
 function Start-InstallerDownload {
-  param($Version, $Year)
+  <#
+  .SYNOPSIS
+  Downloads the QuickBooks POS installer from the internet.
+
+  .DESCRIPTION
+  This function starts the download of the QuickBooks POS installer
+  from the internet. The download progress is displayed in the console
+  and estimated time of completion is calculated based on the user's
+  internet speed.
+  #>
+  param(
+    [Parameter(Mandatory = $true)]
+    $Version,
+    [Parameter(Mandatory = $true)]
+    [int]$Year
+  )
+
   Clear-Host
   Write-Host "`n Downloading POS v$($Version), $($Script:INSTALLER_SIZE)MB... " -ForegroundColor White -BackgroundColor DarkCyan
   
   if (-not($Script:BANDWIDTH_UNKNOWN)) {
-    $estimated_download_time = Get-TimeToComplete $Script:INSTALLER_BITS $Script:BANDWIDTH_BITS
-    Write-Host "`nDST: $Target`nETC: $estimated_download_time @ $($Script:BANDWIDTH) Mbps" -ForegroundColor White
-  } else {
+    $estimated_download_time = Get-TimeToComplete $Script:INSTALLER_SIZE $Script:BANDWIDTH
+    Write-Host "`nDST: $Target`nETC: $estimated_download_time @ $($Script:BANDWIDTH) MB/s" -ForegroundColor White
+  }
+  else {
     Write-Host "`nDST: $Target`nETC: UNKNOWN_DURATION @ >0.01 Mbps" -ForegroundColor White
   }
   
@@ -106,59 +173,25 @@ function Start-InstallerDownload {
   $installer_download_url = "https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/${Year}/Latest/QuickBooksPOSV${Version}.exe"
 
   $installer_download_job = Start-Job -ScriptBlock {
-    param($url, $installer_download_path)
-    try {
-      Invoke-WebRequest -Uri $url -OutFile $installer_download_path
-      # Start-BitsTransfer $url $installer_download_path
-    }
+    param($url, $Destination)
+    try { Invoke-WebRequest -Uri $url -OutFile $Destination }
+    catch { Write-Host "Error: $_" -ForegroundColor Red }
     finally { Compare-InstallerDownloadSize }
   } -ArgumentList $installer_download_url, $installer_download_path
   
-  if (-not($Script:BANDWIDTH_UNKNOWN)) {
-    Start-Progress -DownloadSize $Script:INSTALLER_BITS `
-                   -Bandwidth $Script:BANDWIDTH `
-                   -DownloadJob $installer_download_job
-  }
-
+  Show-WebRequestDownloadJobState -DownloadJob $installer_download_job -Message "Downloading installer"
+  
   # Write-Host $installer_download_path                      # Debug
   Wait-Job $installer_download_job >$null 2>&1
   Remove-Job $installer_download_job
   # Pause                                                    # Debug  
 }
 
-function Start-Progress {
-  param (
-    $DownloadSize, 
-    $Bandwidth, 
-    $DownloadJob
-  )
-
-  $smoothing = 4
-  $sleep = 1000 / [math]::Pow(2, $smoothing) # ~62.5ms -> 75ms
-  # Write-Host "$sleep (milliseconds)"                       # Debug
-  $download_duration = $Script:RAW_DOWNLOAD_TIME * [math]::Pow(2, $smoothing) # x16+n
-  # Write-Host "$download_duration (steps)"                  # Debug
-
-  for ($i = 0; $i -le $download_duration; $i++) {
-    switch ($DownloadJob.State) {
-      'Running' {
-        $x = "{0:F2}" -f [math]::Round(($i / $download_duration) * 100, 2)
-        Write-Host -NoNewLine "`r [ $x% ] "
-        Start-Sleep -Milliseconds $sleep
-      }
-      'Completed' { break }
-      'Failed' { Write-Host ":: Download encountered an error." -ForegroundColor DarkYellow; Pause }
-      'Stopped' { Write-Host ":: Download was manually stopped." -ForegroundColor DarkYellow; Pause }
-      default { Write-Host ":: Unknown job state: $($DownloadJob.State)" -ForegroundColor DarkYellow; Pause }
-    }
-  }
-}
-
 function Compare-InstallerDownloadSize {  
   # clean up uncompleted donwnload
-  if (-not(Compare-IsValidHash -File $Script:SELECTED_QB_VERSION.Name -Hash $Script:SELECTED_QB_VERSION.Hash)) {
-    Remove-Item $Script:SELECTED_QB_VERSION.Name
+  if (-not(Compare-IsHashMatch -File $Script:SELECTED_QB_VERSION.Name -Hash $Script:SELECTED_QB_VERSION.Hash)) {
     # Write-Host $Script:SELECTED_QB_VERSION.Name            # Debug
+    Remove-Item $Target\$Script:SELECTED_QB_VERSION.Name
   }
 }
 
@@ -167,6 +200,7 @@ function Compare-BandwidthSpeedToTime {
   if ($Version -gt 12 -and $Bandwidth -le 2) {
     Write-Host "Download may take more than 5 minutes to complete`nover your current network." -ForegroundColor Yellow
     $query = Read-Host "Are you ready to start the download? (Y/n)"
+    Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
     
     if ($query -eq "n") {
       Write-Action_OperationCancelled

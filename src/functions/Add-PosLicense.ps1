@@ -1,33 +1,26 @@
-function Clear-IntuitData {
-  # Delete Intuit POS installation debris
-  Write-Host -NoNewLine "Removing junk files... "
-  
-  foreach ($path in $qbPathList) {
-    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) {
-      Write-Error_QuickBooksIsInstalled 
-    } else {
-      # remove quickbooks pos program data folder
-      Remove-Item "$env:ProgramData\$path" -Recurse -Force >$null 2>&1 
-      # remove folder of the last quickbooks pos version installed
-      Remove-Item "${env:ProgramFiles(x86)}\$path" -Recurse -Force >$null 2>&1
-      # remove previous copy of sample practice company
-      Remove-Item "$env:PUBLIC\Documents\$path\Data\Sample Practice" -Recurse -Force >$null 2>&1
-    }
-  }
-  
-  # Remove entitlement data store
-  Remove-Item -Path $CLIENT_MODULE_DATA_PATH -Recurse -Force >$null 2>&1
-  Write-Host "Done"
-}
-
 function Write-License {
   param([String]$LNumber, [String]$PNumber)
   return '<Registration InstallDate="" LicenseNumber="', $LNumber, '" ProductNumber="', $PNumber, '"/>' -join ''
 }
 
 function Get-UserOwnLicense {
-  # from `Write-LieResponse`
-  Clear-Host; Write-Host
+  <#
+  .SYNOPSIS
+  Prompts the user for a custom license number and product key to use for 
+  activation of QuickBooks Point of Sale.
+
+  .DESCRIPTION
+  This function is used to get a custom license number and product key from the user. 
+  The user is prompted for a license number and product key. If the user enters an 
+  incorrect length for either of these values, the function will recursively call 
+  itself until the user enters the correct values. Once the user enters the correct 
+  values, the function will set the license number and product key and set the 
+  $Script:CUSTOM_LICENSING variable to $true.
+  
+  .NOTES
+  Linked to Write-LieResponse
+  #>
+  Clear-Terminal
   Write-Host "Enter a valid license below`n" -ForegroundColor White -BackgroundColor DarkCyan
   Write-Host "A valid license pattern: 0000-0000-0000-000" -ForegroundColor White
   Write-Host "A valid product key pattern: 000-000`n" -ForegroundColor White
@@ -37,19 +30,20 @@ function Get-UserOwnLicense {
   
   Write-Host "`nIs this license information correct? (Y/n): " -ForegroundColor Yellow -NoNewline
   $query = Read-Host
+  Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
 
   switch ($query) {
-    "n" { Get-UserOwnLicense }
-    default { break }
+    "n" { Get-UserOwnLicense } # recursive call to prompt user again
+    default { break } # we're good, move on
   }
 
   if ($custom_license_number.Length -lt 18 -or $custom_license_number.Length -gt 18) { Write-Error_IncorrectLicense -LicenseNumber }
   if ($custom_product_number.Length -lt 7 -or $custom_product_number.Length -gt 7) { Write-Error_IncorrectLicense -ProductNumber }
   Set-License (Write-License $custom_license_number $custom_product_number)
-  $Script:CUSTOM_LICENSING = $true
+  $Script:CUSTOM_LICENSING = $true # indicate that we're using a custom license
 }
 
-function Install-IntuitLicense {
+function Install-PosLicense {
   Clear-IntuitData
   Write-Host -NoNewLine "Installing registration keys... "
   
@@ -95,7 +89,7 @@ function Install-IntuitLicense {
   Write-Host "Done"
 }
 
-function Get-IntuitLicense {
+function Get-PosLicense {
   param ($Hash)
   
   switch ($Hash) {

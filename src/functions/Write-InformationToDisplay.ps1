@@ -3,15 +3,21 @@
 function Write-HeaderLabel {
   param ([string]$Mssg)
   if (-not($Mssg -eq "")) { $Mssg = "- $Mssg " }
-  Clear-Host; Write-Host "`n qbactivator $Mssg`n" -ForegroundColor White -BackgroundColor DarkGreen
+  Clear-Terminal
+  Format-Text -Text " qbactivator $Mssg`n" -Foreground White -Background DarkGreen -Format Bold
 }
 
 function Write-InfoLink {
-  param([Switch]$WithFAQs, [Switch]$NoExit)
+  param(
+    [Switch]$WithFAQs,
+    [Switch]$NoExit,
+    [Switch]$Wait
+  )
   Write-Host "`nFor more information, visit:" -ForegroundColor White
   Write-Host "https://github.com/neuralpain/qbactivator" -ForegroundColor Green
   if ($WithFAQs) { Write-Host "https://github.com/neuralpain/qbactivator/wiki/FAQs" -ForegroundColor Green }
   if (-not($NoExit)) { exit $PAUSE }
+  if ($Wait) { Write-Host "`nPress any key to continue..." -ForegroundColor White; [void][System.Console]::ReadKey($true) }
 }
 
 function Write-WaitingScreen {
@@ -124,15 +130,16 @@ function Write-LieResponse {
   Write-Host "5. Yes, I do."
   Write-Host "6. I just wanted to see what would happen."
   $query = Read-Host "`n#"
-    
+  Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
   switch ($query) {
-    1 { Write-LieScolding "Lying is bad." }
-    2 { Write-LieScolding "Having a cat does not make you a good person." }
-    3 { Write-LieScolding "It's likely you never will." }
-    4 { Write-LieScolding "Ha ha... nice try." }
-    5 { Get-UserOwnLicense }
-    6 { Write-LieScolding "And now you've wasted both our time." -ReadAKey }
-    default { Write-LieResponse }
+    0 { Write-MainMenu; break }
+    1 { Write-LieScolding "Lying is bad."; break }
+    2 { Write-LieScolding "Having a cat does not make you a good person."; break }
+    3 { Write-LieScolding "It's likely you never will."; break }
+    4 { Write-LieScolding "Ha ha... nice try."; break }
+    5 { Get-UserOwnLicense; break }
+    6 { Write-LieScolding "And now you've wasted both our time." -ReadAKey; break }
+    default { Write-LieResponse; break }
   }
 }
 
@@ -145,17 +152,22 @@ function Write-SubMenu_NoInstallerFound {
   Write-Host "3 - Locate installer"
   Write-Host "0 - Cancel"
   $query = Read-Host "`n#"
-  
+  Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
+  Write-Host "---"
   switch ($query) {
-    0 { Write-Action_OperationCancelled; Write-MainMenu }
-    1 { Invoke-Activation -ActivationOnly }
+    0 { 
+      Write-Action_OperationCancelled
+      Write-MainMenu
+      exit
+    }
+    1 { Invoke-PosActivation -ActivationOnly; break }
     2 { 
       Select-QuickBooksVersion
       Get-QuickBooksInstaller -Version (Get-Version) 
-      break 
+      break
     }
     3 { break }
-    default { Write-SubMenu_NoInstallerFound }
+    default { Write-SubMenu_NoInstallerFound; break }
   }   
   
   Invoke-QuickBooksInstaller
@@ -176,19 +188,16 @@ function Write-VersionSelectionMenu {
 # --- ACTION MSSG --- #
 
 function Write-Action_ExitActivator {
-  Write-Host "---"
   Write-Host -NoNewline "Exiting qbactivator..." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_BLINK
 }
 
 function Write-Action_OperationCancelled {
-  Write-Host "---"
   Write-Host -NoNewline "Operation cancelled by user." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_BLINK
 }
 
 function Write-Action_OptionUnavailable {
-  Write-Host "---"
   Write-Host -NoNewline "This function has been temporarily disabled." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_NORMAL
 }
@@ -228,7 +237,7 @@ function Write-Error_QuickBooksIsInstalled {
   Write-Host "`nA version of QuickBooks is already installed" -ForegroundColor White -BackgroundColor DarkRed
   Write-Host "`nAll previous versions must be removed before installation." -ForegroundColor Yellow
   Write-Host "`nIf you are requesting activation-only, remove the installer`nfrom this location and restart the activator. The activator`nimmediately checks for a QuickBooks installation executable`nand runs it if one is available." -ForegroundColor White
-  Write-InfoLink
+  Write-InfoLink -NoExit -Wait
 }  
 
 function Write-Error_QuickBooksNotInstalled {
@@ -268,9 +277,9 @@ function Write-Error_IncorrectLicense {
   Start-Sleep -Milliseconds $TIME_SLOW
 
   $query = Read-Host "`nTry again? (y/N)"
-
+  Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
   switch ($query) {
-    "y" { Get-UserOwnLicense }
-    default { Write-MainMenu }
+    "y" { Get-UserOwnLicense; break }
+    default { Write-MainMenu; break }
   }
 }

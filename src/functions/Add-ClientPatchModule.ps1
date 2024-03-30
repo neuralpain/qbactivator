@@ -1,12 +1,3 @@
-$PATCH_HASH = "1A1816C78925E734FCA16974BDBAA4AA"
-$LOCAL_PATCH_FILE = ".\EntClient.dll"
-$LOCAL_GENUINE_FILE = ".\EntClientGenuine.dll"
-$CLIENT_FILE_ON_HOST = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.22.0/src/bin/ecc/EntClient.dll"
-$GENUINE_CLIENT_FILE_ON_HOST = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.22.0/src/bin/ecc/EntClientGenuine.dll"
-$CLIENT_MODULE_PATH = "$env:SystemRoot\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5\Intuit.Spc.Map.EntitlementClient.Common.dll"
-$CLIENT_MODULE_DATA_PATH = "$env:ProgramData\Intuit\Entitlement Client\v8"
-$CLIENT_MODULE_DATA = "$CLIENT_MODULE_DATA_PATH\EntitlementDataStore.ecml"
-
 <# --- CLIENT MODULE FUNCTIONS --- #>
 
 function Get-ClientModule {
@@ -67,7 +58,7 @@ function Repair-GenuineClientModule {
 }
 
 function Clear-ClientActivationFolder {
-  if (-not(Test-Path $CLIENT_MODULE_PATH -PathType Leaf)) {
+  if (-not(Test-Path $CLIENT_MODULE_FULL_PATH -PathType Leaf)) {
     Write-Error_QuickBooksNotInstalled
   }
   
@@ -79,21 +70,22 @@ function Clear-ClientActivationFolder {
   }
   
   Write-Host -NoNewline "Removing old activation data... "
-  Remove-Item "$CLIENT_MODULE_DATA_PATH\*" -Recurse -Force >$null 2>&1
+  Remove-Item "$CLIENT_MODULE_DATA_PATH\*" -Force >$null 2>&1
   Write-Host "Done"
 }
 
-function Install-ClientModule {
+function Install-ClientModulePatch {
   Write-Host -NoNewLine "Patching client module... "
   
-  Rename-Item $CLIENT_MODULE_PATH "${CLIENT_MODULE_PATH}.bak" >$null 2>&1
+  Move-Item $CLIENT_MODULE_FULL_PATH "${CLIENT_MODULE_FULL_PATH}.bak" -Force >$null 2>&1
 
   if (Test-Path "$LOCAL_PATCH_FILE" -PathType Leaf) {
-    $isValid = Compare-IsValidHash $PATCH_HASH $LOCAL_PATCH_FILE
-    if ($isValid) { Copy-Item $LOCAL_PATCH_FILE $CLIENT_MODULE_PATH } 
+    if ((Compare-IsHashMatch -File $LOCAL_PATCH_FILE -Hash $PATCH_HASH)) { 
+      Copy-Item $LOCAL_PATCH_FILE $CLIENT_MODULE_FULL_PATH
+    }
     else { 
       Write-Host "`nPatch file may be corrupted."
-      Get-ClientModule $CLIENT_FILE_ON_HOST
+      Get-ClientModule -Local $LOCAL_PATCH_FILE -FromHost $CLIENT_FILE_ON_HOST -Type "Patch"
       Write-Host "Patch successful."
       return
     }
@@ -101,7 +93,7 @@ function Install-ClientModule {
   else {
     Write-Host "`nLocal patch file not found."
     Write-Host "Requesting client module..."
-    Get-ClientModule $CLIENT_FILE_ON_HOST
+    Get-ClientModule -FromHost $CLIENT_FILE_ON_HOST -Type "Patch"
     Write-Host "Patch successful."
     return
   }

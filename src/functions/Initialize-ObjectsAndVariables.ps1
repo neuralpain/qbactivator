@@ -86,12 +86,6 @@ $POS19InstObj = [Installer]@{
   Size   = '970.28'
 }
 
-# start list from most recent version first
-$qbVersionList = 19, 18, 12, 11
-$qbExeList = $POS19InstObj.Name, $POS18InstObj.Name, $POS12InstObj.Name, $POS11InstObj.Name
-$qbHashList = $POS19InstObj.Hash, $POS18InstObj.Hash, $POS12InstObj.Hash, $POS11InstObj.Hash
-$qbPathList = $POS19InstObj.Path, $POS18InstObj.Path, $POS12InstObj.Path, $POS11InstObj.Path
-
 # script variables
 $Script:LICENSE_KEY = ""
 $Script:INSTALLER_SIZE = 0
@@ -101,6 +95,7 @@ $Script:SELECTED_QB_VERSION = $null
 [int]$Script:INSTALLER_BYTES = 0
 [int]$Script:INSTALLER_BITS = 0
 [int]$Script:BANDWIDTH_BITS = 0
+[int]$Script:BANDWIDTH_BYTES = 0
 [bool]$Script:SECOND_STORE = $false
 [bool]$Script:CUSTOM_LICENSING = $false
 # [bool]$Script:DOWNLOAD_PATCH = $false
@@ -111,15 +106,39 @@ $Script:SELECTED_QB_VERSION = $null
 $global:ProgressPreference = "SilentlyContinue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-function Set-Version($v) { $Script:QB_VERSION = $v }
-function Set-License($l) { $Script:LICENSE_KEY = $l }
-function Get-Version { return $Script:QB_VERSION }
-function Get-License { return $Script:LICENSE_KEY }
+# start list from most recent version first
+$qbVersionList = 19, 18, 12, 11
+$qbExeList = $POS19InstObj.Name, $POS18InstObj.Name, $POS12InstObj.Name, $POS11InstObj.Name
+$qbHashList = $POS19InstObj.Hash, $POS18InstObj.Hash, $POS12InstObj.Hash, $POS11InstObj.Hash
+$qbPathList = $POS19InstObj.Path, $POS18InstObj.Path, $POS12InstObj.Path, $POS11InstObj.Path
+
+# client patch and repair
+$PATCH_HASH = "1A1816C78925E734FCA16974BDBAA4AA"
+$LOCAL_PATCH_FILE = ".\EntClient.dll"
+$LOCAL_GENUINE_FILE = ".\EntClientGenuine.dll"
+$CLIENT_FILE_ON_HOST = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.21.2/src/bin/ecc/EntClient.dll"
+$GENUINE_CLIENT_FILE_ON_HOST = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.22.0-beta/src/bin/ecc/EntClientGenuine.dll"
+
+$CLIENT_MODULE_DATA = "EntitlementDataStore.ecml"
+$CLIENT_MODULE_DATA_PATH = "$env:ProgramData\Intuit\Entitlement Client\v8"
+$CLIENT_MODULE_DATA_FULL_PATH = "$CLIENT_MODULE_DATA_PATH\$CLIENT_MODULE_DATA"
+
+$CLIENT_MODULE = "Intuit.Spc.Map.EntitlementClient.Common.dll"
+$CLIENT_MODULE_PATH = "$env:SystemRoot\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
+$CLIENT_MODULE_FULL_PATH = "$CLIENT_MODULE_PATH\$CLIENT_MODULE"
 
 # log file
 $LOG = "C:\Windows\Logs\qbactivator\qbactivator_$(Get-Date -Format "yyyyMMdd_HHmmss").log"
 # add temp folder for qbactivator
-$qbactivator_temp = "$env:TEMP\qbactivator_temp"
-if (-not(Test-Path $qbactivator_temp)) { mkdir $qbactivator_temp >$null 2>&1 }
+# $qbactivator_temp = "$env:TEMP\qbactivator_temp"
+# if (-not(Test-Path $qbactivator_temp)) { mkdir $qbactivator_temp >$null 2>&1 }
 # temp folder for Intuit
 $intuit_temp = "$env:TEMP\Intuit"
+
+Start-Transcript $LOG
+
+function Clear-Terminal { Clear-Host; Write-Host }
+function Set-Version($v) { $Script:QB_VERSION = $v }
+function Get-Version { return $Script:QB_VERSION }
+function Set-License($l) { $Script:LICENSE_KEY = $l }
+function Get-License { return $Script:LICENSE_KEY }
