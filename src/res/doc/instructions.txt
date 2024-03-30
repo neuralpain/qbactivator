@@ -12,13 +12,11 @@ For more information on this activation script, visit
 Take a moment to read the FAQs for any issues you may encounter:
 <https://github.com/neuralpain/qbactivator/wiki/FAQs>
 
-!!! An internet connection is required.
-
 [ --- Instructions for activation --- ]
 
- 1. Run "qbactivator.cmd", select the store you need to install and
-    activate (Store 1 or Store 2) and allow the QuickBooks software to 
-    install completely before you continue the activation.
+ 1. Run "qbactivator.cmd", select the required activation option
+    activate and allow the QuickBooks software to install completely 
+    before you continue the activation.
  
 <?> If you are installing on Client, exit the activator after the
     software is installed. The Client will be activated automatically
@@ -60,17 +58,6 @@ Take a moment to read the FAQs for any issues you may encounter:
 19. Click Finish
 20. Exit the software
 21. Continue the script
-
-[ ----- EXTRA ---- The following steps is for activation --- ]
-[ ---------------- of Pro/Enterprise/Other QB products ----- ]
-
- 1. Select Option 3 and open the QuickBooks software
- 2. Click "Help" then "About..."
- 3. Press CTRL+R+P
- 4. Enter the code 99999930
- 5. Click Next
- 6. Click Finish
- 7. Close QuickBooks
 
 @neuralpain // 'cause why not?
 With help from @Navish360
