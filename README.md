@@ -2,10 +2,12 @@
   <picture>
     <source srcset="https://user-images.githubusercontent.com/77242216/213914137-51bda12c-6214-44f8-bae4-e9b7e633233b.svg" media="(prefers-color-scheme: light)" height="96px" alt="qbactivator logo light">
     <img src="https://user-images.githubusercontent.com/77242216/213914139-b21538e0-05c1-4194-99bc-620f5d559fc9.svg" height="96px" alt="qbactivator logo dark">
-  </picture>
+  </picture><br/>
+  <a href="https://github.com/neuralpain/qbactivator/latest"><img src="https://img.shields.io/github/v/release/neuralpain/qbactivator?label=Latest%20Release&labelColor=123311&color=3fab05"></a>
+  <a href="https://github.com/neuralpain/qbactivator/latest"><img src="https://img.shields.io/github/downloads/neuralpain/qbactivator/total?style=social"></a>
 </p>
 
-Activation script for QuickBooks Point of Sale Software on Windows. — [Download Now!][download_min]
+Activation script for QuickBooks Point of Sale Software on Windows. — [Download Now!][download]
 
 > [!CAUTION]  
 > **Do not** clone or download *this* repository in an attempt to run `qbactivator` (ref. [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way. If you want to run the script, [download the latest release][release] package and [read the Wiki][getstarted] to get started using `qbactivator`.
