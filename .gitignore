@@ -13,6 +13,7 @@ intuit
 QuickBooks Tool Hub
 
 # misc
+.backup/
 .DS_Store
 .history/
 target/
