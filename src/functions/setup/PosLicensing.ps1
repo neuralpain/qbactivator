@@ -1,25 +1,3 @@
-function Clear-IntuitData {
-  # Delete Intuit POS installation debris
-  Write-Host -NoNewLine "Removing junk files... "
-  
-  foreach ($path in $qbPathList) {
-    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) {
-      Write-Error_QuickBooksIsInstalled 
-    } else {
-      # remove quickbooks pos program data folder
-      Remove-Item "$env:ProgramData\$path" -Recurse -Force >$null 2>&1 
-      # remove folder of the last quickbooks pos version installed
-      Remove-Item "${env:ProgramFiles(x86)}\$path" -Recurse -Force >$null 2>&1
-      # remove previous copy of sample practice company
-      Remove-Item "$env:PUBLIC\Documents\$path\Data\Sample Practice" -Recurse -Force >$null 2>&1
-    }
-  }
-  
-  # Remove entitlement data store
-  Remove-Item -Path $CLIENT_MODULE_DATA_PATH -Recurse -Force >$null 2>&1
-  Write-Host "Done"
-}
-
 function Write-License {
   param([String]$LNumber, [String]$PNumber)
   return '<Registration InstallDate="" LicenseNumber="', $LNumber, '" ProductNumber="', $PNumber, '"/>' -join ''
@@ -43,8 +21,18 @@ function Get-UserOwnLicense {
     default { break }
   }
 
-  if ($custom_license_number.Length -lt 18 -or $custom_license_number.Length -gt 18) { Write-Error_IncorrectLicense -LicenseNumber }
-  if ($custom_product_number.Length -lt 7 -or $custom_product_number.Length -gt 7) { Write-Error_IncorrectLicense -ProductNumber }
+  if ($custom_license_number.Length -lt 18 -or $custom_license_number.Length -gt 18 -or $custom_product_number.Length -lt 7 -or $custom_product_number.Length -gt 7) { 
+    Clear-Terminal
+    Write-Host "`nLicense is invalid" -ForegroundColor White -BackgroundColor DarkRed
+    Write-Host "`nCheck your license and try again." -ForegroundColor White
+    $query = Read-Host "`nTry again? (y/N)"
+    Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
+    switch ($query) {
+      "y" { Get-UserOwnLicense; break }
+      default { Write-Menu_Main; break }
+    }
+  }
+  
   Set-License (Write-License $custom_license_number $custom_product_number)
   $Script:CUSTOM_LICENSING = $true
 }
