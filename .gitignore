@@ -1,7 +1,7 @@
 # testing
 *.exe
 *.zip
-˜log.txt
+*.log
 
 # build files
 build/
