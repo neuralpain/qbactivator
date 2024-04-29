@@ -60,9 +60,9 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 Each release of qbactivator comes with 3 packages:
 
-- [`qbactivator-[version].zip`][download] – a regular release which contains all the files necessary to install and activate the QuickBooks POS software **offline**. Also contains the LICENSE and README.
-- [`qbactivator-[version].min.zip`][download_min] – a lightweight release ZIP package (take note of the `.min` in the name) which does not contain any of the larger files which can be downloaded online, e.g. the patch file. Contains the LICENSE and README.
-- [`qbactivator-[version].cmd`][download_cmd] – just the script file.
+- <code>**qbactivator-[version][.zip][download]**</code> – the complete release which contains all the files necessary to activate the QuickBooks POS software **offline**. Also contains the LICENSE and README.
+- <code>**qbactivator-[version][.min.zip][download_min]**</code> – a lightweight release ZIP package (take note of the `.min` in the name) which does not contain any of the larger files which can be downloaded online, e.g. the patch file. Contains the LICENSE and README.
+- <code>**qbactivator-[version][.cmd][download_cmd]**</code> – just the script file.
 
 They all do the same job since they are the same single script packaged differently. The regular package is best for people who don't have access to the internet at the location of a specific workstation or prefer to activate offline. The `.min.zip` and single `.cmd` are smallest to carry around and suit people with fast internet speeds for downloads and people who just need a quick fix.
 
