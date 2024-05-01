@@ -8,19 +8,14 @@
   [x] Display Menu/Sub Menu/Troubleshooting
   [x] Select Version
   [x] Select License
-  [-] Download installer successfully
+  [x] Download installer successfully
   [x] Run installer successfully
   [ ] Download patch file
   [ ] Download genuine module
   [x] Successful Activation
-  [ ] Make successful repairs on L1
-  [ ] Make successful repairs on L2
-  [ ] Make successful repairs on L3
-#>
-
-<#
-  notes:
-  - does not go back to menu after "Install Only" is completed
+  [x] Make successful repairs on L1
+  [x] Make successful repairs on L2
+  [x] Make successful repairs on L3
 #>
 
 $OK = 0x0000
@@ -62,6 +57,7 @@ $PROC_EMPTY = 0x2090
 $PROC_COMPLETE_EXIT = 0x2091
 $PROC_NEXT_STAGE = 0x2092
 $PROC_DOWNLOAD = 0x2093
+$PROC_RETURN_MAIN = 0x2094
 
 class Installer {
   [System.Object] $Object
@@ -156,7 +152,7 @@ $Script:LICENSE_KEY = ""                          # quickbooks license key
 $Script:QB_VERSION = $null                        # version of quickbooks (to be) installed
 $Script:SELECTED_QB_VERSION = $null               # quickbooks object selected to be installed
 $Script:TARGET_LOCATION = "$pwd"                  # directory where files will be downloaded
-$Script:RUN_PROCEDURE = $null                     # WAS UNUSED
+$Script:RUN_PROCEDURE = $null                     # WAS UNUSED, FOUND A USE FOR IT
 $Script:ACTIVATION_ONLY = $false                  # indicate whether or not the script should only activate quickbooks
 
 # IF QUICKBOOKS IS INSTALLED
@@ -247,12 +243,15 @@ $InitializeMain = {
   $Script:INSTALLER_HASH = $null
   $Script:INSTALLER_IS_VALID = $false
   $Script:INSTALLER_AVAILABLE = $false
+  $Script:BANDWIDTH = 0
   $Script:BANDWIDTH_BITS = 0
-  $Script:RAW_DOWNLOAD_TIME = 0
   $Script:BANDWIDTH_BYTES = 0
   # $Script:BANDWIDTH_UNKNOWN = $false
-  $Script:BANDWIDTH = 0
+  $Script:RAW_DOWNLOAD_TIME = 0
+  $Script:SECOND_STORE = $false
   $Script:CUSTOM_LICENSING = $false
+  $Script:QUICKBOOKS_IS_INSTALLED = $false
+  $Script:ADDITIONAL_CLIENTS = $false
 }
 
 $VerifyIfQuickBooksIsInstalled = {
@@ -272,7 +271,7 @@ $CheckQuickBooksIsNotInstalled_ReturnToMainMenu = {
     Write-Action_OptionUnavailable
     $Script:SECOND_STORE = $false
     $Script:ADDITIONAL_CLIENTS = $false
-    Write-Menu_Main
+    Invoke-NextProcess $PROC_RETURN_MAIN
   }
 }
 
@@ -281,7 +280,7 @@ $CheckQuickBooksIsInstalled_ReturnToMainMenu = {
     Write-Action_OptionUnavailable
     $Script:SECOND_STORE = $false
     $Script:ADDITIONAL_CLIENTS = $false
-    Write-Menu_Main
+    Invoke-NextProcess $PROC_RETURN_MAIN
   }
 }
 
