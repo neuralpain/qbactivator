@@ -1,21 +1,23 @@
 function Clear-ClientActivationFolder {
+  # ensure the the quickbooks entitlement client is available for reactivation
   if (-not(Test-Path $CLIENT_MODULE_FULL_PATH -PathType Leaf)) {
-    Write-Error_QuickBooksNotInstalled
+    if (-not(Test-Path "${CLIENT_MODULE_FULL_PATH}.bak" -PathType Container)) {
+      Write-Error_QuickBooksNotInstalled
+    }
   }
   
+  # 如 entitlement client 不在, 没问题，就创建新的
   if (-not(Test-Path $CLIENT_MODULE_DATA_PATH -PathType Container)) {
-    Write-Host "Data folder not found."
+    Write-Host "L3: Data folder not found."
     New-Item $CLIENT_MODULE_DATA_PATH -ItemType Directory >$null 2>&1
-    Write-Host "Created new data folder."
+    Write-Host "L3: Created new data folder."
     return
   }
   
-  Write-Host -NoNewline "Removing old activation data... "
+  Write-Host -NoNewline "L3: Removing old activation data... "
   Remove-Item "$CLIENT_MODULE_DATA_PATH\*" -Force >$null 2>&1
   Write-Host "Done"
 }
-
-
 
 <#
 function Get-ClientModule {
@@ -31,8 +33,6 @@ function Get-ClientModule {
   }
 }
 #>
-
-
 
 function Get-ClientModule {
   param ($Local, $FromHostUrl)
@@ -69,17 +69,11 @@ function Get-ClientModule {
   }
 }
 
-
-
-
-
 # function Find-GenuineClientModule {
 #   if (-not(Test-Path $CLIENT_MODULE -PathType Leaf)) {
 #     Write-Error_QuickBooksNotInstalled
 #   }
 # }
-
-
 
 function Install-ClientModule {
   param([Switch]$Verify)
@@ -99,7 +93,7 @@ function Install-ClientModule {
 
   Write-Host "Patching client module... "
   
-  Rename-Item $CLIENT_MODULE_FULL_PATH "${CLIENT_MODULE_$CLIENT_MODULE_FULL_PATH}.bak" >$null 2>&1
+  Rename-Item $CLIENT_MODULE_FULL_PATH "${CLIENT_MODULE_FULL_PATH}.bak" >$null 2>&1
 
   # attempt to patch with the local patch file first
   if (Test-Path "$LOCAL_PATCH_FILE" -PathType Leaf) {

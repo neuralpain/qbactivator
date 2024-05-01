@@ -1,8 +1,8 @@
-function Invoke-Activation {
+function Start-PosActivation {
   Stop-QuickBooksProcesses
   Repair-GenuineClientModule # if damaged
   
-  # toll gate #1
+  # toll gate #1 --------- why?
   if ($null -eq $Script:RUN_PROCEDURE) { return }
   
   &$VerifyIfQuickBooksIsInstalled
