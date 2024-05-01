@@ -1,9 +1,10 @@
 function Write-Menu_Main {
   &$InitializeMain
+  &$VerifyIfQuickBooksIsInstalled
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select activation option" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - POS Primary Server/Workstation"
-  Write-Host "2 - POS Second Server/Workstation"
+  Write-Host "2 - POS Secondary Server/Workstation"
   Write-Host "3 - POS Client Workstations"
   Write-Host "4 - I have my own license :p"
   Write-Host "5 - Troubleshooting"
@@ -11,11 +12,11 @@ function Write-Menu_Main {
   $query = Read-Host "`n#"
   
   switch ($query) {
-    0 { 
+    0 {
       Invoke-NextProcess $PROC_NONE
       break
     }
-    1 { 
+    1 {
       $Script:SECOND_STORE = $false
       $Script:ADDITIONAL_CLIENTS = $false
       Write-Menu_SubMenu 
@@ -33,7 +34,9 @@ function Write-Menu_Main {
     4 {
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
       Write-LieResponse
-      Write-Menu_SubMenu
+      if ($null -eq $Script:RUN_PROCEDURE) {
+        Write-Menu_SubMenu
+      }
     }
     5 {
       Invoke-NextProcess $PROC_TROUBLESHOOT
@@ -45,10 +48,10 @@ function Write-Menu_Main {
 function Write-Menu_SubMenu {
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select next operation" -Foreground Gray -Formatting Bold, Underline)`n"
-  Write-Host "1 - Activation Only"
-  Write-Host "2 - Download and install QuickBooks POS"
+  Write-Host "1 - Complete POS Installation"
+  Write-Host "2 - Activation Only"
   Write-Host "3 - Install Only"
-  Write-Host "4 - Download QB POS installer"
+  Write-Host "4 - Download a POS installer"
   
   Write-Host "0 - Cancel"
   $query = Read-Host "`n#"
@@ -58,16 +61,16 @@ function Write-Menu_SubMenu {
       $Script:SECOND_STORE = $false
       $Script:ADDITIONAL_CLIENTS = $false
       Write-Menu_Main
-      break 
+      break
     }
     1 {
-      &$CheckQuickBooksIsNotInstalled_ReturnToMainMenu
-      Invoke-NextProcess $PROC_ACTIVATE
+      &$CheckQuickBooksIsInstalled_ReturnToMainMenu
+      Invoke-NextProcess $PROC_DOWNLOAD
       break
     }
     2 {
-      &$CheckQuickBooksIsInstalled_ReturnToMainMenu
-      Invoke-NextProcess $PROC_DOWNLOAD
+      &$CheckQuickBooksIsNotInstalled_ReturnToMainMenu
+      Invoke-NextProcess $PROC_ACTIVATE
       break
     }
     3 {
@@ -120,13 +123,13 @@ function Write-Menu_Troubleshooting {
     2 {
       Stop-QuickBooksProcesses
       Repair-GenuineClientModule_LevelTwo_SanityCheck
-      Write-Menu_Troubleshooting 
+      Write-Menu_Troubleshooting
       break
     }
     3 {
       Clear-ClientActivationFolder
       Write-Host "Starting reactivation process..."
-      Invoke-Activation
+      Invoke-NextProcess $PROC_ACTIVATE
       break
     }
     4 { 
@@ -164,7 +167,7 @@ function Write-Menu_LinkOptions {
     }
     10 {
       Clear-Terminal
-      Invoke-Activation
+      Start-PosActivation
       Invoke-NextProcess $PROC_NEXT_STAGE
       break
     }

@@ -1,8 +1,8 @@
 function Write-HeaderLabel {
-  param ([string]$Mssg)
   Clear-Terminal
   Format-Text " qbactivator `n" -Foreground White -Background DarkGreen -Formatting Bold
   
+  # store selection information
   if ($Script:SECOND_STORE) {
     Write-Host "Workstation: $(Format-Text "Secondary Server" -Foreground DarkYellow)"
   } elseif ($Script:ADDITIONAL_CLIENTS) {
@@ -10,7 +10,8 @@ function Write-HeaderLabel {
   } else {
     Write-Host "Workstation: $(Format-Text "Primary Server (Default)" -Foreground DarkYellow)"
   }
-
+  
+  # quickbooks installation status
   if ($Script:QUICKBOOKS_IS_INSTALLED) {
     Write-Host "QuickBooks POS: $(Format-Text "Installed" -Foreground Green)"
     Write-Host "Path: $(Format-Text "$($Script:QUICKBOOKS_INSTALLED_PATH)" -Foreground Green)"
@@ -19,13 +20,14 @@ function Write-HeaderLabel {
     Write-Host "Path: $(Format-Text "Unavailable" -Foreground DarkYellow)"
   }  
   
+  # pos version
   if (Get-Version -ne $null) {
     Write-Host "POS Version: $(Format-Text "POS v$(Get-Version)" -Foreground DarkYellow)"
   } elseif (-not($Script:QUICKBOOKS_IS_INSTALLED)) {
     Write-Host "POS Version: $(Format-Text "Unknown" -Foreground DarkYellow)"
   }
 
-  Write-Host
+  Write-Host # break line
 }
 
 function Write-InfoLink {
@@ -46,18 +48,18 @@ function Write-WaitingScreen {
 
 function Write-Action_ExitActivator {
   Write-Host "---"
-  Write-Host -NoNewline "Exiting qbactivator..." -ForegroundColor Yellow
+  Write-Host "Exiting qbactivator..." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_BLINK
 }
 
 function Write-Action_OperationCancelled {
   Write-Host "---"
-  Write-Host -NoNewline "Operation cancelled by user." -ForegroundColor Yellow
+  Write-Host "Operation cancelled by user." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_BLINK
 }
 
 function Write-Action_OptionUnavailable {
   Write-Host "---"
-  Write-Host -NoNewline "This function has been temporarily disabled." -ForegroundColor Yellow
+  Write-Host "Disabled when QuickBooks is installed." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_NORMAL
 }
