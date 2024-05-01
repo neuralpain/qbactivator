@@ -1,6 +1,8 @@
 function Invoke-NextProcess {
   param ([Parameter(Mandatory = $true)]$NextProcess)
+  
   $Script:RUN_PROCEDURE = $NextProcess
+  
   switch ($NextProcess) {
     $PROC_DOWNLOAD {
       Select-QuickBooksVersion
@@ -26,20 +28,21 @@ function Invoke-NextProcess {
       else { break }
     }
     $PROC_ACTIVATE {
-      Invoke-Activation
+      Start-PosActivation
       if ($null -eq $Script:RUN_PROCEDURE) { break }
       else { Invoke-NextProcess $PROC_NEXT_STAGE }
     }
-    $PROC_TROUBLESHOOT {
-      Write-Menu_Troubleshooting
-    }
+    $PROC_TROUBLESHOOT { Write-Menu_Troubleshooting }
     $PROC_NONE {
       Write-Action_ExitActivator
       exit $EXIT_QBA
     }
     $PROC_NEXT_STAGE { exit $OK }
-    default { Write-Menu_Main }
+    $PROC_RETURN_MAIN { Write-Menu_Main }
+    default { Invoke-NextProcess $PROC_RETURN_MAIN }
   }
+
+  Invoke-NextProcess $PROC_RETURN_MAIN
 }
 
 # -------- start PowerShell execution -------- #
