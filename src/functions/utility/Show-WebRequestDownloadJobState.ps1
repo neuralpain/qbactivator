@@ -1,51 +1,51 @@
 function Show-WebRequestDownloadJobState {
   <#
   .SYNOPSIS
-  Display a simple animation while waiting for a download job to complete.
+    Display a simple animation while waiting for a download job to complete.
   
   .DESCRIPTION
-  Waits for a download job to complete, displaying a
-  progress bar while it is running. When the download is complete, the
-  function will write a completion message to the console.
+    Waits for a download job to complete, displaying a
+    progress bar while it is running. When the download is complete, the
+    function will write a completion message to the console.
   
   .PARAMETER DownloadJob
-  The download job to wait for
+    The download job to wait for
     
   .PARAMETER Message
-  The message to display while the download is in progress
+    The message to display while the download is in progress
 
   .EXAMPLE
-  Show-WebRequestDownloadJobState -DownloadJob $DownloadJob -Message "Downloading from host"
+    Show-WebRequestDownloadJobState -DownloadJob $DownloadJob -Message "Downloading from host"
 
-  Waits for the download job to complete
+    Waits for the download job to complete
   
   .EXAMPLE
-  $Job = Start-Job -ScriptBlock { Invoke-WebRequest -Uri "https://www.gutenberg.org/cache/epub/1184/pg1184.txt" -OutFile "TheRoadNotTaken.txt" }
-  Show-WebRequestDownloadJobState -DownloadJob $Job  -Message "Downloading from host"
+    $Job = Start-Job -ScriptBlock { Invoke-WebRequest -Uri "https://www.gutenberg.org/cache/epub/1184/pg1184.txt" -OutFile "TheRoadNotTaken.txt" }
+    Show-WebRequestDownloadJobState -DownloadJob $Job  -Message "Downloading from host"
 
-  Waits for the download job to complete
+    Waits for the download job to complete
 
   .EXAMPLE
-  Start-Job -ScriptBlock {
-    Invoke-WebRequest -Uri "https://www.gutenberg.org/cache/epub/1184/pg1184.txt" -OutFile "TheRoadNotTaken.txt"
-  } | Show-WebRequestDownloadJobState -Message "Downloading from host"
+    Start-Job -ScriptBlock {
+      Invoke-WebRequest -Uri "https://www.gutenberg.org/cache/epub/1184/pg1184.txt" -OutFile "TheRoadNotTaken.txt"
+    } | Show-WebRequestDownloadJobState -Message "Downloading from host"
 
-  Waits for the download job to complete
+    Waits for the download job to complete
 
   .NOTES
-  Filename: Show-WebRequestDownloadJobState.ps1
-  Version 1.2
-  Author: neuralpain
-  Created: 2024-03-16
-  Updated: 2024-03-19
+    Filename: Show-WebRequestDownloadJobState.ps1
+    Version 1.2
+    Author: neuralpain
+    Created: 2024-03-16
+    Updated: 2024-03-19
 
-  Version history:
+    Version history:
   
-  1.0  -  Initial release with basic functionality
+    1.0  -  Initial release with basic functionality
   
-  1.1  -  Bug fixes
+    1.1  -  Bug fixes
   
-  1.2  -  Change text color
+    1.2  -  Change text color
   #>
   [CmdletBinding()]
   param(

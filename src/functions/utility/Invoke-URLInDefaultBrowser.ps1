@@ -1,22 +1,21 @@
-# using jkdba/Invoke-URLInDefaultBrowser.ps1 <https://gist.github.com/jkdba/54fd3a3222ee3bae1436028d54634e7a>
 function Invoke-URLInDefaultBrowser {
   <#
   .SYNOPSIS
-      Cmdlet to open a URL in the User's default browser.
+    Cmdlet to open a URL in the User's default browser.
     
   .DESCRIPTION
-      Cmdlet to open a URL in the User's default browser.
+    Cmdlet to open a URL in the User's default browser.
     
   .PARAMETER URL
-      Specify the URL to be Opened.
+    Specify the URL to be Opened.
     
   .EXAMPLE
-      PS> Invoke-URLInDefaultBrowser -URL 'http://jkdba.com'
+    PS> Invoke-URLInDefaultBrowser -URL 'http://jkdba.com'
       
-      This will open the website "jkdba.com" in the user's default browser.
+    This will open the website "jkdba.com" in the user's default browser.
     
   .NOTES
-      This cmdlet has only been test on Windows 10, using edge, chrome, and firefox as default browsers.
+    This cmdlet has only been test on Windows 10, using edge, chrome, and firefox as default browsers.
   #>
   [CmdletBinding()]
   param (

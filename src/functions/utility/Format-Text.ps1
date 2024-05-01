@@ -1,91 +1,91 @@
 function Format-Text {
   <#
   .SYNOPSIS
-  Writes text with color and formatting
+    Writes text with color and formatting
 
   .DESCRIPTION
-  Writes text with color, formatting and RGB support
+    Writes text with color, formatting and RGB support
   
   .INPUTS
-  This function accepts pipeline input.
+    This function accepts pipeline input.
 
   .PARAMETER Text
-  The text to be written
+    The text to be written
 
   .PARAMETER Foreground
-  The foreground color of the text to be written.
-  Accepts a valid color name, 8-bit 0-255 integer value, 24-bit RGB 0,0,0 format.
+    The foreground color of the text to be written.
+    Accepts a valid color name, 8-bit 0-255 integer value, 24-bit RGB 0,0,0 format.
 
   .PARAMETER Background
-  The background color of the text to be written.
-  Accepts a valid color name, 8-bit 0-255 integer value, 24-bit RGB 0,0,0 format.
+    The background color of the text to be written.
+    Accepts a valid color name, 8-bit 0-255 integer value, 24-bit RGB 0,0,0 format.
 
   .PARAMETER Formatting
-  The text formatting options to be applied to the text.
-  Accepts a list of valid formatting options:
-    - Bold
-    - Dim
-    - Underline
-    - Blink
-    - Reverse
-    - Hidden
+    The text formatting options to be applied to the text.
+    Accepts a list of valid formatting options:
+      - Bold
+      - Dim
+      - Underline
+      - Blink
+      - Reverse
+      - Hidden
 
   .PARAMETER BitDepth
-  The bit depth of the text to be written.
-  Accepts values: 8 or 24
+    The bit depth of the text to be written.
+    Accepts values: 8 or 24
   
   .EXAMPLE
-  Format-Text -Text "This is some red text on a black background" -Foreground Red -Background Black
+    Format-Text -Text "This is some red text on a black background" -Foreground Red -Background Black
   
   .EXAMPLE
-  Write-Host "This text: $(Format-Text -Text "is green and underlined" -Foreground Green -Formatting Bold, Underline). Cool right?"
+    Write-Host "This text: $(Format-Text -Text "is green and underlined" -Foreground Green -Formatting Bold, Underline). Cool right?"
 
 
   .EXAMPLE
-  Format-Text -Console -Foreground Blue -Background White
-  
-  This example shows how to change the color of the console.
+    Format-Text -Console -Foreground Blue -Background White
+    
+    This example shows how to change the color of the console.
 
   .EXAMPLE
-  "Lorem ipsum dolor sit amet" | Format-Text -BitDepth 8 -Foreground 166 -Formatting Bold
-  
-  "Lorem ipsum dolor sit amet" | Format-Text -BitDepth 24 -Foreground 12,66,34 -Formatting Underline
+    "Lorem ipsum dolor sit amet" | Format-Text -BitDepth 8 -Foreground 166 -Formatting Bold
+    
+    "Lorem ipsum dolor sit amet" | Format-Text -BitDepth 24 -Foreground 12,66,34 -Formatting Underline
 
-  This example shows how to pipe text to the function with color in 8 and 24 bit depth.
+    This example shows how to pipe text to the function with color in 8 and 24 bit depth.
 
   .NOTES
-  8-bit color format:
-  
-  ESC[38;5;⟨n⟩m Select foreground color, where `n` is a number from the table below
-  ESC[48;5;⟨n⟩m Select background color, where `n` is a number from the table below
-  
-      0-7:  standard colors (as in ESC [ 30-37 m)
-     8-15:  high intensity colors (as in ESC [ 90-97 m)
-   16-231:  6 × 6 × 6 cube (216 colors): 16 + 36 × r + 6 × g + b (0 ≤ r, g, b ≤ 5)
-  232-255:  grayscale from dark to light in 24 steps
+    8-bit color format:
+    
+    ESC[38;5;⟨n⟩m Select foreground color, where `n` is a number from the table below
+    ESC[48;5;⟨n⟩m Select background color, where `n` is a number from the table below
+    
+        0-7:  standard colors (as in ESC [ 30-37 m)
+      8-15:  high intensity colors (as in ESC [ 90-97 m)
+    16-231:  6 × 6 × 6 cube (216 colors): 16 + 36 × r + 6 × g + b (0 ≤ r, g, b ≤ 5)
+    232-255:  grayscale from dark to light in 24 steps
 
 
-  RGB color format:
+    RGB color format:
 
-  ESC[38;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB foreground color
-  ESC[48;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB background color
+    ESC[38;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB foreground color
+    ESC[48;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB background color
 
   .NOTES
-  Filename: Format-Text.ps1
-  Version: 1.3
-  Author:  neuralpain
-  Created: 2024-03-17
-  Updated: 2024-04-20
+    Filename: Format-Text.ps1
+    Version: 1.3
+    Author:  neuralpain
+    Created: 2024-03-17
+    Updated: 2024-04-20
 
-  Version history:
+    Version history:
 
-  1.0  -  Initial release
-  
-  1.1  -  Add complete color set for both foreground and background
+    1.0  -  Initial release
+    
+    1.1  -  Add complete color set for both foreground and background
 
-  1.2  -  Add support for 8-bit and 24-bit colors
+    1.2  -  Add support for 8-bit and 24-bit colors
 
-  1.3  -  Add proper support for Light and Dark colors on Forground and Background; and fixed bug on text formatting
+    1.3  -  Add proper support for Light and Dark colors on Forground and Background; and fixed bug on text formatting
   #>
   [CmdletBinding()]
   param(
