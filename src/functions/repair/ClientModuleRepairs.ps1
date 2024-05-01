@@ -29,7 +29,7 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
     # if the comparison returns true, then this client module was modified
     if ((Compare-IsValidHash -File $CLIENT_MODULE_FULL_PATH -Hash $PATCH_HASH)) {
       Write-Host "Lv2: Client module is modified. Repairing..."
-      # remove all files 
+      # remove all files
       Remove-Item "$CLIENT_MODULE_PATH\*" -Force >$null 2>&1
       # fix this error by using the LOCAL_GENUINE_FILE on user system to repair, if this is available
       # if a LOCAL_GENUINE_FILE is not found, then download it from the host
@@ -37,7 +37,7 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
     }
     else {
       # if the comparison with PATCH_HASH returns false, then there is no issue
-      Write-Host "Lv2: No issues found. Nothing to repair." 
+      Write-Host "Lv2: No issues found. Nothing to repair."
       Start-Sleep -Milliseconds $TIME_SLOW
       return
     }
@@ -64,17 +64,7 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
 }
 
 function Repair-GenuineClientModule {
-  param(
-    # [Switch]$IsInstallation
-  )
-
   # Step 1: Check if QuickBooks is installed
-  
-  <#
-  # this just says whether or not the script already checked if QuickBooks is installed
-  if ($IsInstallation) { Repair-GenuineClientModule_LevelOne }
-  #>
-
   switch ($Script:QUICKBOOKS_IS_INSTALLED) {
     $true { Repair-GenuineClientModule_LevelOne; break }
     $false {
@@ -83,7 +73,6 @@ function Repair-GenuineClientModule {
       break
     }
   }
-
   # Step 2: Repair-GenuineClientModule_LevelOne -> Check if the .bak file exists
-  # Step 3: Repair-GenuineClientModule_LevelTwo_SanityCheck -> Check if the client file is the genuine one. Will only run if this is requested.
+  # Step 3: Repair-GenuineClientModule_LevelTwo_SanityCheck -> Check if the client file is the genuine one and make any additional repairs
 }
