@@ -64,7 +64,6 @@ powershell_functions=(
   "$functions/ObjectsAndVariables.ps1"
   # ------------------------------ #
   # -- add misc scripts -- #
-  "$functions/misc/CompareHash.ps1"
   "$functions/misc/ClearIntuitData.ps1"
   "$functions/misc/StopQuickBooksProcesses.ps1"
   # "$functions/misc/BandwidthTest.ps1"
