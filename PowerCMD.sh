@@ -70,6 +70,7 @@ powershell_functions=(
   # "$functions/misc/BandwidthTest.ps1"
   # ------------------------------ #
   # -- add utility scripts -- #
+  "$functions/utility/Compare-IsValidHash.ps1"
   "$functions/utility/Format-Text.ps1"
   "$functions/utility/Invoke-URLInDefaultBrowser.ps1"
   # "$functions/utility/Measure-UserBandwidth.ps1"
