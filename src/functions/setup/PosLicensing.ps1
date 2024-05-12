@@ -29,7 +29,7 @@ function Get-UserOwnLicense {
     Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
     switch ($query) {
       "y" { Get-UserOwnLicense; break }
-      default { $Script:RUN_PROCEDURE = $null; break }
+      default { $Script:RUN_NEXT_PROCEDURE = $null; break }
     }
   }
   

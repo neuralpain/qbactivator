@@ -22,8 +22,6 @@ $OK = 0x0000
 $ERR = 0x0001
 $EXIT_QBA = 0x0002 # no action; complete exit
 $PAUSE = 0x0003
-# $CANCEL = 0x0004
-# $GENERAL_ACTIVATION = 0x0005
 
 $TIME_BLINK = 500
 $TIME_SHORT = 800
@@ -52,7 +50,7 @@ $PROC_ACTIVATE = 0x208b
 $PROC_WRITE_LIES = 0x208c
 $PROC_LICENSE = 0x208d
 $PROC_TROUBLESHOOT = 0x208e
-$PROC_NONE = 0x208f
+$PROC_EXIT = 0x208f
 $PROC_EMPTY = 0x2090
 $PROC_COMPLETE_EXIT = 0x2091
 $PROC_NEXT_STAGE = 0x2092
@@ -152,7 +150,7 @@ $Script:LICENSE_KEY = ""                          # quickbooks license key
 $Script:QB_VERSION = $null                        # version of quickbooks (to be) installed
 $Script:SELECTED_QB_VERSION = $null               # quickbooks object selected to be installed
 $Script:TARGET_LOCATION = "$pwd"                  # directory where files will be downloaded
-$Script:RUN_PROCEDURE = $null                     # WAS UNUSED, FOUND A USE FOR IT
+$Script:RUN_NEXT_PROCEDURE = $null                # WAS UNUSED, FOUND A USE FOR IT; contains the next step to be run
 $Script:ACTIVATION_ONLY = $false                  # indicate whether or not the script should only activate quickbooks
 
 # IF QUICKBOOKS IS INSTALLED

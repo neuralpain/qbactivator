@@ -1,14 +1,14 @@
 function Invoke-NextProcess {
   param ([Parameter(Mandatory = $true)]$NextProcess)
   
-  $Script:RUN_PROCEDURE = $NextProcess
+  $Script:RUN_NEXT_PROCEDURE = $NextProcess
   
   switch ($NextProcess) {
     $PROC_DOWNLOAD {
       Select-QuickBooksVersion
       Get-QuickBooksObject
       Get-QuickBooksInstaller
-      if ($Script:INSTALLER_DOWNLOAD_ONLY -or $null -eq $Script:RUN_PROCEDURE) { break }
+      if ($Script:INSTALLER_DOWNLOAD_ONLY -or $null -eq $Script:RUN_NEXT_PROCEDURE) { break }
       else { Invoke-NextProcess $PROC_LICENSE }
     }
     $PROC_LICENSE {
@@ -29,11 +29,11 @@ function Invoke-NextProcess {
     }
     $PROC_ACTIVATE {
       Start-PosActivation
-      if ($null -eq $Script:RUN_PROCEDURE) { break }
+      if ($null -eq $Script:RUN_NEXT_PROCEDURE) { break }
       else { Invoke-NextProcess $PROC_NEXT_STAGE }
     }
     $PROC_TROUBLESHOOT { Write-Menu_Troubleshooting }
-    $PROC_NONE {
+    $PROC_EXIT {
       Write-Action_ExitActivator
       exit $EXIT_QBA
     }

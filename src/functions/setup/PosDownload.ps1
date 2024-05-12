@@ -103,40 +103,33 @@ function Get-QuickBooksInstaller {
   
   Write-Host "`nPreparing to download $(Format-Text "POS v$(Get-Version)" -Formatting Blink)... "
   Write-Host "This may take a couple of minutes." -ForegroundColor Yellow
-  Write-Host "Testing connectivity... " -NoNewLine
   
-  if (-not(Test-Connection www.google.com -Quiet)) { 
-    Write-Error_NoInternetConnectivity
-    return
-  }
-  else {
-    Write-Host "OK"
+  &$TestInternetAvailable
 
-    # Get-BandwidthTestResults               # THIS IS NOT USED ANYMORE
+  # Get-BandwidthTestResults               # THIS IS NOT USED ANYMORE
     
-    # Write-Host "Version:         $Version"                              # Debug
-    # Write-Host "ReleaseYear:     $($Script:SELECTED_QB_VERSION.Year)"   # Debug
-    # Write-Host "INSTALLER_SIZE:  $Script:INSTALLER_SIZE"                # Debug
-    # Write-Host "INSTALLER_MBYTE: $Script:INSTALLER_BYTES"               # Debug
-    # Write-Host "BANDWIDTH:       $Script:BANDWIDTH"                     # Debug
-    # Pause                                                               # Debug    
+  # Write-Host "Version:         $Version"                              # Debug
+  # Write-Host "ReleaseYear:     $($Script:SELECTED_QB_VERSION.Year)"   # Debug
+  # Write-Host "INSTALLER_SIZE:  $Script:INSTALLER_SIZE"                # Debug
+  # Write-Host "INSTALLER_MBYTE: $Script:INSTALLER_BYTES"               # Debug
+  # Write-Host "BANDWIDTH:       $Script:BANDWIDTH"                     # Debug
+  # Pause                                                               # Debug    
     
-    Write-Host "Need to download $($Script:INSTALLER_SIZE)MB installer."
-    $query = Read-Host "Do you want to continue? (Y/n)"
+  Write-Host "Need to download $($Script:INSTALLER_SIZE)MB installer."
+  $query = Read-Host "Do you want to continue? (Y/n)"
     
-    switch ($query) {
-      "n" {
-        Write-Action_OperationCancelled
-        # skip the next process and return to menu
-        $Script:RUN_PROCEDURE = $null
-        return
+  switch ($query) {
+    "n" {
+      Write-Action_OperationCancelled
+      # skip the next process and return to menu
+      $Script:RUN_NEXT_PROCEDURE = $null
+      return
       }
-      default {
-        # Compare-BandwidthSpeedToTime -Version (Get-Version) -Bandwidth $Script:BANDWIDTH
+    default {
+      # Compare-BandwidthSpeedToTime -Version (Get-Version) -Bandwidth $Script:BANDWIDTH
   #>
-        Start-InstallerDownload -Version (Get-Version) -Year $Script:SELECTED_QB_VERSION.Year
+      Start-InstallerDownload -Version (Get-Version) -Year $Script:SELECTED_QB_VERSION.Year
   <#
-      }
     }
   }
   #>

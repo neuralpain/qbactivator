@@ -35,7 +35,7 @@ function Write-InfoLink {
   Write-Host "`nFor more information, visit:" -ForegroundColor White
   Write-Host "https://github.com/neuralpain/qbactivator" -ForegroundColor Green
   if ($WithFAQs) { Write-Host "https://github.com/neuralpain/qbactivator/wiki/FAQs" -ForegroundColor Green }
-  if ($ReturnToMenu) { $Script:RUN_PROCEDURE = $null }
+  if ($ReturnToMenu) { $Script:RUN_NEXT_PROCEDURE = $null }
 }
 
 function Write-WaitingScreen {

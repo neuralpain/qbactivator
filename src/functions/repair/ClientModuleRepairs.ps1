@@ -69,7 +69,7 @@ function Repair-GenuineClientModule {
     $true { Repair-GenuineClientModule_LevelOne; break }
     $false {
       Write-Error_QuickBooksNotInstalled
-      $Script:RUN_PROCEDURE = $null
+      $Script:RUN_NEXT_PROCEDURE = $null
       break
     }
   }

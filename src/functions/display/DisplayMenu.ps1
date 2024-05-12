@@ -13,7 +13,7 @@ function Write-Menu_Main {
   
   switch ($query) {
     0 {
-      Invoke-NextProcess $PROC_NONE
+      Invoke-NextProcess $PROC_EXIT
       break
     }
     1 {
