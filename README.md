@@ -35,7 +35,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 ### A few things before you start
 
-- An internet connection *is not* required for activation or adding users, i.e., offline activation is available; but you can let it have that one free phone call to let Intuit know that it's safe.
+- An internet connection **is not** required for activation or adding users, i.e., offline activation is available; but you can let it have that one free phone call to let Intuit know that it's safe.
 - Manually running the QuickBooks POS installer or entering any keys into the installer **is not required** as the script will handle these tasks. You only need to click on the "Next" and "Finish" buttons.
 - Remember that you **should not** launch QuickBooks Point of Sale after installation. Ensure that you uncheck the "Launch QuickBooks" option before clicking on "Finish" and proceeding with the activation process. If QuickBooks is launched, however, the activator should close it automatically.
 - It is recommended to **avoid** installing updates through the application due to some of the features being blocked (ref. [#27][issue_27]), though they are available here if you want to [download them yourself](https://github.com/neuralpain/qbactivator/wiki#optional-updates-for-quickbooks-pos-software-from-intuit).
@@ -51,10 +51,26 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 > [!NOTE]
 > ### Latest Release [⧉][release]
 >
-> **v0.21.2**
+> **v0.22.0**
+> - Add new Troubleshooting menu
+> - Add option `Lv3` in troubleshooting to potentially fix "Invalid Product Code" error
+> - Add 16 more licenses for each version of POS, a total of 64 new licenses; available for client activation
+> - Add links to qbactivator wiki, etc. in Troubleshooting Menu
+> - Add indicators for installation & activation status
+> - Fix instructions not being exported before activation
+> - Fix edge-case loop error scenario when refusing to proceed to download an installer
+> - Enabled transcript log to trace errors encountered during the runtime of the activator
+> - Disabled bandwidth calculation
+> - Code refactoring, minor bug fixes and improvements
 > 
+> *v0.21.2*
 > - Fix validation bug on local patch files
 > - Fix bug preventing launch of QuickBooks POS application after installation
+> - Minor bug fixes
+> 
+> *v0.21.1*
+> - Fix licensing issues for POS v19 ([#30](https://github.com/neuralpain/qbactivator/issues/30)) and custom licenses ([#31](https://github.com/neuralpain/qbactivator/issues/31))
+> - Code refactoring
 
 ### Release Breakdown
 
@@ -112,9 +128,9 @@ Licensed under [BSD 2-Clause](LICENSE).
 [getstarted]: https://github.com/neuralpain/qbactivator/wiki#getting-started
 [update]: https://github.com/neuralpain/qbactivator/wiki#downloads--updates
 [instructions]: https://github.com/neuralpain/qbactivator/wiki/How-to-Use
-[download_cmd]: https://github.com/neuralpain/qbactivator/releases/download/v0.21.2/qbactivator-0.21.2.cmd
-[download_min]: https://github.com/neuralpain/qbactivator/releases/download/v0.21.2/qbactivator-0.21.2.min.zip
-[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.21.2/qbactivator-0.21.2.zip
+[download_cmd]: https://github.com/neuralpain/qbactivator/releases/download/v0.22.0/qbactivator-0.22.0.cmd
+[download_min]: https://github.com/neuralpain/qbactivator/releases/download/v0.22.0/qbactivator-0.22.0.min.zip
+[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.22.0/qbactivator-0.22.0.zip
 [release]: https://github.com/neuralpain/qbactivator/releases/latest
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell
