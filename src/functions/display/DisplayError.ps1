@@ -56,3 +56,9 @@ function Write-Error_UnableToVerifyInstaller {
   Write-InfoLink -ReturnToMenu
   Pause
 }
+
+function Write-Error_UninstallUnsupported {
+  Write-Host "---"
+  Write-Host "Uninstall currently unsupported." -ForegroundColor Yellow
+  Start-Sleep -Milliseconds $TIME_NORMAL
+}
