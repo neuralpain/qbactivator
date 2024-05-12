@@ -10,8 +10,8 @@
   [x] Select License
   [x] Download installer successfully
   [x] Run installer successfully
-  [ ] Download patch file
-  [ ] Download genuine module
+  [x] Download patch file
+  [x] Download genuine module
   [x] Successful Activation
   [x] Make successful repairs on L1
   [x] Make successful repairs on L2
@@ -250,6 +250,14 @@ $InitializeMain = {
   $Script:CUSTOM_LICENSING = $false
   $Script:QUICKBOOKS_IS_INSTALLED = $false
   $Script:ADDITIONAL_CLIENTS = $false
+}
+
+$TestInternetAvailable = {
+  Write-Host -NoNewline "Testing connectivity... "
+  if (-not(Test-Connection www.google.com -Quiet)) { 
+    Write-Error_NoInternetConnectivity
+    Invoke-NextProcess $PROC_RETURN_MAIN
+  } else { Write-Host "OK" }
 }
 
 $VerifyIfQuickBooksIsInstalled = {

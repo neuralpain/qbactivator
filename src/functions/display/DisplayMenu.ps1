@@ -1,3 +1,9 @@
+$InvokeGeneralActivation = {
+  Clear-Terminal
+  Stop-QuickBooksProcesses
+  Invoke-NextProcess $PROC_NEXT_STAGE
+}
+
 function Write-Menu_Main {
   &$InitializeMain
   &$VerifyIfQuickBooksIsInstalled
@@ -16,6 +22,7 @@ function Write-Menu_Main {
       Invoke-NextProcess $PROC_EXIT
       break
     }
+    10 { &$InvokeGeneralActivation }
     1 {
       $Script:SECOND_STORE = $false
       $Script:ADDITIONAL_CLIENTS = $false
@@ -34,7 +41,7 @@ function Write-Menu_Main {
     4 {
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
       Write-LieResponse
-      if ($null -eq $Script:RUN_PROCEDURE) {
+      if ($null -eq $Script:RUN_NEXT_PROCEDURE) {
         Write-Menu_SubMenu
       }
     }
@@ -48,8 +55,8 @@ function Write-Menu_Main {
 function Write-Menu_SubMenu {
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select next operation" -Foreground Gray -Formatting Bold, Underline)`n"
-  Write-Host "1 - Complete POS Installation"
-  Write-Host "2 - Activation Only"
+  Write-Host "1 - Install & Activate"
+  Write-Host "2 - Activate Only"
   Write-Host "3 - Install Only"
   Write-Host "4 - Download a POS installer"
   
@@ -63,6 +70,8 @@ function Write-Menu_SubMenu {
       Write-Menu_Main
       break
     }
+    10 { &$InvokeGeneralActivation }
+    100 { Invoke-NextProcess $PROC_EXIT }
     1 {
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
       Invoke-NextProcess $PROC_DOWNLOAD
@@ -98,6 +107,12 @@ function Write-Menu_VersionSelection {
   Write-Host "0 --- Cancel"
   $query = Read-Host "`nVersion"
   Set-Version $query
+
+  # allow exit at any point in time
+  switch ($query) {
+    10 { &$InvokeGeneralActivation }
+    100 { Invoke-NextProcess $PROC_EXIT }
+  }
 }
 
 function Write-Menu_Troubleshooting {
@@ -114,6 +129,8 @@ function Write-Menu_Troubleshooting {
   Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
   switch ($query) {
     0 { Write-Menu_Main; break }
+    10 { &$InvokeGeneralActivation }
+    100 { Invoke-NextProcess $PROC_EXIT }
     1 {
       Stop-QuickBooksProcesses
       Repair-GenuineClientModule_LevelOne
@@ -159,16 +176,12 @@ function Write-Menu_LinkOptions {
   Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
   switch ($query) {
     0 { Write-Menu_Troubleshooting; break }
+    10 { &$InvokeGeneralActivation }
+    100 { Invoke-NextProcess $PROC_EXIT }
     1 {
       Write-Host "Opening qbactivator Wiki..."
       Invoke-URLInDefaultBrowser -URL "https://github.com/neuralpain/qbactivator/wiki" 
       Write-Menu_LinkOptions
-      break
-    }
-    10 {
-      Clear-Terminal
-      Start-PosActivation
-      Invoke-NextProcess $PROC_NEXT_STAGE
       break
     }
     2 { 

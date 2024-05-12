@@ -24,13 +24,16 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
   # Step 3: Check if the client file is the genuine one. Will only run if this is requested.
   # if a client module is found on the system then, do a comparison with the PATCH_HASH for genuineity
   if ($SanityCheck) { Write-Host "Lv2: Performing a sanity check..." }
+  
   if (Test-Path $CLIENT_MODULE_FULL_PATH -PathType Leaf) {
     Write-Host "Lv2: Found a client module."
     # if the comparison returns true, then this client module was modified
     if ((Compare-IsValidHash -File $CLIENT_MODULE_FULL_PATH -Hash $PATCH_HASH)) {
       Write-Host "Lv2: Client module is modified. Repairing..."
-      # remove all files
+      # remove client files
       Remove-Item "$CLIENT_MODULE_PATH\*" -Force >$null 2>&1
+      # Remove-Item "${CLIENT_MODULE_FULL_PATH}.bak" -Force >$null 2>&1
+      # Remove-Item $CLIENT_MODULE_FULL_PATH -Force >$null 2>&1
       # fix this error by using the LOCAL_GENUINE_FILE on user system to repair, if this is available
       # if a LOCAL_GENUINE_FILE is not found, then download it from the host
       Get-ClientModule -Local $LOCAL_GENUINE_FILE -FromHostUrl $GENUINE_CLIENT_FILE_ON_HOST
@@ -52,7 +55,7 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
       Write-Host "Lv2: Removed unusable client module backup."
     }
   }
-  
+  # ----------------------------------------------------
   # check if the client module was repaired successfully
   if ((Compare-IsValidHash -File $CLIENT_MODULE_FULL_PATH -Hash $PATCH_HASH)) {
     Write-Host "Lv2: Unable to repair the client module." # create fullscreen prompt for this
