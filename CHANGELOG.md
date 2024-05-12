@@ -1,6 +1,19 @@
 # Changelog
 
-## v0.21.2
+## v0.22.0
+- Add new Troubleshooting menu
+- Add option `Lv3` in troubleshooting to potentially fix "Invalid Product Code" error
+- Add 16 more licenses for each version of POS, a total of 64 new licenses; available for client activation
+- Add links to qbactivator wiki, etc. in Troubleshooting Menu
+- Add indicators for installation & activation status
+- Fix instructions not being exported before activation
+- Fix edge-case loop error scenario when refusing to proceed to download an installer
+- Enabled transcript log to trace errors encountered during the runtime of the activator
+- Disabled bandwidth calculation
+<!-- - Fix internet bandwidth calculation with updated `Measure-UserBandwidth` utility -->
+- Code refactoring, minor bug fixes and improvements
+
+#### v0.21.2
 - Fix validation bug on local patch files
 - Fix bug preventing launch of QuickBooks POS application after installation
 - Minor bug fixes

@@ -3,6 +3,7 @@ if %ERRORLEVEL% EQU 0 (
   net start "Intuit Entitlement Service v8" >nul 2>&1
   goto :pos_activation
 ) else if %ERRORLEVEL% EQU 3 (
+  @REM pause screen before exiting
   echo. & pause
   goto exitQBA
 ) else if %ERRORLEVEL% EQU 5 (
