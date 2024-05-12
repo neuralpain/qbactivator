@@ -4,20 +4,6 @@
   Module for activation of QuickBooks Point of Sale
 #>
 
-<# THINGS THAT SHOULD BE WORKING TO SHIP PRODUCTION CODE
-  [x] Display Menu/Sub Menu/Troubleshooting
-  [x] Select Version
-  [x] Select License
-  [x] Download installer successfully
-  [x] Run installer successfully
-  [x] Download patch file
-  [x] Download genuine module
-  [x] Successful Activation
-  [x] Make successful repairs on L1
-  [x] Make successful repairs on L2
-  [x] Make successful repairs on L3
-#>
-
 $OK = 0x0000
 $ERR = 0x0001
 $EXIT_QBA = 0x0002 # no action; complete exit
@@ -203,8 +189,8 @@ $pos11_licenses = @("4152-7820-7508-121", "4710-8115-1842-661", "6666-1981-1862-
 $PATCH_HASH = "1A1816C78925E734FCA16974BDBAA4AA"
 $LOCAL_PATCH_FILE = ".\EntClient.dll"
 $LOCAL_GENUINE_FILE = ".\EntClientGenuine.dll"
-$CLIENT_FILE_ON_HOST = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.22.0-beta/src/bin/ecc/EntClient.dll"
-$GENUINE_CLIENT_FILE_ON_HOST = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.22.0-beta/src/bin/ecc/EntClientGenuine.dll"
+$CLIENT_FILE_ON_HOST = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.22.0/src/bin/ecc/EntClient.dll"
+$GENUINE_CLIENT_FILE_ON_HOST = "https://raw.githubusercontent.com/neuralpain/qbactivator/v0.22.0/src/bin/ecc/EntClientGenuine.dll"
 
 $CLIENT_MODULE_DATA = "EntitlementDataStore.ecml"
 $CLIENT_MODULE_DATA_PATH = "$env:ProgramData\Intuit\Entitlement Client\v8"
