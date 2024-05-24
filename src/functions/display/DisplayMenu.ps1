@@ -14,6 +14,7 @@ function Write-Menu_Main {
   Write-Host "3 - POS Client Workstations"
   Write-Host "4 - I have my own license :p"
   Write-Host "5 - Troubleshooting"
+  Write-Host "6 - Refresh qbactivator"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
@@ -48,7 +49,12 @@ function Write-Menu_Main {
     5 {
       Invoke-NextProcess $PROC_TROUBLESHOOT
     }
-    default { Write-Menu_Main }
+    6 {
+      &$InitializeMain
+      &$VerifyIfQuickBooksIsInstalled    
+      Invoke-NextProcess $PROC_RETURN_MAIN
+    }
+    default { Invoke-NextProcess $PROC_RETURN_MAIN }
   }
 }
 
