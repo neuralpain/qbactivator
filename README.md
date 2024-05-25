@@ -28,7 +28,7 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 - Windows 10
 - Windows 8.1
 - Windows 7 SP1 (requires [Windows Management Framework 4.0][wikiwmf4])
-- Windows Server 2012-2022
+- Windows Server 2012-2022 (ref. [#44][issue_44])
 
 > [!IMPORTANT]  
 > `qbactivator` **requires** at least PowerShell 4.0 [or later][updatepowershell] to be installed on your Windows machine in order to function as intended. If you are using Windows 10 or above, it is likely that PowerShell 5.1 or a later version is already installed on your machine. You can check your PowerShell version by using the `$PSVersionTable` command in PowerShell if you are unsure.
@@ -51,7 +51,12 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 > [!NOTE]
 > ### Latest Release [⧉][release]
 >
-> **v0.22.0**
+> **v0.23.0**
+> - Add manual refresh option to update menu head information
+> - Fix issue [#43](https://github.com/neuralpain/qbactivator/issues/43) where `qba-22` ignored local available POS installers
+> - Minor improvements
+>
+> *v0.22.0*
 > - Add new Troubleshooting menu
 > - Add option `Lv3` in troubleshooting to potentially fix "Invalid Product Code" error
 > - Add 16 more licenses for each version of POS, a total of 64 new licenses; available for client activation
@@ -67,10 +72,6 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 > - Fix validation bug on local patch files
 > - Fix bug preventing launch of QuickBooks POS application after installation
 > - Minor bug fixes
-> 
-> *v0.21.1*
-> - Fix licensing issues for POS v19 ([#30](https://github.com/neuralpain/qbactivator/issues/30)) and custom licenses ([#31](https://github.com/neuralpain/qbactivator/issues/31))
-> - Code refactoring
 
 ### Release Breakdown
 
@@ -128,9 +129,9 @@ Licensed under [BSD 2-Clause](LICENSE).
 [getstarted]: https://github.com/neuralpain/qbactivator/wiki#getting-started
 [update]: https://github.com/neuralpain/qbactivator/wiki#downloads--updates
 [instructions]: https://github.com/neuralpain/qbactivator/wiki/How-to-Use
-[download_cmd]: https://github.com/neuralpain/qbactivator/releases/download/v0.22.0/qbactivator-0.22.0.cmd
-[download_min]: https://github.com/neuralpain/qbactivator/releases/download/v0.22.0/qbactivator-0.22.0.min.zip
-[download]: https://github.com/neuralpain/qbactivator/releases/download/v0.22.0/qbactivator-0.22.0.zip
+[download_cmd]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.23.0.cmd
+[download_min]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.23.0.min.zip
+[download]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.23.0.zip
 [release]: https://github.com/neuralpain/qbactivator/releases/latest
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell
@@ -139,4 +140,5 @@ Licensed under [BSD 2-Clause](LICENSE).
 [issue_10]: https://github.com/neuralpain/qbactivator/issues/10#issuecomment-1416758671
 [issue_12]: https://github.com/neuralpain/qbactivator/issues/12#issuecomment-1478727716
 [issue_27]: https://github.com/neuralpain/qbactivator/issues/27#issuecomment-1913171241
+[issue_44]: https://github.com/neuralpain/qbactivator/issues/44
 <!-- End Links -->

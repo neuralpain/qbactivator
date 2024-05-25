@@ -4,6 +4,10 @@ $InvokeGeneralActivation = {
   Invoke-NextProcess $PROC_NEXT_STAGE
 }
 
+$ExitQbactivator = { Invoke-NextProcess $PROC_EXIT }
+$OpenWiki = { Invoke-URLInDefaultBrowser -URL "https://github.com/neuralpain/qbactivator/wiki" }
+$OpenLogs = { explorer.exe "C:\Windows\Logs\qbactivator" }
+
 function Write-Menu_Main {
   &$InitializeMain
   &$VerifyIfQuickBooksIsInstalled
@@ -14,15 +18,16 @@ function Write-Menu_Main {
   Write-Host "3 - POS Client Workstations"
   Write-Host "4 - I have my own license :p"
   Write-Host "5 - Troubleshooting"
+  Write-Host "6 - Refresh qbactivator"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
   
   switch ($query) {
-    0 {
-      Invoke-NextProcess $PROC_EXIT
-      break
-    }
+    0 { &$ExitQbactivator }
     10 { &$InvokeGeneralActivation }
+    100 { &$ExitQbactivator }
+    300 { &$OpenWiki; Write-Menu_Main }
+    500 { &$OpenLogs; Write-Menu_Main }
     1 {
       $Script:SECOND_STORE = $false
       $Script:ADDITIONAL_CLIENTS = $false
@@ -48,7 +53,12 @@ function Write-Menu_Main {
     5 {
       Invoke-NextProcess $PROC_TROUBLESHOOT
     }
-    default { Write-Menu_Main }
+    6 {
+      &$InitializeMain
+      &$VerifyIfQuickBooksIsInstalled    
+      Invoke-NextProcess $PROC_RETURN_MAIN
+    }
+    default { Invoke-NextProcess $PROC_RETURN_MAIN }
   }
 }
 
@@ -71,10 +81,12 @@ function Write-Menu_SubMenu {
       break
     }
     10 { &$InvokeGeneralActivation }
-    100 { Invoke-NextProcess $PROC_EXIT }
+    100 { &$ExitQbactivator }
+    300 { &$OpenWiki; Write-Menu_SubMenu }
+    500 { &$OpenLogs; Write-Menu_SubMenu }
     1 {
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
-      Invoke-NextProcess $PROC_DOWNLOAD
+      Invoke-NextProcess $PROC_LICENSE
       break
     }
     2 {
@@ -111,7 +123,9 @@ function Write-Menu_VersionSelection {
   # allow exit at any point in time
   switch ($query) {
     10 { &$InvokeGeneralActivation }
-    100 { Invoke-NextProcess $PROC_EXIT }
+    100 { &$ExitQbactivator }
+    300 { &$OpenWiki; Write-Menu_VersionSelection }
+    500 { &$OpenLogs; Write-Menu_VersionSelection }
   }
 }
 
@@ -130,7 +144,9 @@ function Write-Menu_Troubleshooting {
   switch ($query) {
     0 { Write-Menu_Main; break }
     10 { &$InvokeGeneralActivation }
-    100 { Invoke-NextProcess $PROC_EXIT }
+    100 { &$ExitQbactivator }
+    300 { &$OpenWiki; Write-Menu_Troubleshooting }
+    500 { &$OpenLogs; Write-Menu_Troubleshooting }
     1 {
       Stop-QuickBooksProcesses
       Repair-GenuineClientModule_LevelOne
@@ -177,10 +193,12 @@ function Write-Menu_LinkOptions {
   switch ($query) {
     0 { Write-Menu_Troubleshooting; break }
     10 { &$InvokeGeneralActivation }
-    100 { Invoke-NextProcess $PROC_EXIT }
+    100 { &$ExitQbactivator }
+    300 { &$OpenWiki; Write-Menu_LinkOptions }
+    500 { &$OpenLogs; Write-Menu_LinkOptions }
     1 {
       Write-Host "Opening qbactivator Wiki..."
-      Invoke-URLInDefaultBrowser -URL "https://github.com/neuralpain/qbactivator/wiki" 
+      &$OpenWiki
       Write-Menu_LinkOptions
       break
     }
@@ -190,7 +208,7 @@ function Write-Menu_LinkOptions {
       break
     }
     3 {
-      explorer.exe "C:\Windows\Logs\qbactivator"
+      &$OpenLogs
       Write-Menu_LinkOptions
       break
     }

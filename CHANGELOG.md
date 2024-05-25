@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.22.0
+## v0.23.0
+- Add manual refresh option to update menu head information
+- Fix issue [#43](https://github.com/neuralpain/qbactivator/issues/43) where `qba-22` ignored local available POS installers
+- Minor improvements
+
+#### v0.22.0
 - Add new Troubleshooting menu
 - Add option `Lv3` in troubleshooting to potentially fix "Invalid Product Code" error
 - Add 16 more licenses for each version of POS, a total of 64 new licenses; available for client activation
