@@ -80,7 +80,7 @@ function Write-Menu_SubMenu {
     100 { Invoke-NextProcess $PROC_EXIT }
     1 {
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
-      Invoke-NextProcess $PROC_DOWNLOAD
+      Invoke-NextProcess $PROC_LICENSE
       break
     }
     2 {

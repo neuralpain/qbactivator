@@ -13,7 +13,8 @@ function Invoke-NextProcess {
     }
     $PROC_LICENSE {
       &$LocateQuickBooksInstaller
-      &$ValidateQuickBooksInstaller
+      if ($Script:INSTALLER_AVAILABLE) { &$ValidateQuickBooksInstaller }
+      else { Invoke-NextProcess $PROC_DOWNLOAD } # get an installer
       Get-IntuitLicense $Script:INSTALLER_HASH
       Install-IntuitLicense
       Invoke-NextProcess $PROC_INSTALL

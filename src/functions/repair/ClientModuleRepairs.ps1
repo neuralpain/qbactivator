@@ -1,6 +1,8 @@
 function Repair-GenuineClientModule_LevelOne {
-  # param([Switch]$Lv2AddedGenuineClientModule)
-  # Step 2: Check if the .bak file exists
+  <#
+  .SYNOPSIS
+    Check if the .bak file exists
+  #>
   if (Test-Path "${CLIENT_MODULE_FULL_PATH}.bak" -PathType Leaf) {
     Write-Host "Lv1: Fixing error on client module... "
     Remove-Item $CLIENT_MODULE_FULL_PATH -Force >$null 2>&1
@@ -20,8 +22,11 @@ function Repair-GenuineClientModule_LevelOne {
 }
 
 function Repair-GenuineClientModule_LevelTwo_SanityCheck {
+  <#
+  .SYNOPSIS
+    Check if the client file is the genuine one and make any additional repairs. Will only run if this is requested.
+  #>
   param([switch]$SanityCheck)
-  # Step 3: Check if the client file is the genuine one. Will only run if this is requested.
   # if a client module is found on the system then, do a comparison with the PATCH_HASH for genuineity
   if ($SanityCheck) { Write-Host "Lv2: Performing a sanity check..." }
   
@@ -64,18 +69,4 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
     Write-Host "Lv2: Client module repaired successfully."
     Start-Sleep -Milliseconds $TIME_SLOW
   }
-}
-
-function Repair-GenuineClientModule {
-  # Step 1: Check if QuickBooks is installed
-  switch ($Script:QUICKBOOKS_IS_INSTALLED) {
-    $true { Repair-GenuineClientModule_LevelOne; break }
-    $false {
-      Write-Error_QuickBooksNotInstalled
-      $Script:RUN_NEXT_PROCEDURE = $null
-      break
-    }
-  }
-  # Step 2: Repair-GenuineClientModule_LevelOne -> Check if the .bak file exists
-  # Step 3: Repair-GenuineClientModule_LevelTwo_SanityCheck -> Check if the client file is the genuine one and make any additional repairs
 }
