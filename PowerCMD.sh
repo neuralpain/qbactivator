@@ -1,14 +1,18 @@
 #!/bin/bash
 
-# PowerCMD.sh, Version 0.2.4
+# PowerCMD.sh, Version 0.3.0
 # Copyright (c) 2024, neuralpain
 # https://github.com/neuralpain/PowerCMD
 # A bundler to integrate PowerShell with CMD
 
-v="0.2.4"
+v="0.3.0"
 return="PowerCMD:"
 
 # --- START CONFIGURATION --- #
+
+# [ TERMINAL WINDOW CONFIG ]
+window_width=60
+window_height=22
 
 # [ SCRIPT INFO ]
 # edit script version in ./VERSION
@@ -153,18 +157,22 @@ bundle() {
   echo ":: $script_description" >> $cmd_cache
   echo >> $cmd_cache
   echo "@echo off" >> $cmd_cache
-  echo "@mode 60,22" >> $cmd_cache
+  echo "@mode $window_width,$window_height" >> $cmd_cache
   echo "@title $script_title v$version" >> $cmd_cache
   add_pwsh
   echo >> $cmd_cache
-  # -- add batch code | this is optional -- #
-  cat $src/main.cmd >> $cmd_cache
-  echo >> $cmd_cache
-  echo ":qbreadme:" >> $cmd_cache
-  cat $res/doc/instructions.txt >> $cmd_cache
-  echo ":qbreadme:" >> $cmd_cache
-  echo >> $cmd_cache
+
+  # -- add batch code -- #
+  if [[ -f "$src/main.cmd" ]]; then 
+    cat $src/main.cmd >> $cmd_cache
+    echo >> $cmd_cache
+    echo ":qbreadme:" >> $cmd_cache
+    cat $res/doc/instructions.txt >> $cmd_cache
+    echo ":qbreadme:" >> $cmd_cache
+    echo >> $cmd_cache
+  fi
   # -- end batch code -- #
+  
   echo "# ---------- PowerShell Script ---------- #>" >> $cmd_cache
 
   # Loop through the powershell_functions
@@ -203,6 +211,7 @@ compress() {
   done
 
   cd dist
+  
   # ensure that the 'zip' package should be installed
   zip -q $complete_release * || (echo -e "$return error: Failed to create archive." && return)
   # files to exclude in lightweight release
@@ -215,7 +224,7 @@ compress() {
     rm $file
   done
 
-  [[ -f $complete_release ]] && echo -e "$return Archived to \"/dist\""
+  [[ -f $complete_release ]] && echo -e "$return Archived to '/dist'"
 }
 
 printusage() {
