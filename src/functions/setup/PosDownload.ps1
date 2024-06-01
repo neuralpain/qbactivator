@@ -17,12 +17,13 @@ function Get-TimeToComplete {
 
 function Compare-InstallerDownloadSize {  
   # clean up uncompleted donwnload
-  if (-not(Compare-IsValidHash -File $Script:SELECTED_QB_VERSION.Name -Hash $Script:SELECTED_QB_VERSION.Hash)) {
-    # Write-Host $Script:SELECTED_QB_VERSION.Name            # Debug
-    Remove-Item $Script:SELECTED_QB_VERSION.Name
+  if (-not(Compare-IsValidHash -File $Script:SELECTED_QB_OBJECT.Name -Hash $Script:SELECTED_QB_OBJECT.Hash)) {
+    # Write-Host $Script:SELECTED_QB_OBJECT.Name            # Debug
+    Remove-Item $Script:SELECTED_QB_OBJECT.Name
   }
 }
 
+<#
 function Compare-BandwidthSpeedToTime {
   param($Version, $Bandwidth)
   if ($Version -gt 12 -and $Bandwidth -le 2) {
@@ -36,8 +37,13 @@ function Compare-BandwidthSpeedToTime {
     }
   }
 }
+#>
 
 function Select-QuickBooksVersion {
+  <#
+  .NOTES
+    Triggered by `Write-Menu_VersionSelection`
+  #>
   if ($null -ne $Script:QB_VERSION) {
     Write-Host "Already selected version: $(Get-Version)"
     Write-Host "Clear selection?"
@@ -73,66 +79,32 @@ function Select-QuickBooksVersion {
 function Get-QuickBooksObject {
   <#
   .SYNOPSIS
-  Downloads the QuickBooks POS installer from the internet.
+    Downloads the QuickBooks POS installer from the internet.
   
   .DESCRIPTION
-  This function is the first function called by the Install-QuickBooksPOS function.
-  It gets the QuickBooks POS installer from the internet.
+    This function is the first function called by the Install-QuickBooksPOS function.
+    It gets the QuickBooks POS installer from the internet.
   
   .NOTES
-  Linked to Install-QuickBooksPOS
+    Linked to Install-QuickBooksPOS
   #>
   if ($null -eq $Script:QB_VERSION) { Write-Menu_SubMenu } 
   else {
     switch (Get-Version) {
-      $POS19InstObj.VerNum { $Script:SELECTED_QB_VERSION = $POS19InstObj }
-      $POS18InstObj.VerNum { $Script:SELECTED_QB_VERSION = $POS18InstObj }
-      $POS12InstObj.VerNum { $Script:SELECTED_QB_VERSION = $POS12InstObj }
-      $POS11InstObj.VerNum { $Script:SELECTED_QB_VERSION = $POS11InstObj }
+      $POS19InstObj.VerNum { $Script:SELECTED_QB_OBJECT = $POS19InstObj }
+      $POS18InstObj.VerNum { $Script:SELECTED_QB_OBJECT = $POS18InstObj }
+      $POS12InstObj.VerNum { $Script:SELECTED_QB_OBJECT = $POS12InstObj }
+      $POS11InstObj.VerNum { $Script:SELECTED_QB_OBJECT = $POS11InstObj }
     }
 
-    $Script:INSTALLER_SIZE = $Script:SELECTED_QB_VERSION.Size
-    $Script:INSTALLER_BYTES = $Script:SELECTED_QB_VERSION.XByte
-    $Script:INSTALLER_BITS = $Script:SELECTED_QB_VERSION.XBits
+    $Script:INSTALLER_SIZE = $Script:SELECTED_QB_OBJECT.Size
+    $Script:INSTALLER_BYTES = $Script:SELECTED_QB_OBJECT.XByte
+    $Script:INSTALLER_BITS = $Script:SELECTED_QB_OBJECT.XBits
   }
 }
 
 function Get-QuickBooksInstaller {
-  <#
-  Clear-Terminal
-  
-  Write-Host "`nPreparing to download $(Format-Text "POS v$(Get-Version)" -Formatting Blink)... "
-  Write-Host "This may take a couple of minutes." -ForegroundColor Yellow
-  
-  &$TestInternetAvailable
-
-  # Get-BandwidthTestResults               # THIS IS NOT USED ANYMORE
-    
-  # Write-Host "Version:         $Version"                              # Debug
-  # Write-Host "ReleaseYear:     $($Script:SELECTED_QB_VERSION.Year)"   # Debug
-  # Write-Host "INSTALLER_SIZE:  $Script:INSTALLER_SIZE"                # Debug
-  # Write-Host "INSTALLER_MBYTE: $Script:INSTALLER_BYTES"               # Debug
-  # Write-Host "BANDWIDTH:       $Script:BANDWIDTH"                     # Debug
-  # Pause                                                               # Debug    
-    
-  Write-Host "Need to download $($Script:INSTALLER_SIZE)MB installer."
-  $query = Read-Host "Do you want to continue? (Y/n)"
-    
-  switch ($query) {
-    "n" {
-      Write-Action_OperationCancelled
-      # skip the next process and return to menu
-      $Script:RUN_NEXT_PROCEDURE = $null
-      return
-      }
-    default {
-      # Compare-BandwidthSpeedToTime -Version (Get-Version) -Bandwidth $Script:BANDWIDTH
-  #>
-      Start-InstallerDownload -Version (Get-Version) -Year $Script:SELECTED_QB_VERSION.Year
-  <#
-    }
-  }
-  #>
+  Start-InstallerDownload -Version (Get-Version) -Year $Script:SELECTED_QB_OBJECT.Year
 }
 
 function Start-InstallerDownload {

@@ -4,8 +4,11 @@ function Write-License {
 }
 
 function Get-UserOwnLicense {
-  # from `Write-LieResponse`
-  Clear-Host; Write-Host
+  <#
+  .NOTES
+    Triggered by `Write-LieResponse`
+  #>
+  Clear-Terminal
   Write-Host "Enter a valid license below`n" -ForegroundColor White -BackgroundColor DarkCyan
   Write-Host "A valid license pattern: 0000-0000-0000-000" -ForegroundColor White
   Write-Host "A valid product key pattern: 000-000`n" -ForegroundColor White

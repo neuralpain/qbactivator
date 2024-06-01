@@ -23,6 +23,7 @@ function Invoke-NextProcess {
     $PROC_INSTALL {
       if ($Script:INSTALLER_IS_VALID) {
         Invoke-QuickBooksInstaller
+        &$VerifyIfQuickBooksIsInstalled
         if ($Script:QUICKBOOKS_INSTALL_ONLY) { break }
         else { Invoke-NextProcess $PROC_ACTIVATE }
       }

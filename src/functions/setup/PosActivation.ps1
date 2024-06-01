@@ -1,11 +1,10 @@
 function Start-PosActivation {
   Stop-QuickBooksProcesses
-  &$VerifyIfQuickBooksIsInstalled
   
   switch ($Script:QUICKBOOKS_IS_INSTALLED) {
     $true {
       Repair-GenuineClientModule_LevelOne
-      break 
+      break
     }
     $false {
       Write-Error_QuickBooksNotInstalled

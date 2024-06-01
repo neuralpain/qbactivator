@@ -20,12 +20,4 @@ function Start-Installer {
   try { Start-Process -FilePath $Installer -Wait }
   catch { Write-Error_CannotStartInstaller }
   
-  foreach ($path in $qbPathList) { 
-    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { 
-      Clear-Host; Write-Host
-      return
-    } 
-  }
-  
-  Write-Error_QuickBooksNotInstalled
 }

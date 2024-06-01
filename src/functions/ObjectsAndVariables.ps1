@@ -44,18 +44,18 @@ $PROC_DOWNLOAD = 0x2093
 $PROC_RETURN_MAIN = 0x2094
 
 class Installer {
-  [System.Object] $Object
-  [string] $Name
-  [string] $VerNum
-  [string] $Year
-  [string] $Hash
-  [string] $Path
-  [string] $LNum1
-  [string] $LNum2
-  [string] $PNum
-  [int]    $XBits
-  [int]    $XByte
-  [string] $Size
+  [System.Object] $Object    # POS Installer Object
+  [string] $Name             # name of installer
+  [string] $VerNum           # POS version number, e.g. 11 
+  [string] $Year             # POS release year, e.g. 2013
+  [string] $Hash             # installer hash value
+  [string] $Path             # insatllation path
+  [string] $LNum1            # license number #1
+  [string] $LNum2            # license number #2
+  [string] $PNum             # product number
+  [int]    $XBits            # installer bit size
+  [int]    $XByte            # installer byte size
+  [string] $Size             # installer megabyte size
 }
 
 $POS11InstObj = [Installer]@{
@@ -134,7 +134,7 @@ $PosInstalerExe = [Installer]@{
 # MISCELLANEOUS
 $Script:LICENSE_KEY = ""                          # quickbooks license key
 $Script:QB_VERSION = $null                        # version of quickbooks (to be) installed
-$Script:SELECTED_QB_VERSION = $null               # quickbooks object selected to be installed
+$Script:SELECTED_QB_OBJECT = $null               # quickbooks object selected to be installed
 $Script:TARGET_LOCATION = "$pwd"                  # directory where files will be downloaded
 $Script:RUN_NEXT_PROCEDURE = $null                # WAS UNUSED, FOUND A USE FOR IT; contains the next step to be run
 $Script:ACTIVATION_ONLY = $false                  # indicate whether or not the script should only activate quickbooks
@@ -203,7 +203,7 @@ $CLIENT_MODULE_FULL_PATH = "$CLIENT_MODULE_PATH\$CLIENT_MODULE"
 # log file
 $LOG = "C:\Windows\Logs\qbactivator\qbactivator_$(Get-Date -Format "yyyyMMdd_HHmmss").log"
 
-# temp folder for Intuit
+# temp folder for Intuit (is this folder still being used?)
 $intuit_temp = "$env:TEMP\Intuit"
 
 function Clear-Terminal { Clear-Host; Write-Host }
@@ -215,9 +215,7 @@ function Get-License { return $Script:LICENSE_KEY }
 <# --- SCRIPT BLOCKS --- #>
 
 $InitializeMain = {
-  $Script:LICENSE_KEY = ""
   $Script:QB_VERSION = $null
-  $Script:SELECTED_QB_VERSION = $null
   $Script:ACTIVATION_ONLY = $false
   $Script:INSTALLER_SIZE = 0
   $Script:INSTALLER_BITS = 0
