@@ -44,6 +44,7 @@ $PROC_DOWNLOAD = 0x2093
 $PROC_RETURN_MAIN = 0x2094
 
 class Installer {
+  [string] $WindowTitle      # installer window data
   [System.Object] $Object    # POS Installer Object
   [string] $Name             # name of installer
   [string] $VerNum           # POS version number, e.g. 11 
@@ -59,6 +60,7 @@ class Installer {
 }
 
 $POS11InstObj = [Installer]@{
+  WindowTitle = 'QuickBooks Point of Sale 2013'
   Name   = 'QuickBooksPOSV11.exe'
   VerNum = '11'
   Year   = '2013'
@@ -73,6 +75,7 @@ $POS11InstObj = [Installer]@{
 }
 
 $POS12InstObj = [Installer]@{
+  WindowTitle = 'QuickBooks Desktop Point of Sale 12.0'
   Name   = 'QuickBooksPOSV12.exe'
   VerNum = '12'
   Year   = '2015'
@@ -87,6 +90,7 @@ $POS12InstObj = [Installer]@{
 }
 
 $POS18InstObj = [Installer]@{
+  WindowTitle = 'QuickBooks Desktop Point of Sale 18.0'
   Name   = 'QuickBooksPOSV18.exe'
   VerNum = '18'
   Year   = '2018'
@@ -101,6 +105,7 @@ $POS18InstObj = [Installer]@{
 }
 
 $POS19InstObj = [Installer]@{
+  WindowTitle = 'QuickBooks Desktop Point of Sale 19.0'
   Name   = 'QuickBooksPOSV19.exe'
   VerNum = '19'
   Year   = '2019'
