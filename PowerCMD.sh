@@ -80,11 +80,11 @@ powershell_functions=(
   "$functions/utility/Show-WebRequestDownloadJobState.ps1"
   # ------------------------------ #
   # -- add setup scripts -- #
-  "$functions/setup/PosLicensing.ps1"
-  "$functions/setup/PosActivation.ps1"
-  "$functions/setup/PosInstallation.ps1"
   "$functions/setup/PosDownload.ps1"
+  "$functions/setup/PosLicensing.ps1"
+  "$functions/setup/PosInstallation.ps1"
   "$functions/setup/PosClientModule.ps1"
+  "$functions/setup/PosActivation.ps1"
   # ------------------------------ #
   # -- add repair scripts -- #
   "$functions/repair/ClientModuleRepairs.ps1"
