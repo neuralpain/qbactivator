@@ -99,10 +99,13 @@ function Get-IntuitLicense {
         return
       } elseif ($Script:SECOND_STORE) {
         Set-License (Write-License -LNumber $POS19InstObj.LNum2 -PNumber $POS19InstObj.PNum)
+      } elseif ($Script:ADDITIONAL_CLIENTS) {
+        $_license = ($pos19_licenses | Get-Random)
+        Set-License (Write-License -LNumber $_license -PNumber $POS19InstObj.PNum)
       } else {
         Set-License (Write-License -LNumber $POS19InstObj.LNum1 -PNumber $POS19InstObj.PNum)
       }
-    } 
+    }
 
     $POS18InstObj.Hash {
       Set-Version $POS18InstObj.VerNum
@@ -113,10 +116,13 @@ function Get-IntuitLicense {
         return
       } elseif ($Script:SECOND_STORE) {
         Set-License (Write-License -LNumber $POS18InstObj.LNum2 -PNumber $POS18InstObj.PNum)
+      } elseif ($Script:ADDITIONAL_CLIENTS) {
+        $_license = ($pos18_licenses | Get-Random)
+        Set-License (Write-License -LNumber $_license -PNumber $POS18InstObj.PNum)
       } else {
         Set-License (Write-License -LNumber $POS18InstObj.LNum1 -PNumber $POS18InstObj.PNum)
       }
-    } 
+    }
 
     $POS12InstObj.Hash {
       Set-Version $POS12InstObj.VerNum
@@ -127,10 +133,13 @@ function Get-IntuitLicense {
         return
       } elseif ($Script:SECOND_STORE) {
         Set-License (Write-License -LNumber $POS12InstObj.LNum2 -PNumber $POS12InstObj.PNum)
+      } elseif ($Script:ADDITIONAL_CLIENTS) {
+        $_license = ($pos12_licenses | Get-Random)
+        Set-License (Write-License -LNumber $_license -PNumber $POS12InstObj.PNum)
       } else {
         Set-License (Write-License -LNumber $POS12InstObj.LNum1 -PNumber $POS12InstObj.PNum)
       }
-    } 
+    }
     
     $POS11InstObj.Hash {
       Set-Version $POS11InstObj.VerNum
@@ -141,9 +150,12 @@ function Get-IntuitLicense {
         return
       } elseif ($Script:SECOND_STORE) {
         Set-License (Write-License -LNumber $POS11InstObj.LNum2 -PNumber $POS11InstObj.PNum)
+      } elseif ($Script:ADDITIONAL_CLIENTS) {
+        $_license = ($pos11_licenses | Get-Random)
+        Set-License (Write-License -LNumber $_license -PNumber $POS11InstObj.PNum)
       } else {
         Set-License (Write-License -LNumber $POS11InstObj.LNum1 -PNumber $POS11InstObj.PNum)
       }
-    } 
+    }
   }
 }
