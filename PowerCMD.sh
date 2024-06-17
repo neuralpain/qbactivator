@@ -77,6 +77,7 @@ powershell_functions=(
   "$functions/utility/Format-Text.ps1"
   "$functions/utility/Invoke-URLInDefaultBrowser.ps1"
   # "$functions/utility/Measure-UserBandwidth.ps1"
+  "$functions/utility/New-ToastNotification.ps1"
   "$functions/utility/Show-WebRequestDownloadJobState.ps1"
   # ------------------------------ #
   # -- add setup scripts -- #
