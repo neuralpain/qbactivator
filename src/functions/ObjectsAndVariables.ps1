@@ -4,6 +4,11 @@
   Module for activation of QuickBooks Point of Sale
 #>
 
+<#
+  check is quickbooks is installed
+  during activation, reset header screen to show "installing" status
+#>
+
 $OK = 0x0000
 $ERR = 0x0001
 $EXIT_QBA = 0x0002 # no action; complete exit
@@ -230,9 +235,9 @@ $InitializeMain = {
   $Script:INSTALLER_HASH = $null
   $Script:INSTALLER_IS_VALID = $false
   $Script:INSTALLER_AVAILABLE = $false
-  $Script:BANDWIDTH = 0
-  $Script:BANDWIDTH_BITS = 0
-  $Script:BANDWIDTH_BYTES = 0
+  # $Script:BANDWIDTH = 0
+  # $Script:BANDWIDTH_BITS = 0
+  # $Script:BANDWIDTH_BYTES = 0
   # $Script:BANDWIDTH_UNKNOWN = $false
   $Script:RAW_DOWNLOAD_TIME = 0
   $Script:SECOND_STORE = $false
@@ -283,7 +288,7 @@ $ValidateQuickBooksInstaller = {
   Write-Host -NoNewLine "Verifying `"$($Script:INSTALLER_OBJECT)`"... "
   foreach ($hash in $qbHashList) {
     if (Compare-IsValidHash -Hash $hash -File $Script:INSTALLER_OBJECT) {
-      Write-Host "Valid."
+      Write-Host "$($Script:INSTALLER_OBJECT) is valid."
       $Script:INSTALLER_IS_VALID = $true
       $Script:INSTALLER_HASH = $hash
       return
