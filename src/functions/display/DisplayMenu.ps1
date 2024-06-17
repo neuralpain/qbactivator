@@ -1,6 +1,7 @@
 $InvokeGeneralActivation = {
   Clear-Terminal
   Stop-QuickBooksProcesses
+  New-ToastNotification -ToastText "Forced General Activation initiated" -ToastTitle "qbactivator"
   Invoke-NextProcess $PROC_NEXT_STAGE
 }
 

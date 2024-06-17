@@ -297,11 +297,13 @@ $ValidateQuickBooksInstaller = {
 
 $LocateQuickBooksInstaller = {
   Write-Host "`nLocating QuickBooks POS installer..."
+  New-ToastNotification -ToastText "Locating QuickBooks POS installer..." -ToastTitle "qbactivator"
   # Find which installer version is available and compare 
   # known hashes against the installer for verification
   foreach ($exe in $qbExeList) {
     if (Test-Path ".\$exe" -PathType Leaf) {
-      Write-Host "Found `"$exe`"."
+      Write-Host "Found `"$exe`""
+      New-ToastNotification -ToastText "Found `"$exe`"" -ToastTitle "qbactivator"
       $Script:INSTALLER_AVAILABLE = $true
       $Script:INSTALLER_OBJECT = $exe
       Set-Version ($exe.Trim("QuickBooksPOSV.exe"))

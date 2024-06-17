@@ -17,7 +17,10 @@ function Start-Installer {
   Remove-Item $intuit_temp -Recurse -Force >$null 2>&1
   Write-WaitingScreen
   
-  try { Start-Process -FilePath $Installer -Wait }
+  try { 
+    New-ToastNotification -ToastText "Installing QuickBooks POS..." -ToastTitle "qbactivator"
+    Start-Process -FilePath $Installer -Wait 
+  }
   catch { Write-Error_CannotStartInstaller }
   
 }
