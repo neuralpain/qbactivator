@@ -65,7 +65,13 @@ remove_files=(
 )
 # declare a list of your PowerShell functions here
 powershell_functions=(
-  "$functions/ObjectsAndVariables.ps1"
+  "$functions/init/Header.ps1"
+  "$functions/init/ScriptVariables.ps1"
+  "$functions/init/InstallerObjectClass.ps1"
+  "$functions/init/PosInstallerObjects.ps1"
+  "$functions/init/InstallerVariables.ps1"
+  "$functions/init/ScriptBlocks.ps1"
+  "$functions/init/Init.ps1"
   # ------------------------------ #
   # -- add misc scripts -- #
   "$functions/misc/ClearIntuitData.ps1"
