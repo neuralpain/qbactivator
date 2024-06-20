@@ -20,6 +20,28 @@ $InitializeMain = {
   $Script:ADDITIONAL_CLIENTS = $false
 }
 
+$OpenLogs = {
+  New-ToastNotification -ToastText "Locating qbactivator logs..." -ToastTitle "qbactivator"
+  explorer.exe "C:\Windows\Logs\qbactivator"
+}
+
+$InvokeGeneralActivation = {
+  Clear-Terminal
+  Stop-QuickBooksProcesses
+  New-ToastNotification -ToastText "Forced General Activation initiated" -ToastTitle "qbactivator"
+  Invoke-NextProcess $PROC_NEXT_STAGE
+}  
+
+$ExitQbactivator = {
+  New-ToastNotification -ToastText "Exiting qbactivator..." -ToastTitle "qbactivator"
+  Invoke-NextProcess $PROC_EXIT
+}  
+
+$OpenWiki = { 
+  New-ToastNotification -ToastText "Opening qbactivator Wiki..." -ToastTitle "qbactivator"
+  Invoke-URLInDefaultBrowser -URL "https://github.com/neuralpain/qbactivator/wiki" 
+}  
+
 $TestInternetAvailable = {
   Write-Host -NoNewline "Testing connectivity... "
   if (-not(Test-Connection www.google.com -Quiet)) { 

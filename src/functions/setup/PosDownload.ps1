@@ -23,22 +23,6 @@ function Compare-InstallerDownloadSize {
   }
 }
 
-<#
-function Compare-BandwidthSpeedToTime {
-  param($Version, $Bandwidth)
-  if ($Version -gt 12 -and $Bandwidth -le 2) {
-    Write-Host "Download may take more than 5 minutes to complete`nover your current network." -ForegroundColor Yellow
-    $query = Read-Host "Are you ready to start the download? (Y/n)"
-    
-    if ($query -eq "n") {
-      Write-Action_OperationCancelled
-      Select-QuickBooksVersion
-      Get-QuickBooksInstaller
-    }
-  }
-}
-#>
-
 function Select-QuickBooksVersion {
   <#
   .NOTES
@@ -103,10 +87,6 @@ function Get-QuickBooksObject {
   }
 }
 
-function Get-QuickBooksInstaller {
-  Start-InstallerDownload -Version (Get-Version) -Year $Script:SELECTED_QB_OBJECT.Year
-}
-
 function Start-InstallerDownload {
   <#
   .SYNOPSIS
@@ -117,26 +97,24 @@ function Start-InstallerDownload {
   from the internet. The download progress is displayed in the console
   and estimated time of completion is calculated based on the user's
   internet speed.
-  #>
-  param($Version, $Year, $Target = $Script:TARGET_LOCATION)
-  
+  #>  
   Clear-Terminal
-
-  Write-Host " Downloading POS v$($Version), $($Script:INSTALLER_SIZE)MB... " -ForegroundColor White -BackgroundColor DarkCyan
+  Write-Host " Downloading POS v$($Script:SELECTED_QB_OBJECT.VerNum), $($Script:INSTALLER_SIZE)MB... " -ForegroundColor White -BackgroundColor DarkCyan
+  New-ToastNotification -ToastText "Downloading POS v$($Script:SELECTED_QB_OBJECT.Name), $($Script:INSTALLER_SIZE)MB..." -ToastTitle "Download started"
   
   if (-not($Script:BANDWIDTH_UNKNOWN)) {
     $estimated_download_time = Get-TimeToComplete $Script:INSTALLER_BITS $Script:BANDWIDTH_BITS
-    Write-Host "`nDST: $Target`nETC: $estimated_download_time @ $($Script:BANDWIDTH) Mbps" -ForegroundColor White
+    Write-Host "`nDST: $($Script:TARGET_LOCATION)`nETC: $estimated_download_time @ $($Script:BANDWIDTH) Mbps" -ForegroundColor White
   }
   else {
-    Write-Host "`nDST: $Target`nETC: UNKNOWN_DURATION @ >0.01 Mbps" -ForegroundColor White
+    Write-Host "`nDST: $($Script:TARGET_LOCATION)`nETC: UNKNOWN_DURATION @ >0.01 Mbps" -ForegroundColor White
   }
   
   Write-Host "`nEstimated time is calculated from the point that your`ninternet speed was tested. This is just an estimation and`nmay not reflect the actual time that it would take for the`ndownload to complete on your system. This is subject to`nchange as your internet speed fluctuates."
   Write-Host "`nPlease wait while the installer is being downloaded.`nThe installer will be started automatically after the`ndownload is complete.`n" -ForegroundColor Yellow
   
-  $installer_download_path = "$Target\QuickBooksPOSV${Version}.exe"
-  $installer_download_url = "https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/${Year}/Latest/QuickBooksPOSV${Version}.exe"
+  $installer_download_path = "$($Script:TARGET_LOCATION)\$($Script:SELECTED_QB_OBJECT.Name)"
+  $installer_download_url = "$($Script:SELECTED_QB_OBJECT.Url)"
 
   $installer_download_job = Start-Job -ScriptBlock {
     param($url, $Destination)

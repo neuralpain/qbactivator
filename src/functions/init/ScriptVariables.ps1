@@ -8,22 +8,6 @@ $TIME_SHORT = 800
 $TIME_NORMAL = 1000
 $TIME_SLOW = 2000
 
-<# unused but kept for reference
-enum QbaStatus {
-  SUCCESS
-  FAILURE
-  NONE
-  PAUSED
-  CANCELLED
-  INVALID
-  BAD_HASH
-  BAD_LICENSE
-  BAD_VERIFICATION
-  OPTION_UNAVAILABLE 
-  QUICKBOOKS_NOT_INSTALLED
-}
-#>
-
 # THIS! ...because Enums in PowerShell don't work how I want them to
 $PROC_INSTALL = 0x208a
 $PROC_ACTIVATE = 0x208b
@@ -40,7 +24,7 @@ $PROC_RETURN_MAIN = 0x2094
 # MISCELLANEOUS
 $Script:LICENSE_KEY = ""                          # quickbooks license key
 $Script:QB_VERSION = $null                        # version of quickbooks (to be) installed
-$Script:SELECTED_QB_OBJECT = $null               # quickbooks object selected to be installed
+$Script:SELECTED_QB_OBJECT = $null                # quickbooks object selected to be installed
 $Script:TARGET_LOCATION = "$pwd"                  # directory where files will be downloaded
 $Script:RUN_NEXT_PROCEDURE = $null                # WAS UNUSED, FOUND A USE FOR IT; contains the next step to be run
 $Script:ACTIVATION_ONLY = $false                  # indicate whether or not the script should only activate quickbooks

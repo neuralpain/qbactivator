@@ -1,4 +1,4 @@
-function Repair-GenuineClientModule_LevelOne {
+function Repair-LevelOne_GenuineClientModule {
   <#
   .SYNOPSIS
     Check if the .bak file exists
@@ -12,7 +12,7 @@ function Repair-GenuineClientModule_LevelOne {
       Write-Host "Lv1: Unable to resolve error."
       Write-Host "Lv1: Escalating to Lv2..."
       Start-Sleep -Milliseconds $TIME_SLOW
-      Repair-GenuineClientModule_LevelTwo_SanityCheck
+      Repair-LevelTwo_GenuineClientModule_SanityCheck
     }
   }
   else {
@@ -21,7 +21,7 @@ function Repair-GenuineClientModule_LevelOne {
   }
 }
 
-function Repair-GenuineClientModule_LevelTwo_SanityCheck {
+function Repair-LevelTwo_GenuineClientModule_SanityCheck {
   <#
   .SYNOPSIS
     Check if the client file is the genuine one and make any additional repairs. Will only run if this is requested.
@@ -37,8 +37,6 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
       Write-Host "Lv2: Client module is modified. Repairing..."
       # remove client files
       Remove-Item "$CLIENT_MODULE_PATH\*" -Force >$null 2>&1
-      # Remove-Item "${CLIENT_MODULE_FULL_PATH}.bak" -Force >$null 2>&1
-      # Remove-Item $CLIENT_MODULE_FULL_PATH -Force >$null 2>&1
       # fix this error by using the LOCAL_GENUINE_FILE on user system to repair, if this is available
       # if a LOCAL_GENUINE_FILE is not found, then download it from the host
       Get-ClientModule -Local $LOCAL_GENUINE_FILE -FromHostUrl $GENUINE_CLIENT_FILE_ON_HOST
@@ -69,4 +67,25 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
     Write-Host "Lv2: Client module repaired successfully."
     Start-Sleep -Milliseconds $TIME_SLOW
   }
+}
+
+function Repair-LevelThree_Reactivation {
+  # ensure the the quickbooks entitlement client is available for reactivation
+  if (-not(Test-Path $CLIENT_MODULE_FULL_PATH -PathType Leaf)) {
+    if (-not(Test-Path "${CLIENT_MODULE_FULL_PATH}.bak" -PathType Container)) {
+      Write-Error_QuickBooksNotInstalled
+    }
+  }
+  
+  # 如 entitlement client 不在, 没问题，就创建新的
+  if (-not(Test-Path $CLIENT_MODULE_DATA_PATH -PathType Container)) {
+    Write-Host "Lv3: Data folder not found."
+    New-Item $CLIENT_MODULE_DATA_PATH -ItemType Directory >$null 2>&1
+    Write-Host "Lv3: Created new data folder."
+    return
+  }
+  
+  Write-Host -NoNewline "Lv3: Removing old activation data... "
+  Remove-Item "$CLIENT_MODULE_DATA_PATH\*" -Force >$null 2>&1
+  Write-Host "Done"
 }

@@ -3,7 +3,7 @@ function Start-PosActivation {
   
   switch ($Script:QUICKBOOKS_IS_INSTALLED) {
     $true {
-      Repair-GenuineClientModule_LevelOne
+      Repair-LevelOne_GenuineClientModule
       break
     }
     $false {

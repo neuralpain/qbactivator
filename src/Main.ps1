@@ -7,9 +7,16 @@ function Invoke-NextProcess {
     $PROC_DOWNLOAD {
       Select-QuickBooksVersion
       Get-QuickBooksObject
-      Get-QuickBooksInstaller
-      if ($Script:INSTALLER_DOWNLOAD_ONLY -or $null -eq $Script:RUN_NEXT_PROCEDURE) { break }
-      else { Invoke-NextProcess $PROC_LICENSE }
+      if ($null -eq $Script:RUN_NEXT_PROCEDURE) { break }
+      elseif ($Script:INSTALLER_DOWNLOAD_ONLY) {
+        &$TestInternetAvailable
+        Start-InstallerDownload
+        break
+      }
+      else {
+        Start-InstallerDownload
+        Invoke-NextProcess $PROC_LICENSE
+      }
     }
     $PROC_LICENSE {
       &$LocateQuickBooksInstaller

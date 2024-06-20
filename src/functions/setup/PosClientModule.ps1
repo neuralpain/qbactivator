@@ -10,27 +10,6 @@ $VerifyClientModulePatch = {
   }
 }
 
-function Clear-ClientActivationFolder {
-  # ensure the the quickbooks entitlement client is available for reactivation
-  if (-not(Test-Path $CLIENT_MODULE_FULL_PATH -PathType Leaf)) {
-    if (-not(Test-Path "${CLIENT_MODULE_FULL_PATH}.bak" -PathType Container)) {
-      Write-Error_QuickBooksNotInstalled
-    }
-  }
-  
-  # 如 entitlement client 不在, 没问题，就创建新的
-  if (-not(Test-Path $CLIENT_MODULE_DATA_PATH -PathType Container)) {
-    Write-Host "L3: Data folder not found."
-    New-Item $CLIENT_MODULE_DATA_PATH -ItemType Directory >$null 2>&1
-    Write-Host "L3: Created new data folder."
-    return
-  }
-  
-  Write-Host -NoNewline "L3: Removing old activation data... "
-  Remove-Item "$CLIENT_MODULE_DATA_PATH\*" -Force >$null 2>&1
-  Write-Host "Done"
-}
-
 function Get-ClientModule {
   param ($Local, $FromHostUrl)
   # check if the local file exists

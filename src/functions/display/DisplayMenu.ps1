@@ -1,14 +1,3 @@
-$InvokeGeneralActivation = {
-  Clear-Terminal
-  Stop-QuickBooksProcesses
-  New-ToastNotification -ToastText "Forced General Activation initiated" -ToastTitle "qbactivator"
-  Invoke-NextProcess $PROC_NEXT_STAGE
-}
-
-$ExitQbactivator = { Invoke-NextProcess $PROC_EXIT }
-$OpenWiki = { Invoke-URLInDefaultBrowser -URL "https://github.com/neuralpain/qbactivator/wiki" }
-$OpenLogs = { explorer.exe "C:\Windows\Logs\qbactivator" }
-
 function Write-Menu_Main {
   &$InitializeMain
   &$VerifyIfQuickBooksIsInstalled
@@ -150,18 +139,18 @@ function Write-Menu_Troubleshooting {
     500 { &$OpenLogs; Write-Menu_Troubleshooting }
     1 {
       Stop-QuickBooksProcesses
-      Repair-GenuineClientModule_LevelOne
+      Repair-LevelOne_GenuineClientModule
       Write-Menu_Troubleshooting
       break
     }
     2 {
       Stop-QuickBooksProcesses
-      Repair-GenuineClientModule_LevelTwo_SanityCheck
+      Repair-LevelTwo_GenuineClientModule_SanityCheck
       Write-Menu_Troubleshooting
       break
     }
     3 {
-      Clear-ClientActivationFolder
+      Repair-LevelThree_Reactivation
       Write-Host "Starting reactivation process..."
       Invoke-NextProcess $PROC_ACTIVATE
       break
@@ -213,5 +202,6 @@ function Write-Menu_LinkOptions {
       Write-Menu_LinkOptions
       break
     }
+    default { Write-Menu_LinkOptions; break }
   }
 }
