@@ -78,3 +78,9 @@ $Script:INSTALLER_IS_VALID = $false               # indicate whether or not the 
 # download and security level preferences
 $global:ProgressPreference = "SilentlyContinue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# log file
+$LOG = "C:\Windows\Logs\qbactivator\qbactivator_$(Get-Date -Format "yyyyMMdd_HHmmss").log"
+
+# temp folder for Intuit (is this folder still being used?)
+$intuit_temp = "$env:TEMP\Intuit"
