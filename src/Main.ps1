@@ -14,6 +14,7 @@ function Invoke-NextProcess {
         break
       }
       else {
+        &$TestInternetAvailable
         Start-InstallerDownload
         Invoke-NextProcess $PROC_LICENSE
       }
