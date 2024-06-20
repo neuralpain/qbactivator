@@ -118,7 +118,10 @@ function Start-InstallerDownload {
 
   $installer_download_job = Start-Job -ScriptBlock {
     param($url, $Destination)
-    try { Invoke-WebRequest -Uri $url -OutFile $Destination }
+    try { 
+      Invoke-WebRequest -Uri $url -OutFile $Destination
+      New-ToastNotification -ToastText "Successfully downloaded $($Script:SELECTED_QB_OBJECT.Name)." -ToastTitle "Download complete"
+    }
     catch { Write-Host "Error: $_" -ForegroundColor Red }
     finally { Compare-InstallerDownloadSize }
   } -ArgumentList $installer_download_url, $installer_download_path

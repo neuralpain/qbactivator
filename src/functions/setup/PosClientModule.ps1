@@ -25,6 +25,7 @@ function Get-ClientModule {
   &$TestInternetAvailable
   Write-Host "Downloading, please wait..."
   Start-BitsTransfer $FromHostUrl $CLIENT_MODULE_FULL_PATH
+  New-ToastNotification -ToastText "Client module downloaded." -ToastTitle "Download complete"
   return
 }
 

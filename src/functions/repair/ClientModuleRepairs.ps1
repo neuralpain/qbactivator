@@ -13,6 +13,9 @@ function Repair-LevelOne_GenuineClientModule {
       Write-Host "Lv1: Escalating to Lv2..."
       Start-Sleep -Milliseconds $TIME_SLOW
       Repair-LevelTwo_GenuineClientModule_SanityCheck
+    } else {
+      # notify the user that the client module was successfully repaired
+      New-ToastNotification -ToastText "Lv1: Client module restored." -ToastTitle "Client Module Repair"
     }
   }
   else {
@@ -62,9 +65,13 @@ function Repair-LevelTwo_GenuineClientModule_SanityCheck {
   # check if the client module was repaired successfully
   if ((Compare-IsValidHash -File $CLIENT_MODULE_FULL_PATH -Hash $PATCH_HASH)) {
     Write-Host "Lv2: Unable to repair the client module." # create fullscreen prompt for this
+    # notify the user that the client module was not repaired
+    New-ToastNotification -ToastText "Lv2: Unable to repair the client module." -ToastTitle "Client Module Repair"
   }
   else {
     Write-Host "Lv2: Client module repaired successfully."
+    # notify the user that the client module was successfully repaired
+    New-ToastNotification -ToastText "Lv2: Client module repaired successfully." -ToastTitle "Client Module Repair"
     Start-Sleep -Milliseconds $TIME_SLOW
   }
 }
@@ -88,4 +95,6 @@ function Repair-LevelThree_Reactivation {
   Write-Host -NoNewline "Lv3: Removing old activation data... "
   Remove-Item "$CLIENT_MODULE_DATA_PATH\*" -Force >$null 2>&1
   Write-Host "Done"
+
+  New-ToastNotification -ToastText "Activation data has been cleared." -ToastTitle "Client Module Repair"
 }

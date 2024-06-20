@@ -47,7 +47,7 @@ function Write-Error_QuickBooksNotInstalled {
 
 function Write-Error_FileNotFound($File) {
   Clear-Terminal
-  New-ToastNotification -ToastText "File not found." -ToastTitle "Download Error"
+  New-ToastNotification -ToastText "File `"$File`" not found." -ToastTitle "Download Error"
   Write-Host "The requested file could not be downloaded" -ForegroundColor White -BackgroundColor DarkRed
   Write-Host "`nThe file was not found on the server at `"$File`"" -ForegroundColor White
   Write-Host "Please submit this issue to @neuralpain. Thank you." -ForegroundColor White
@@ -57,7 +57,7 @@ function Write-Error_FileNotFound($File) {
 
 function Write-Error_UnableToVerifyInstaller {
   Clear-Terminal
-  New-ToastNotification -ToastText "Unable to verify the installer." -ToastTitle "Installer Error"
+  New-ToastNotification -ToastText "Unable to verify `"$Script:INSTALLER_OBJECT`"." -ToastTitle "Installer Error"
   Write-Host "Failed to verify the installer." -ForegroundColor White -BackgroundColor DarkRed
   Write-Host "`nThe installer `"$Script:INSTALLER_OBJECT`" may be corrupted." -ForegroundColor Yellow
   Write-InfoLink -ReturnToMenu
@@ -65,7 +65,6 @@ function Write-Error_UnableToVerifyInstaller {
 }
 
 function Write-Error_UninstallUnsupported {
-  New-ToastNotification -ToastText "Uninstall is not supported." -ToastTitle "Uninstall Error"
   Write-Host "---"
   Write-Host "Uninstall currently unsupported." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_NORMAL
