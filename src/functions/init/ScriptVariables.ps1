@@ -59,6 +59,10 @@ $Script:INSTALLER_IS_VALID = $false               # indicate whether or not the 
 [bool]$Script:CUSTOM_LICENSING = $false           # indicate whether or not the user added a custom license
 [bool]$Script:ADDITIONAL_CLIENTS = $false         # indicate whether or not the user wants to activate additional clients
 
+# CONFIG
+$Script:TOAST_NOTIFICATIONS = 1
+# $Script:ALLOW_ONLINE = 1 # UNUSED
+
 # download and security level preferences
 $global:ProgressPreference = "SilentlyContinue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

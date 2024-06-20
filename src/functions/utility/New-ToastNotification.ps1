@@ -29,6 +29,8 @@ function New-ToastNotification {
     $ToastText
   )
 
+  if ($Script:TOAST_NOTIFICATIONS -eq 0) { return }
+
   [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null
   $Template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02)
 
