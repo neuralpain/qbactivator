@@ -103,11 +103,12 @@ fc "%CLIENT_MODULE%" "%CLIENT_MODULE%.bak" > nul
 :: error handling if files have not been restored
 if %ERRORLEVEL% EQU 1 (
   cls & echo.
-  echo The script ran into a problem while attempting to restore
+  echo qbactivator ran into a problem while attempting to restore
   echo the client.
   echo.
-  echo Restart the script and request activation to automatically
-  echo resolve the error. You may choose to exit afterwards.
+  echo Restart qbactivator and go through the troubleshooting
+  echo "Lv1: Restore" to resolve the error. You may choose to
+  echo exit the script afterwards.
   echo. & pause
   goto :exitQBA
 ) else (
@@ -124,6 +125,6 @@ if %ERRORLEVEL% EQU 1 (
 taskkill /f /fi "WindowTitle eq README*" >nul 2>&1
 del "%wdir%README.txt" >nul 2>&1
 cls & echo.
-echo Activator will now terminate.
+echo qbactivator will now terminate.
 ping -n 1 127.0.0.1 >nul
 goto :eof
