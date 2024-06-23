@@ -64,7 +64,7 @@ $Script:TOAST_NOTIFICATIONS = 1
 # $Script:ALLOW_ONLINE = 1 # UNUSED
 
 # download and security level preferences
-$global:ProgressPreference = "SilentlyContinue"
+$Script:ProgressPreference = "SilentlyContinue"
 # securely enable TLS 1.2 to download files
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
