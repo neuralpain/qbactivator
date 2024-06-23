@@ -60,8 +60,8 @@ $Script:INSTALLER_IS_VALID = $false               # indicate whether or not the 
 [bool]$Script:ADDITIONAL_CLIENTS = $false         # indicate whether or not the user wants to activate additional clients
 
 # CONFIG
-$Script:TOAST_NOTIFICATIONS = 1
 # $Script:ALLOW_ONLINE = 1 # UNUSED
+# $Script:TOAST_NOTIFICATIONS = 1                 # enable toast notifications, UNUSED
 
 # download and security level preferences
 $Script:ProgressPreference = "SilentlyContinue"

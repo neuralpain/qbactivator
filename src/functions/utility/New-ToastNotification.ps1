@@ -28,8 +28,9 @@ function New-ToastNotification {
     [parameter(ValueFromPipeline)]
     $ToastText
   )
-
-  if ($Script:TOAST_NOTIFICATIONS -eq 0) { return }
+  
+  # don't allow toast notifications on operating systems below Windows 10
+  if (((Get-WmiObject -Class Win32_OperatingSystem).Version.Split('.')[0]) -lt 10) { return }
 
   [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null
   $Template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02)
