@@ -65,7 +65,8 @@ $Script:TOAST_NOTIFICATIONS = 1
 
 # download and security level preferences
 $global:ProgressPreference = "SilentlyContinue"
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+# securely enable TLS 1.2 to download files
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
 
 # log file
 $LOG = "C:\Windows\Logs\qbactivator\qbactivator_$(Get-Date -Format "yyyyMMdd_HHmmss").log"
