@@ -1,4 +1,5 @@
 function Start-PosActivation {
+  Clear-Terminal
   Stop-QuickBooksProcesses
   
   switch ($Script:QUICKBOOKS_IS_INSTALLED) {
