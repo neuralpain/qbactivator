@@ -35,12 +35,12 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 ### A few things before you start
 
-- An internet connection **is not** required for activation or adding users, i.e., offline activation is available; but you can let it have that one free phone call to let Intuit know that it's safe.
+- An internet connection **is not** required for activation or adding users, i.e., you can activate offline; but you can let it have that one free phone call to let Intuit know that it's safe.
 - Manually running the QuickBooks POS installer or entering any keys into the installer **is not required** as the script will handle these tasks. You only need to click on the "Next" and "Finish" buttons.
-- Remember that you **should not** launch QuickBooks Point of Sale after installation. Ensure that you uncheck the "Launch QuickBooks" option before clicking on "Finish" and proceeding with the activation process. If QuickBooks is launched, however, the activator should close it automatically.
+- Remember that you **should not** launch QuickBooks Point of Sale after installation. Ensure that you uncheck the "Launch QuickBooks Point Of Sale" option before clicking on "Finish" and proceeding with the activation process.
 - It is recommended to **avoid** installing updates through the application due to some of the features being blocked (ref. [#27][issue_27]), though they are available here if you want to [download them yourself](https://github.com/neuralpain/qbactivator/wiki#optional-updates-for-quickbooks-pos-software-from-intuit).
 - All versions of QuickBooks Desktop Point of Sale, including v12, v18, and v19, are licensed as `Pro Multistore Level`. The only exception is POS v11, which is licensed as `Pro Level`.
-- [View the instructions][instructions] to run `qbactivator` and activate QuickBooks
+- [View the instructions][instructions] to run `qbactivator` and activate QuickBooks.
 - [Read the FAQs](#faqs) for further information and guidance for any concerns you may have.
 
 > [!WARNING]  
@@ -51,7 +51,13 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 > [!NOTE]
 > ### Latest Release [⧉][release]
 >
-> **v0.23.0**
+> **v0.24.0**
+> - Fix critical bug affecting additional Client licenses
+> - Add Toast notifications
+> - TLS security improvements
+> - Bug fixes and improvements
+>
+> *v0.23.0*
 > - Add manual refresh option to update menu head information
 > - Fix issue [#43](https://github.com/neuralpain/qbactivator/issues/43) where `qba-22` ignored local available POS installers
 > - Minor improvements
@@ -67,21 +73,18 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 > - Enabled transcript log to trace errors encountered during the runtime of the activator
 > - Disabled bandwidth calculation
 > - Code refactoring, minor bug fixes and improvements
-> 
-> *v0.21.2*
-> - Fix validation bug on local patch files
-> - Fix bug preventing launch of QuickBooks POS application after installation
-> - Minor bug fixes
 
 ### Release Breakdown
 
 Each release of qbactivator comes with 3 packages:
 
-- <code>**qbactivator-[version][.zip][download]**</code> – the complete release which contains all the files necessary to activate the QuickBooks POS software **offline**. Also contains the LICENSE and README.
-- <code>**qbactivator-[version][.min.zip][download_min]**</code> – a lightweight release ZIP package (take note of the `.min` in the name) which does not contain any of the larger files which can be downloaded online, e.g. the patch file. Contains the LICENSE and README.
-- <code>**qbactivator-[version][.cmd][download_cmd]**</code> – just the script file.
+- <code>**qbactivator-[version][.zip][download]**</code>: the complete release which contains all the files necessary to activate the QuickBooks POS software **offline**. It also includes the LICENSE and README.
+- <code>**qbactivator-[version][.min.zip][download_min]**</code>: a lightweight release ZIP package (take note of the `.min` in the name) which excludes larger files that can be downloaded online, such as the patch file. It also includes the LICENSE and README.
+- <code>**qbactivator-[version][.cmd][download_cmd]**</code>: just the script file with no other files.
 
-They all do the same job since they are the same single script packaged differently. The regular package is best for people who don't have access to the internet at the location of a specific workstation or prefer to activate offline. The `.min.zip` and single `.cmd` are smallest to carry around and suit people with fast internet speeds for downloads and people who just need a quick fix.
+All packages perform the same function as they are derived from a single script, merely packaged in different formats. The regular package is ideal for users who either lack internet access at a specific workstation or prefer to activate the software offline. 
+
+On the other hand, the `.min.zip` package and the single `.cmd` file are smaller and more portable. These formats are perfect for users with fast internet connections who can quickly download the files, or for those who need a swift, on-the-go solution.
 
 ### Available QuickBooks POS Software from Intuit
 
@@ -129,9 +132,9 @@ Licensed under [BSD 2-Clause](LICENSE).
 [getstarted]: https://github.com/neuralpain/qbactivator/wiki#getting-started
 [update]: https://github.com/neuralpain/qbactivator/wiki#downloads--updates
 [instructions]: https://github.com/neuralpain/qbactivator/wiki/How-to-Use
-[download_cmd]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.23.0.cmd
-[download_min]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.23.0.min.zip
-[download]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.23.0.zip
+[download_cmd]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.24.0.cmd
+[download_min]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.24.0.min.zip
+[download]: https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.24.0.zip
 [release]: https://github.com/neuralpain/qbactivator/releases/latest
 [powershell]: https://github.com/PowerShell/PowerShell/releases/latest
 [updatepowershell]: https://github.com/neuralpain/qbactivator/wiki/Updating-PowerShell
