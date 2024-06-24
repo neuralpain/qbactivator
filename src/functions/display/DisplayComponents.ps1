@@ -60,6 +60,6 @@ function Write-Action_OperationCancelled {
 
 function Write-Action_OptionUnavailable {
   Write-Host "---"
-  Write-Host "Disabled when QuickBooks is installed." -ForegroundColor Yellow
+  Write-Host "This option is disabled." -ForegroundColor Yellow
   Start-Sleep -Milliseconds $TIME_NORMAL
 }
