@@ -78,10 +78,9 @@ function Repair-LevelTwo_GenuineClientModule_SanityCheck {
 
 function Repair-LevelThree_Reactivation {
   # ensure the the quickbooks entitlement client is available for reactivation
-  if (-not(Test-Path $CLIENT_MODULE_FULL_PATH -PathType Leaf)) {
-    if (-not(Test-Path "${CLIENT_MODULE_FULL_PATH}.bak" -PathType Container)) {
-      Write-Error_QuickBooksNotInstalled
-    }
+  if (-not($Script:QUICKBOOKS_IS_INSTALLED)) {
+    Write-Error_QuickBooksNotInstalled
+    return
   }
   
   # 如 entitlement client 不在, 没问题，就创建新的
