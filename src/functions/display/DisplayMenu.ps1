@@ -1,3 +1,11 @@
+<#
+  Menu Shortcuts / HotKeys
+    100: Exit Qbactivator
+    200: Open Troubleshooting Menu
+    300: Open wiki
+    500: Open logs
+#>
+
 function Write-Menu_Main {
   &$InitializeMain
   &$VerifyIfQuickBooksIsInstalled
@@ -16,6 +24,7 @@ function Write-Menu_Main {
     0 { &$ExitQbactivator }
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_Main }
     500 { &$OpenLogs; Write-Menu_Main }
     1 {
@@ -41,6 +50,7 @@ function Write-Menu_Main {
       }
     }
     5 {
+      &$CheckQuickBooksIsNotInstalled_ReturnToMainMenu
       Invoke-NextProcess $PROC_TROUBLESHOOT
     }
     6 {
@@ -72,6 +82,7 @@ function Write-Menu_SubMenu {
     }
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_SubMenu }
     500 { &$OpenLogs; Write-Menu_SubMenu }
     1 {
@@ -114,6 +125,7 @@ function Write-Menu_VersionSelection {
   switch ($query) {
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_VersionSelection }
     500 { &$OpenLogs; Write-Menu_VersionSelection }
   }
@@ -135,6 +147,7 @@ function Write-Menu_Troubleshooting {
     0 { Write-Menu_Main; break }
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_Troubleshooting }
     500 { &$OpenLogs; Write-Menu_Troubleshooting }
     1 {
@@ -184,6 +197,7 @@ function Write-Menu_LinkOptions {
     0 { Write-Menu_Troubleshooting; break }
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_LinkOptions }
     500 { &$OpenLogs; Write-Menu_LinkOptions }
     1 {
