@@ -1,4 +1,4 @@
-function Repair-GenuineClientModule_LevelOne {
+function Repair-LevelOne_GenuineClientModule {
   <#
   .SYNOPSIS
     Check if the .bak file exists
@@ -12,7 +12,10 @@ function Repair-GenuineClientModule_LevelOne {
       Write-Host "Lv1: Unable to resolve error."
       Write-Host "Lv1: Escalating to Lv2..."
       Start-Sleep -Milliseconds $TIME_SLOW
-      Repair-GenuineClientModule_LevelTwo_SanityCheck
+      Repair-LevelTwo_GenuineClientModule_SanityCheck
+    } else {
+      # notify the user that the client module was successfully repaired
+      New-ToastNotification -ToastText "Lv1: Client module restored." -ToastTitle "Client Module Repair"
     }
   }
   else {
@@ -21,7 +24,7 @@ function Repair-GenuineClientModule_LevelOne {
   }
 }
 
-function Repair-GenuineClientModule_LevelTwo_SanityCheck {
+function Repair-LevelTwo_GenuineClientModule_SanityCheck {
   <#
   .SYNOPSIS
     Check if the client file is the genuine one and make any additional repairs. Will only run if this is requested.
@@ -37,8 +40,6 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
       Write-Host "Lv2: Client module is modified. Repairing..."
       # remove client files
       Remove-Item "$CLIENT_MODULE_PATH\*" -Force >$null 2>&1
-      # Remove-Item "${CLIENT_MODULE_FULL_PATH}.bak" -Force >$null 2>&1
-      # Remove-Item $CLIENT_MODULE_FULL_PATH -Force >$null 2>&1
       # fix this error by using the LOCAL_GENUINE_FILE on user system to repair, if this is available
       # if a LOCAL_GENUINE_FILE is not found, then download it from the host
       Get-ClientModule -Local $LOCAL_GENUINE_FILE -FromHostUrl $GENUINE_CLIENT_FILE_ON_HOST
@@ -64,9 +65,35 @@ function Repair-GenuineClientModule_LevelTwo_SanityCheck {
   # check if the client module was repaired successfully
   if ((Compare-IsValidHash -File $CLIENT_MODULE_FULL_PATH -Hash $PATCH_HASH)) {
     Write-Host "Lv2: Unable to repair the client module." # create fullscreen prompt for this
+    # notify the user that the client module was not repaired
+    New-ToastNotification -ToastText "Lv2: Unable to repair the client module." -ToastTitle "Client Module Repair"
   }
   else {
     Write-Host "Lv2: Client module repaired successfully."
+    # notify the user that the client module was successfully repaired
+    New-ToastNotification -ToastText "Lv2: Client module repaired successfully." -ToastTitle "Client Module Repair"
     Start-Sleep -Milliseconds $TIME_SLOW
   }
+}
+
+function Repair-LevelThree_Reactivation {
+  # ensure the the quickbooks entitlement client is available for reactivation
+  if (-not($Script:QUICKBOOKS_IS_INSTALLED)) {
+    Write-Error_QuickBooksNotInstalled
+    return
+  }
+  
+  # 如 entitlement client 不在, 没问题，就创建新的
+  if (-not(Test-Path $CLIENT_MODULE_DATA_PATH -PathType Container)) {
+    Write-Host "Lv3: Data folder not found."
+    New-Item $CLIENT_MODULE_DATA_PATH -ItemType Directory >$null 2>&1
+    Write-Host "Lv3: Created new data folder."
+    return
+  }
+  
+  Write-Host -NoNewline "Lv3: Removing old activation data... "
+  Remove-Item "$CLIENT_MODULE_DATA_PATH\*" -Force >$null 2>&1
+  Write-Host "Done"
+
+  New-ToastNotification -ToastText "Activation data has been cleared." -ToastTitle "Client Module Repair"
 }

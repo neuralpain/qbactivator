@@ -4,6 +4,7 @@ function Invoke-QuickBooksInstaller {
   }
   else {
     Write-Host "A QuickBooks POS installer was not found." -ForegroundColor Yellow
+    New-ToastNotification -ToastText "A QuickBooks POS installer was not found." -ToastTitle "Installer not found"
     Start-Sleep -Milliseconds $TIME_SLOW
     $Script:RUN_NEXT_PROCEDURE = $null
     return
@@ -17,15 +18,10 @@ function Start-Installer {
   Remove-Item $intuit_temp -Recurse -Force >$null 2>&1
   Write-WaitingScreen
   
-  try { Start-Process -FilePath $Installer -Wait }
+  try { 
+    New-ToastNotification -ToastText "Installing QuickBooks POS..." -ToastTitle "qbactivator"
+    Start-Process -FilePath $Installer -Wait 
+  }
   catch { Write-Error_CannotStartInstaller }
   
-  foreach ($path in $qbPathList) { 
-    if (Test-Path "${env:ProgramFiles(x86)}\$path\QBPOSShell.exe" -PathType Leaf) { 
-      Clear-Host; Write-Host
-      return
-    } 
-  }
-  
-  Write-Error_QuickBooksNotInstalled
 }

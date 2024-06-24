@@ -17,27 +17,17 @@ function Get-TimeToComplete {
 
 function Compare-InstallerDownloadSize {  
   # clean up uncompleted donwnload
-  if (-not(Compare-IsValidHash -File $Script:SELECTED_QB_VERSION.Name -Hash $Script:SELECTED_QB_VERSION.Hash)) {
-    # Write-Host $Script:SELECTED_QB_VERSION.Name            # Debug
-    Remove-Item $Script:SELECTED_QB_VERSION.Name
-  }
-}
-
-function Compare-BandwidthSpeedToTime {
-  param($Version, $Bandwidth)
-  if ($Version -gt 12 -and $Bandwidth -le 2) {
-    Write-Host "Download may take more than 5 minutes to complete`nover your current network." -ForegroundColor Yellow
-    $query = Read-Host "Are you ready to start the download? (Y/n)"
-    
-    if ($query -eq "n") {
-      Write-Action_OperationCancelled
-      Select-QuickBooksVersion
-      Get-QuickBooksInstaller
-    }
+  if (-not(Compare-IsValidHash -File $Script:SELECTED_QB_OBJECT.Name -Hash $Script:SELECTED_QB_OBJECT.Hash)) {
+    # Write-Host $Script:SELECTED_QB_OBJECT.Name            # Debug
+    Remove-Item $Script:SELECTED_QB_OBJECT.Name
   }
 }
 
 function Select-QuickBooksVersion {
+  <#
+  .NOTES
+    Triggered by `Write-Menu_VersionSelection`
+  #>
   if ($null -ne $Script:QB_VERSION) {
     Write-Host "Already selected version: $(Get-Version)"
     Write-Host "Clear selection?"
@@ -73,66 +63,28 @@ function Select-QuickBooksVersion {
 function Get-QuickBooksObject {
   <#
   .SYNOPSIS
-  Downloads the QuickBooks POS installer from the internet.
+    Downloads the QuickBooks POS installer from the internet.
   
   .DESCRIPTION
-  This function is the first function called by the Install-QuickBooksPOS function.
-  It gets the QuickBooks POS installer from the internet.
+    This function is the first function called by the Install-QuickBooksPOS function.
+    It gets the QuickBooks POS installer from the internet.
   
   .NOTES
-  Linked to Install-QuickBooksPOS
+    Linked to Install-QuickBooksPOS
   #>
   if ($null -eq $Script:QB_VERSION) { Write-Menu_SubMenu } 
   else {
     switch (Get-Version) {
-      $POS19InstObj.VerNum { $Script:SELECTED_QB_VERSION = $POS19InstObj }
-      $POS18InstObj.VerNum { $Script:SELECTED_QB_VERSION = $POS18InstObj }
-      $POS12InstObj.VerNum { $Script:SELECTED_QB_VERSION = $POS12InstObj }
-      $POS11InstObj.VerNum { $Script:SELECTED_QB_VERSION = $POS11InstObj }
+      $POS19InstObj.VerNum { $Script:SELECTED_QB_OBJECT = $POS19InstObj }
+      $POS18InstObj.VerNum { $Script:SELECTED_QB_OBJECT = $POS18InstObj }
+      $POS12InstObj.VerNum { $Script:SELECTED_QB_OBJECT = $POS12InstObj }
+      $POS11InstObj.VerNum { $Script:SELECTED_QB_OBJECT = $POS11InstObj }
     }
 
-    $Script:INSTALLER_SIZE = $Script:SELECTED_QB_VERSION.Size
-    $Script:INSTALLER_BYTES = $Script:SELECTED_QB_VERSION.XByte
-    $Script:INSTALLER_BITS = $Script:SELECTED_QB_VERSION.XBits
+    $Script:INSTALLER_SIZE = $Script:SELECTED_QB_OBJECT.Size
+    $Script:INSTALLER_BYTES = $Script:SELECTED_QB_OBJECT.XByte
+    $Script:INSTALLER_BITS = $Script:SELECTED_QB_OBJECT.XBits
   }
-}
-
-function Get-QuickBooksInstaller {
-  <#
-  Clear-Terminal
-  
-  Write-Host "`nPreparing to download $(Format-Text "POS v$(Get-Version)" -Formatting Blink)... "
-  Write-Host "This may take a couple of minutes." -ForegroundColor Yellow
-  
-  &$TestInternetAvailable
-
-  # Get-BandwidthTestResults               # THIS IS NOT USED ANYMORE
-    
-  # Write-Host "Version:         $Version"                              # Debug
-  # Write-Host "ReleaseYear:     $($Script:SELECTED_QB_VERSION.Year)"   # Debug
-  # Write-Host "INSTALLER_SIZE:  $Script:INSTALLER_SIZE"                # Debug
-  # Write-Host "INSTALLER_MBYTE: $Script:INSTALLER_BYTES"               # Debug
-  # Write-Host "BANDWIDTH:       $Script:BANDWIDTH"                     # Debug
-  # Pause                                                               # Debug    
-    
-  Write-Host "Need to download $($Script:INSTALLER_SIZE)MB installer."
-  $query = Read-Host "Do you want to continue? (Y/n)"
-    
-  switch ($query) {
-    "n" {
-      Write-Action_OperationCancelled
-      # skip the next process and return to menu
-      $Script:RUN_NEXT_PROCEDURE = $null
-      return
-      }
-    default {
-      # Compare-BandwidthSpeedToTime -Version (Get-Version) -Bandwidth $Script:BANDWIDTH
-  #>
-      Start-InstallerDownload -Version (Get-Version) -Year $Script:SELECTED_QB_VERSION.Year
-  <#
-    }
-  }
-  #>
 }
 
 function Start-InstallerDownload {
@@ -145,30 +97,31 @@ function Start-InstallerDownload {
   from the internet. The download progress is displayed in the console
   and estimated time of completion is calculated based on the user's
   internet speed.
-  #>
-  param($Version, $Year, $Target = $Script:TARGET_LOCATION)
-  
+  #>  
   Clear-Terminal
-
-  Write-Host " Downloading POS v$($Version), $($Script:INSTALLER_SIZE)MB... " -ForegroundColor White -BackgroundColor DarkCyan
+  Write-Host " Downloading POS v$($Script:SELECTED_QB_OBJECT.VerNum), $($Script:INSTALLER_SIZE)MB... " -ForegroundColor White -BackgroundColor DarkCyan
+  New-ToastNotification -ToastText "Downloading POS v$($Script:SELECTED_QB_OBJECT.Name), $($Script:INSTALLER_SIZE)MB..." -ToastTitle "Download started"
   
   if (-not($Script:BANDWIDTH_UNKNOWN)) {
     $estimated_download_time = Get-TimeToComplete $Script:INSTALLER_BITS $Script:BANDWIDTH_BITS
-    Write-Host "`nDST: $Target`nETC: $estimated_download_time @ $($Script:BANDWIDTH) Mbps" -ForegroundColor White
+    Write-Host "`nDST: $($Script:TARGET_LOCATION)`nETC: $estimated_download_time @ $($Script:BANDWIDTH) Mbps" -ForegroundColor White
   }
   else {
-    Write-Host "`nDST: $Target`nETC: UNKNOWN_DURATION @ >0.01 Mbps" -ForegroundColor White
+    Write-Host "`nDST: $($Script:TARGET_LOCATION)`nETC: UNKNOWN_DURATION @ >0.01 Mbps" -ForegroundColor White
   }
   
   Write-Host "`nEstimated time is calculated from the point that your`ninternet speed was tested. This is just an estimation and`nmay not reflect the actual time that it would take for the`ndownload to complete on your system. This is subject to`nchange as your internet speed fluctuates."
   Write-Host "`nPlease wait while the installer is being downloaded.`nThe installer will be started automatically after the`ndownload is complete.`n" -ForegroundColor Yellow
   
-  $installer_download_path = "$Target\QuickBooksPOSV${Version}.exe"
-  $installer_download_url = "https://dlm2.download.intuit.com/akdlm/SBD/QuickBooks/${Year}/Latest/QuickBooksPOSV${Version}.exe"
+  $installer_download_path = "$($Script:TARGET_LOCATION)\$($Script:SELECTED_QB_OBJECT.Name)"
+  $installer_download_url = "$($Script:SELECTED_QB_OBJECT.Url)"
 
   $installer_download_job = Start-Job -ScriptBlock {
     param($url, $Destination)
-    try { Invoke-WebRequest -Uri $url -OutFile $Destination }
+    try { 
+      Invoke-WebRequest -Uri $url -OutFile $Destination
+      New-ToastNotification -ToastText "Successfully downloaded $($Script:SELECTED_QB_OBJECT.Name)." -ToastTitle "Download complete"
+    }
     catch { Write-Host "Error: $_" -ForegroundColor Red }
     finally { Compare-InstallerDownloadSize }
   } -ArgumentList $installer_download_url, $installer_download_path

@@ -1,12 +1,10 @@
-$InvokeGeneralActivation = {
-  Clear-Terminal
-  Stop-QuickBooksProcesses
-  Invoke-NextProcess $PROC_NEXT_STAGE
-}
-
-$ExitQbactivator = { Invoke-NextProcess $PROC_EXIT }
-$OpenWiki = { Invoke-URLInDefaultBrowser -URL "https://github.com/neuralpain/qbactivator/wiki" }
-$OpenLogs = { explorer.exe "C:\Windows\Logs\qbactivator" }
+<#
+  Menu Shortcuts / HotKeys
+    100: Exit Qbactivator
+    200: Open Troubleshooting Menu
+    300: Open wiki
+    500: Open logs
+#>
 
 function Write-Menu_Main {
   &$InitializeMain
@@ -26,6 +24,7 @@ function Write-Menu_Main {
     0 { &$ExitQbactivator }
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_Main }
     500 { &$OpenLogs; Write-Menu_Main }
     1 {
@@ -51,6 +50,7 @@ function Write-Menu_Main {
       }
     }
     5 {
+      &$CheckQuickBooksIsNotInstalled_ReturnToMainMenu
       Invoke-NextProcess $PROC_TROUBLESHOOT
     }
     6 {
@@ -82,6 +82,7 @@ function Write-Menu_SubMenu {
     }
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_SubMenu }
     500 { &$OpenLogs; Write-Menu_SubMenu }
     1 {
@@ -124,6 +125,7 @@ function Write-Menu_VersionSelection {
   switch ($query) {
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_VersionSelection }
     500 { &$OpenLogs; Write-Menu_VersionSelection }
   }
@@ -145,22 +147,23 @@ function Write-Menu_Troubleshooting {
     0 { Write-Menu_Main; break }
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_Troubleshooting }
     500 { &$OpenLogs; Write-Menu_Troubleshooting }
     1 {
       Stop-QuickBooksProcesses
-      Repair-GenuineClientModule_LevelOne
+      Repair-LevelOne_GenuineClientModule
       Write-Menu_Troubleshooting
       break
     }
     2 {
       Stop-QuickBooksProcesses
-      Repair-GenuineClientModule_LevelTwo_SanityCheck
+      Repair-LevelTwo_GenuineClientModule_SanityCheck
       Write-Menu_Troubleshooting
       break
     }
     3 {
-      Clear-ClientActivationFolder
+      Repair-LevelThree_Reactivation
       Write-Host "Starting reactivation process..."
       Invoke-NextProcess $PROC_ACTIVATE
       break
@@ -194,6 +197,7 @@ function Write-Menu_LinkOptions {
     0 { Write-Menu_Troubleshooting; break }
     10 { &$InvokeGeneralActivation }
     100 { &$ExitQbactivator }
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
     300 { &$OpenWiki; Write-Menu_LinkOptions }
     500 { &$OpenLogs; Write-Menu_LinkOptions }
     1 {
@@ -212,5 +216,6 @@ function Write-Menu_LinkOptions {
       Write-Menu_LinkOptions
       break
     }
+    default { Write-Menu_LinkOptions; break }
   }
 }

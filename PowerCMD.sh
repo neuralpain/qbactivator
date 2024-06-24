@@ -1,14 +1,18 @@
 #!/bin/bash
 
-# PowerCMD.sh, Version 0.2.4
+# PowerCMD.sh, Version 0.3.0
 # Copyright (c) 2024, neuralpain
 # https://github.com/neuralpain/PowerCMD
 # A bundler to integrate PowerShell with CMD
 
-v="0.2.4"
+v="0.3.0"
 return="PowerCMD:"
 
 # --- START CONFIGURATION --- #
+
+# [ TERMINAL WINDOW CONFIG ]
+window_width=60
+window_height=22
 
 # [ SCRIPT INFO ]
 # edit script version in ./VERSION
@@ -61,7 +65,13 @@ remove_files=(
 )
 # declare a list of your PowerShell functions here
 powershell_functions=(
-  "$functions/ObjectsAndVariables.ps1"
+  "$functions/init/Header.ps1"
+  "$functions/init/ScriptVariables.ps1"
+  "$functions/init/InstallerObjectClass.ps1"
+  "$functions/init/PosInstallerObjects.ps1"
+  "$functions/init/InstallerVariables.ps1"
+  "$functions/init/ScriptBlocks.ps1"
+  "$functions/init/Init.ps1"
   # ------------------------------ #
   # -- add misc scripts -- #
   "$functions/misc/ClearIntuitData.ps1"
@@ -73,14 +83,15 @@ powershell_functions=(
   "$functions/utility/Format-Text.ps1"
   "$functions/utility/Invoke-URLInDefaultBrowser.ps1"
   # "$functions/utility/Measure-UserBandwidth.ps1"
+  "$functions/utility/New-ToastNotification.ps1"
   "$functions/utility/Show-WebRequestDownloadJobState.ps1"
   # ------------------------------ #
   # -- add setup scripts -- #
-  "$functions/setup/PosLicensing.ps1"
-  "$functions/setup/PosActivation.ps1"
-  "$functions/setup/PosInstallation.ps1"
   "$functions/setup/PosDownload.ps1"
+  "$functions/setup/PosLicensing.ps1"
+  "$functions/setup/PosInstallation.ps1"
   "$functions/setup/PosClientModule.ps1"
+  "$functions/setup/PosActivation.ps1"
   # ------------------------------ #
   # -- add repair scripts -- #
   "$functions/repair/ClientModuleRepairs.ps1"
@@ -153,18 +164,22 @@ bundle() {
   echo ":: $script_description" >> $cmd_cache
   echo >> $cmd_cache
   echo "@echo off" >> $cmd_cache
-  echo "@mode 60,22" >> $cmd_cache
+  echo "@mode $window_width,$window_height" >> $cmd_cache
   echo "@title $script_title v$version" >> $cmd_cache
   add_pwsh
   echo >> $cmd_cache
-  # -- add batch code | this is optional -- #
-  cat $src/main.cmd >> $cmd_cache
-  echo >> $cmd_cache
-  echo ":qbreadme:" >> $cmd_cache
-  cat $res/doc/instructions.txt >> $cmd_cache
-  echo ":qbreadme:" >> $cmd_cache
-  echo >> $cmd_cache
+
+  # -- add batch code -- #
+  if [[ -f "$src/main.cmd" ]]; then 
+    cat $src/main.cmd >> $cmd_cache
+    echo >> $cmd_cache
+    echo ":qbreadme:" >> $cmd_cache
+    cat $res/doc/instructions.txt >> $cmd_cache
+    echo ":qbreadme:" >> $cmd_cache
+    echo >> $cmd_cache
+  fi
   # -- end batch code -- #
+  
   echo "# ---------- PowerShell Script ---------- #>" >> $cmd_cache
 
   # Loop through the powershell_functions
@@ -203,6 +218,7 @@ compress() {
   done
 
   cd dist
+  
   # ensure that the 'zip' package should be installed
   zip -q $complete_release * || (echo -e "$return error: Failed to create archive." && return)
   # files to exclude in lightweight release
@@ -215,7 +231,7 @@ compress() {
     rm $file
   done
 
-  [[ -f $complete_release ]] && echo -e "$return Archived to \"/dist\""
+  [[ -f $complete_release ]] && echo -e "$return Archived to '/dist'"
 }
 
 printusage() {

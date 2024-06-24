@@ -1,17 +1,14 @@
 function Start-PosActivation {
-  Stop-QuickBooksProcesses
-  &$VerifyIfQuickBooksIsInstalled
+  Clear-Terminal
   
-  switch ($Script:QUICKBOOKS_IS_INSTALLED) {
-    $true {
-      Repair-GenuineClientModule_LevelOne
-      break 
-    }
-    $false {
-      Write-Error_QuickBooksNotInstalled
-      Invoke-NextProcess $PROC_RETURN_MAIN
-      break
-    }
+  if ($Script:QUICKBOOKS_IS_INSTALLED) {
+    Stop-QuickBooksProcesses
+    # check for any errors with the client module
+    Repair-LevelOne_GenuineClientModule
+  }
+  else {
+    Write-Error_QuickBooksNotInstalled
+    Invoke-NextProcess $PROC_RETURN_MAIN
   }
 
   Install-ClientModule # inject modified client module
