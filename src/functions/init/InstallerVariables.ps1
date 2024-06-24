@@ -1,8 +1,8 @@
 # start list from most recent version first
-$qbVersionList = 19, 18, 12, 11
-$qbExeList = $POS19InstObj.Name, $POS18InstObj.Name, $POS12InstObj.Name, $POS11InstObj.Name
-$qbHashList = $POS19InstObj.Hash, $POS18InstObj.Hash, $POS12InstObj.Hash, $POS11InstObj.Hash
-$qbPathList = $POS19InstObj.Path, $POS18InstObj.Path, $POS12InstObj.Path, $POS11InstObj.Path
+$qbVersionList = 11, 12, 18, 19
+$qbExeList = $POS11InstObj.Name, $POS12InstObj.Name, $POS18InstObj.Name, $POS19InstObj.Name
+$qbHashList = $POS11InstObj.Hash, $POS12InstObj.Hash, $POS18InstObj.Hash, $POS19InstObj.Hash
+$qbPathList = $POS11InstObj.Path, $POS12InstObj.Path, $POS18InstObj.Path, $POS19InstObj.Path
 
 # extra licenses
 $pos19_licenses = @("4569-3302-3865-178", "7881-1645-9971-269", "4938-5814-0940-038", "4808-1135-2336-049", "2851-9930-2558-997", "6120-5395-3507-303", "9987-3884-2589-215", "2708-9947-4862-202", "5009-9403-1002-207", "8409-4961-4037-794", "3053-7747-9128-534", "7786-9879-2771-754", "7487-0743-3346-368", "9280-8996-7677-618", "5956-5105-0683-052", "7767-9250-5701-417")
