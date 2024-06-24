@@ -65,18 +65,20 @@ $VerifyIfQuickBooksIsInstalled = {
 
 $CheckQuickBooksIsNotInstalled_ReturnToMainMenu = {
   if (-not($Script:QUICKBOOKS_IS_INSTALLED)) { 
-    Write-Action_OptionUnavailable
+    Write-Host "Disabled when QuickBooks is not installed." -ForegroundColor Yellow
     $Script:SECOND_STORE = $false
     $Script:ADDITIONAL_CLIENTS = $false
+    Start-Sleep -Milliseconds $TIME_NORMAL
     Invoke-NextProcess $PROC_RETURN_MAIN
   }
 }
 
 $CheckQuickBooksIsInstalled_ReturnToMainMenu = {
   if ($Script:QUICKBOOKS_IS_INSTALLED) { 
-    Write-Action_OptionUnavailable
+    Write-Host "Disabled when QuickBooks is installed." -ForegroundColor Yellow
     $Script:SECOND_STORE = $false
     $Script:ADDITIONAL_CLIENTS = $false
+    Start-Sleep -Milliseconds $TIME_NORMAL
     Invoke-NextProcess $PROC_RETURN_MAIN
   }
 }
