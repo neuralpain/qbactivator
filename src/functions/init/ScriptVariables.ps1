@@ -31,18 +31,18 @@ $Script:ACTIVATION_ONLY = $false                  # indicate whether or not the 
 
 # IF QUICKBOOKS IS INSTALLED
 [bool]$Script:QUICKBOOKS_IS_INSTALLED = $false    # indicate whether or not quickbooks is installed
+[bool]$Script:QUICKBOOKS_INSTALL_ONLY = $false    # indicate whether or not the script should only install quickbooks
 $Script:QUICKBOOKS_INSTALLED_PATH = $null         # path where quickbooks is installed
 $Script:QUICKBOOKS_INSTALLED_VERSION = $null      # version of quickbooks installed
-$Script:QUICKBOOKS_INSTALL_ONLY = $false          # indicate whether or not the script should only install quickbooks
 
 # INSTALLER RELATED
 $Script:INSTALLER_SIZE = 0                        # size of installer
 [int]$Script:INSTALLER_BITS = 0                   # bit size of installer
 [int]$Script:INSTALLER_BYTES = 0                  # byte size of installer
 $Script:INSTALLER_OBJECT = $null                  # the installer, the `.exe` object
-$Script:INSTALLER_PATH = $null                    # path to the installer
-$Script:INSTALLER_HASH = $null                    # hash of the installer
-$Script:INSTALLER_IS_VALID = $false               # indicate whether or not the installer is valid for use
+[string]$Script:INSTALLER_PATH = $null            # path to the installer
+[string]$Script:INSTALLER_HASH = $null            # hash of the installer
+[bool]$Script:INSTALLER_IS_VALID = $false         # indicate whether or not the installer is valid for use
 [bool]$Script:INSTALLER_AVAILABLE = $false        # indicate whether or not the installer is available on the user's system
 [bool]$Script:INSTALLER_DOWNLOAD_ONLY = $false    # indicate whether or not the script should only download the installer
 
