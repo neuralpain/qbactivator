@@ -21,7 +21,7 @@ $InitializeMain = {
 }
 
 $OpenLogs = {
-  New-ToastNotification -ToastText "Locating qbactivator logs..." -ToastTitle "qbactivator"
+  New-ToastNotification -ToastText "Opening qbactivator log directory..." -ToastTitle "qbactivator"
   explorer.exe "C:\Windows\Logs\qbactivator"
 }
 
