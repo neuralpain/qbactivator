@@ -3,11 +3,8 @@ function Write-License {
   return '<Registration InstallDate="" LicenseNumber="', $LNumber, '" ProductNumber="', $PNumber, '"/>' -join ''
 }
 
+<#
 function Get-UserOwnLicense {
-  <#
-  .NOTES
-    Triggered by `Write-LieResponse`
-  #>
   Clear-Terminal
   Write-Host "Enter a valid license below`n" -ForegroundColor White -BackgroundColor DarkCyan
   Write-Host "A valid license pattern: 0000-0000-0000-000" -ForegroundColor White
@@ -39,9 +36,13 @@ function Get-UserOwnLicense {
   Set-License (Write-License $custom_license_number $custom_product_number)
   $Script:CUSTOM_LICENSING = $true
 }
+#>
 
 function Install-IntuitLicense {
-  Clear-IntuitData
+  if ($Script:CUSTOM_LICENSING) {
+    return
+  }
+  
   Write-Host -NoNewLine "Installing registration keys... "
   
   switch (Get-Version) {

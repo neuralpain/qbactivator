@@ -99,7 +99,7 @@ powershell_functions=(
   # -- add display scripts -- #
   "$functions/display/DisplayComponents.ps1"
   "$functions/display/DisplayMenu.ps1"
-  "$functions/display/DisplayLieScreen.ps1"
+  # "$functions/display/DisplayLieScreen.ps1"
   "$functions/display/DisplayError.ps1"
   # ------------------------------ #
   "$src/Main.ps1"

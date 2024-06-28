@@ -44,10 +44,11 @@ function Write-Menu_Main {
     }
     4 {
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
-      Write-LieResponse
-      if ($null -eq $Script:RUN_NEXT_PROCEDURE) {
+      # Write-LieResponse
+      $Script:CUSTOM_LICENSING = $true
+      # if ($null -eq $Script:RUN_NEXT_PROCEDURE) {
         Write-Menu_SubMenu
-      }
+      # }
     }
     5 {
       &$CheckQuickBooksIsNotInstalled_ReturnToMainMenu
