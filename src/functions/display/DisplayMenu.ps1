@@ -1,14 +1,38 @@
-<#
-  Menu Shortcuts / HotKeys
-    100: Exit Qbactivator
-    200: Open Troubleshooting Menu
-    300: Open wiki
-    500: Open logs
-#>
+enum Menu {
+  MAIN
+  SUBMENU
+  VERSION_SELECTION
+  TROUBLESHOOTING
+  LINK_OPTIONS
+}
+
+$CURRENT_MENU = $null
+
+function Show-CurrentMenu {
+  switch ($CURRENT_MENU) {
+    MAIN { Write-Menu_Main }
+    SUBMENU { Write-Menu_SubMenu }
+    VERSION_SELECTION { Write-Menu_VersionSelection }
+    TROUBLESHOOTING { Write-Menu_Troubleshooting }
+    LINK_OPTIONS { Write-Menu_LinkOptions }
+  }
+}
+
+function Confirm-MenuShortcut($x) {
+  switch ($x) {
+    10 { &$InvokeGeneralActivation }                     # Force general activation
+    100 { &$ExitQbactivator }                            # Exit Qbactivator
+    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }        # Open Troubleshooting Menu
+    250 { Stop-QuickBooksProcesses; Show-CurrentMenu }   # Terminate QB
+    300 { &$OpenWiki; Show-CurrentMenu }                 # Open wiki
+    500 { &$OpenLogs; Show-CurrentMenu }                 # Open logs
+  }
+}
 
 function Write-Menu_Main {
   &$InitializeMain
   &$VerifyIfQuickBooksIsInstalled
+  $CURRENT_MENU = [Menu]::MAIN
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select activation option" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - POS Primary Server/Workstation"
@@ -19,18 +43,14 @@ function Write-Menu_Main {
   Write-Host "6 - Refresh qbactivator"
   Write-Host "0 - Exit"
   $query = Read-Host "`n#"
+  Confirm-MenuShortcut $query
   
   switch ($query) {
     0 { &$ExitQbactivator }
-    10 { &$InvokeGeneralActivation }
-    100 { &$ExitQbactivator }
-    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
-    300 { &$OpenWiki; Write-Menu_Main }
-    500 { &$OpenLogs; Write-Menu_Main }
     1 {
       $Script:SECOND_STORE = $false
       $Script:ADDITIONAL_CLIENTS = $false
-      Write-Menu_SubMenu 
+      Write-Menu_SubMenu
     }
     2 {
       $Script:SECOND_STORE = $true
@@ -64,16 +84,19 @@ function Write-Menu_Main {
 }
 
 function Write-Menu_SubMenu {
+  $CURRENT_MENU = [Menu]::SUBMENU
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select next operation" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - Install & Activate"
   Write-Host "2 - Activate Only"
   Write-Host "3 - Install Only"
   Write-Host "4 - Download a POS installer"
-  
   Write-Host "0 - Cancel"
+  
   $query = Read-Host "`n#"
   Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
+  Confirm-MenuShortcut $query
+
   switch ($query) {
     0 { 
       $Script:SECOND_STORE = $false
@@ -81,11 +104,6 @@ function Write-Menu_SubMenu {
       Write-Menu_Main
       break
     }
-    10 { &$InvokeGeneralActivation }
-    100 { &$ExitQbactivator }
-    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
-    300 { &$OpenWiki; Write-Menu_SubMenu }
-    500 { &$OpenLogs; Write-Menu_SubMenu }
     1 {
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
       Invoke-NextProcess $PROC_LICENSE
@@ -107,11 +125,12 @@ function Write-Menu_SubMenu {
       Invoke-NextProcess $PROC_DOWNLOAD
       break
     }
-    default { Write-Menu_SubMenu; break }
+    default { Show-CurrentMenu; break }
   }
 }
 
 function Write-Menu_VersionSelection {
+  $CURRENT_MENU = [Menu]::VERSION_SELECTION
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select QuickBooks POS verison" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "11 - QuickBooks POS 2013"
@@ -121,18 +140,11 @@ function Write-Menu_VersionSelection {
   Write-Host "0 --- Cancel"
   $query = Read-Host "`nVersion"
   Set-Version $query
-
-  # allow exit at any point in time
-  switch ($query) {
-    10 { &$InvokeGeneralActivation }
-    100 { &$ExitQbactivator }
-    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
-    300 { &$OpenWiki; Write-Menu_VersionSelection }
-    500 { &$OpenLogs; Write-Menu_VersionSelection }
-  }
+  Confirm-MenuShortcut $query
 }
 
 function Write-Menu_Troubleshooting {
+  $CURRENT_MENU = [Menu]::TROUBLESHOOTING
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select troubleshooting option" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - Lv1 Client module: Restore"
@@ -144,13 +156,10 @@ function Write-Menu_Troubleshooting {
   Write-Host "0 - Back"
   $query = Read-Host "`n#"
   Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
+  Confirm-MenuShortcut $query
+
   switch ($query) {
     0 { Write-Menu_Main; break }
-    10 { &$InvokeGeneralActivation }
-    100 { &$ExitQbactivator }
-    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
-    300 { &$OpenWiki; Write-Menu_Troubleshooting }
-    500 { &$OpenLogs; Write-Menu_Troubleshooting }
     1 {
       Stop-QuickBooksProcesses
       Repair-LevelOne_GenuineClientModule
@@ -181,11 +190,12 @@ function Write-Menu_Troubleshooting {
       break
     }
     6 { Write-Menu_LinkOptions; break }
-    default { Write-Menu_Troubleshooting; break }
+    default { Show-CurrentMenu; break }
   }
 }
 
 function Write-Menu_LinkOptions {
+  $CURRENT_MENU = [Menu]::LINK_OPTIONS
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select a link to jump to" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - View the qbactivator Wiki"
@@ -194,13 +204,10 @@ function Write-Menu_LinkOptions {
   Write-Host "0 - Back"
   $query = Read-Host "`n#"
   Write-Host -NoNewLine "Selected: $query"; Write-Host -NoNewLine "`r                              `r" # To transcript # Debug
+  Confirm-MenuShortcut $query
+  
   switch ($query) {
     0 { Write-Menu_Troubleshooting; break }
-    10 { &$InvokeGeneralActivation }
-    100 { &$ExitQbactivator }
-    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }
-    300 { &$OpenWiki; Write-Menu_LinkOptions }
-    500 { &$OpenLogs; Write-Menu_LinkOptions }
     1 {
       Write-Host "Opening qbactivator Wiki..."
       &$OpenWiki
@@ -217,6 +224,6 @@ function Write-Menu_LinkOptions {
       Write-Menu_LinkOptions
       break
     }
-    default { Write-Menu_LinkOptions; break }
+    default { Show-CurrentMenu; break }
   }
 }
