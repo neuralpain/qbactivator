@@ -29,6 +29,7 @@ $Script:SELECTED_QB_OBJECT = $null                # quickbooks object selected t
 $Script:TARGET_LOCATION = "$pwd"                  # directory where files will be downloaded
 $Script:RUN_NEXT_PROCEDURE = $null                # WAS UNUSED, FOUND A USE FOR IT; contains the next step to be run
 $Script:ACTIVATION_ONLY = $false                  # indicate whether or not the script should only activate quickbooks
+$Script:CURRENT_MENU = $null                      # current menu
 
 # IF QUICKBOOKS IS INSTALLED
 [bool]$Script:QUICKBOOKS_IS_INSTALLED = $false    # indicate whether or not quickbooks is installed

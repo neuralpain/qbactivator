@@ -6,10 +6,8 @@ enum Menu {
   LINK_OPTIONS
 }
 
-$CURRENT_MENU = $null
-
 function Show-CurrentMenu {
-  switch ($CURRENT_MENU) {
+  switch ($Script:CURRENT_MENU) {
     MAIN { Write-Menu_Main }
     SUBMENU { Write-Menu_SubMenu }
     VERSION_SELECTION { Write-Menu_VersionSelection }
@@ -32,7 +30,7 @@ function Confirm-MenuShortcut($x) {
 function Write-Menu_Main {
   &$InitializeMain
   &$VerifyIfQuickBooksIsInstalled
-  $CURRENT_MENU = [Menu]::MAIN
+  $Script:CURRENT_MENU = [Menu]::MAIN
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select activation option" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - POS Primary Server/Workstation"
@@ -80,7 +78,7 @@ function Write-Menu_Main {
 }
 
 function Write-Menu_SubMenu {
-  $CURRENT_MENU = [Menu]::SUBMENU
+  $Script:CURRENT_MENU = [Menu]::SUBMENU
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select next operation" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - Install & Activate"
@@ -126,7 +124,7 @@ function Write-Menu_SubMenu {
 }
 
 function Write-Menu_VersionSelection {
-  $CURRENT_MENU = [Menu]::VERSION_SELECTION
+  $Script:CURRENT_MENU = [Menu]::VERSION_SELECTION
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select QuickBooks POS verison" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "11 - QuickBooks POS 2013"
@@ -140,7 +138,7 @@ function Write-Menu_VersionSelection {
 }
 
 function Write-Menu_Troubleshooting {
-  $CURRENT_MENU = [Menu]::TROUBLESHOOTING
+  $Script:CURRENT_MENU = [Menu]::TROUBLESHOOTING
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select troubleshooting option" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - Lv1 Client module: Restore"
@@ -191,7 +189,7 @@ function Write-Menu_Troubleshooting {
 }
 
 function Write-Menu_LinkOptions {
-  $CURRENT_MENU = [Menu]::LINK_OPTIONS
+  $Script:CURRENT_MENU = [Menu]::LINK_OPTIONS
   Write-HeaderLabel
   Write-Host "$(Format-Text "Select a link to jump to" -Foreground Gray -Formatting Bold, Underline)`n"
   Write-Host "1 - View the qbactivator Wiki"
