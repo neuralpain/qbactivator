@@ -29,12 +29,11 @@ $InvokeGeneralActivation = {
   Clear-Terminal
   Stop-QuickBooksProcesses
   New-ToastNotification -ToastText "Forced General Activation initiated" -ToastTitle "qbactivator"
-  Invoke-NextProcess $PROC_NEXT_STAGE
+  Invoke-NextProcess PROC_NEXT_STAGE
 }  
 
 $ExitQbactivator = {
-  New-ToastNotification -ToastText "Exiting qbactivator..." -ToastTitle "qbactivator"
-  Invoke-NextProcess $PROC_EXIT
+  Invoke-NextProcess PROC_EXIT
 }  
 
 $OpenWiki = { 
@@ -46,7 +45,7 @@ $TestInternetAvailable = {
   Write-Host -NoNewline "Testing connectivity... "
   if (-not(Test-Connection www.google.com -Quiet)) { 
     Write-Error_NoInternetConnectivity
-    Invoke-NextProcess $PROC_RETURN_MAIN
+    Invoke-NextProcess PROC_RETURN_MAIN
   }
   else { Write-Host "OK" }
 }
@@ -69,7 +68,7 @@ $CheckQuickBooksIsNotInstalled_ReturnToMainMenu = {
     $Script:SECOND_STORE = $false
     $Script:ADDITIONAL_CLIENTS = $false
     Start-Sleep -Milliseconds $TIME_NORMAL
-    Invoke-NextProcess $PROC_RETURN_MAIN
+    Invoke-NextProcess PROC_RETURN_MAIN
   }
 }
 
@@ -79,7 +78,7 @@ $CheckQuickBooksIsInstalled_ReturnToMainMenu = {
     $Script:SECOND_STORE = $false
     $Script:ADDITIONAL_CLIENTS = $false
     Start-Sleep -Milliseconds $TIME_NORMAL
-    Invoke-NextProcess $PROC_RETURN_MAIN
+    Invoke-NextProcess PROC_RETURN_MAIN
   }
 }
 

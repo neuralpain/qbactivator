@@ -8,7 +8,7 @@ function Start-PosActivation {
   }
   else {
     Write-Error_QuickBooksNotInstalled
-    Invoke-NextProcess $PROC_RETURN_MAIN
+    Invoke-NextProcess PROC_RETURN_MAIN
   }
 
   Install-ClientModule # inject modified client module

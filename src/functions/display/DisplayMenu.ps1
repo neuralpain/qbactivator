@@ -22,7 +22,7 @@ function Confirm-MenuShortcut($x) {
   switch ($x) {
     10 { &$InvokeGeneralActivation }                     # Force general activation
     100 { &$ExitQbactivator }                            # Exit Qbactivator
-    200 { Invoke-NextProcess $PROC_TROUBLESHOOT }        # Open Troubleshooting Menu
+    200 { Invoke-NextProcess PROC_TROUBLESHOOT }        # Open Troubleshooting Menu
     250 { Stop-QuickBooksProcesses; Show-CurrentMenu }   # Terminate QB
     300 { &$OpenWiki; Show-CurrentMenu }                 # Open wiki
     500 { &$OpenLogs; Show-CurrentMenu }                 # Open logs
@@ -72,14 +72,10 @@ function Write-Menu_Main {
     }
     5 {
       &$CheckQuickBooksIsNotInstalled_ReturnToMainMenu
-      Invoke-NextProcess $PROC_TROUBLESHOOT
+      Invoke-NextProcess PROC_TROUBLESHOOT
     }
-    6 {
-      &$InitializeMain
-      &$VerifyIfQuickBooksIsInstalled    
-      Invoke-NextProcess $PROC_RETURN_MAIN
-    }
-    default { Invoke-NextProcess $PROC_RETURN_MAIN }
+    6 { Invoke-NextProcess PROC_RETURN_MAIN }
+    default { Invoke-NextProcess PROC_RETURN_MAIN }
   }
 }
 
@@ -106,23 +102,23 @@ function Write-Menu_SubMenu {
     }
     1 {
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
-      Invoke-NextProcess $PROC_LICENSE
+      Invoke-NextProcess PROC_LICENSE
       break
     }
     2 {
       &$CheckQuickBooksIsNotInstalled_ReturnToMainMenu
-      Invoke-NextProcess $PROC_ACTIVATE
+      Invoke-NextProcess PROC_ACTIVATE
       break
     }
     3 {
       $Script:QUICKBOOKS_INSTALL_ONLY = $true
       &$CheckQuickBooksIsInstalled_ReturnToMainMenu
-      Invoke-NextProcess $PROC_LICENSE
+      Invoke-NextProcess PROC_LICENSE
       break
     }
     4 {
       $Script:INSTALLER_DOWNLOAD_ONLY = $true
-      Invoke-NextProcess $PROC_DOWNLOAD
+      Invoke-NextProcess PROC_DOWNLOAD
       break
     }
     default { Show-CurrentMenu; break }
@@ -175,7 +171,7 @@ function Write-Menu_Troubleshooting {
     3 {
       Repair-LevelThree_Reactivation
       Write-Host "Starting reactivation process..."
-      Invoke-NextProcess $PROC_ACTIVATE
+      Invoke-NextProcess PROC_ACTIVATE
       break
     }
     4 { 

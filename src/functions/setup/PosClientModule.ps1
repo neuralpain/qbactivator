@@ -6,7 +6,7 @@ $VerifyClientModulePatch = {
   }
   else {
     Write-Host "Unable to patch POS."; Pause
-    Invoke-NextProcess $PROC_RETURN_MAIN
+    Invoke-NextProcess PROC_RETURN_MAIN
   }
 }
 
