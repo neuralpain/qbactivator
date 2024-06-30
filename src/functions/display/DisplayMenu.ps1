@@ -38,7 +38,7 @@ function Write-Menu_Main {
   Write-Host "1 - POS Primary Server/Workstation"
   Write-Host "2 - POS Secondary Server/Workstation"
   Write-Host "3 - POS Client Workstations"
-  Write-Host "4 - I have my own license :p"
+  Write-Host "4 - I own a QB POS license"
   Write-Host "5 - Troubleshooting"
   Write-Host "6 - Refresh qbactivator"
   Write-Host "0 - Exit"
