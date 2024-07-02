@@ -1,6 +1,6 @@
 function Write-License {
-  param([String]$LNumber, [String]$PNumber)
-  return '<Registration InstallDate="" LicenseNumber="', $LNumber, '" ProductNumber="', $PNumber, '"/>' -join ''
+  param([String]$LicenseNumber, [String]$ProductNumber)
+  return '<Registration InstallDate="" LicenseNumber="', $LicenseNumber, '" ProductNumber="', $ProductNumber, '"/>' -join ''
 }
 
 <#
@@ -99,12 +99,12 @@ function Get-IntuitLicense {
       if ($Script:CUSTOM_LICENSING) {
         return
       } elseif ($Script:SECOND_STORE) {
-        Set-License (Write-License -LNumber $POS19InstObj.LNum2 -PNumber $POS19InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $POS19InstObj.LNum2 -ProductNumber $POS19InstObj.PNum)
       } elseif ($Script:ADDITIONAL_CLIENTS) {
         $_license = ($pos19_licenses | Get-Random)
-        Set-License (Write-License -LNumber $_license -PNumber $POS19InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $_license -ProductNumber $POS19InstObj.PNum)
       } else {
-        Set-License (Write-License -LNumber $POS19InstObj.LNum1 -PNumber $POS19InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $POS19InstObj.LNum1 -ProductNumber $POS19InstObj.PNum)
       }
     }
 
@@ -116,12 +116,12 @@ function Get-IntuitLicense {
       if ($Script:CUSTOM_LICENSING) {
         return
       } elseif ($Script:SECOND_STORE) {
-        Set-License (Write-License -LNumber $POS18InstObj.LNum2 -PNumber $POS18InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $POS18InstObj.LNum2 -ProductNumber $POS18InstObj.PNum)
       } elseif ($Script:ADDITIONAL_CLIENTS) {
         $_license = ($pos18_licenses | Get-Random)
-        Set-License (Write-License -LNumber $_license -PNumber $POS18InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $_license -ProductNumber $POS18InstObj.PNum)
       } else {
-        Set-License (Write-License -LNumber $POS18InstObj.LNum1 -PNumber $POS18InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $POS18InstObj.LNum1 -ProductNumber $POS18InstObj.PNum)
       }
     }
 
@@ -133,12 +133,12 @@ function Get-IntuitLicense {
       if ($Script:CUSTOM_LICENSING) {
         return
       } elseif ($Script:SECOND_STORE) {
-        Set-License (Write-License -LNumber $POS12InstObj.LNum2 -PNumber $POS12InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $POS12InstObj.LNum2 -ProductNumber $POS12InstObj.PNum)
       } elseif ($Script:ADDITIONAL_CLIENTS) {
         $_license = ($pos12_licenses | Get-Random)
-        Set-License (Write-License -LNumber $_license -PNumber $POS12InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $_license -ProductNumber $POS12InstObj.PNum)
       } else {
-        Set-License (Write-License -LNumber $POS12InstObj.LNum1 -PNumber $POS12InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $POS12InstObj.LNum1 -ProductNumber $POS12InstObj.PNum)
       }
     }
     
@@ -150,12 +150,12 @@ function Get-IntuitLicense {
       if ($Script:CUSTOM_LICENSING) {
         return
       } elseif ($Script:SECOND_STORE) {
-        Set-License (Write-License -LNumber $POS11InstObj.LNum2 -PNumber $POS11InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $POS11InstObj.LNum2 -ProductNumber $POS11InstObj.PNum)
       } elseif ($Script:ADDITIONAL_CLIENTS) {
         $_license = ($pos11_licenses | Get-Random)
-        Set-License (Write-License -LNumber $_license -PNumber $POS11InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $_license -ProductNumber $POS11InstObj.PNum)
       } else {
-        Set-License (Write-License -LNumber $POS11InstObj.LNum1 -PNumber $POS11InstObj.PNum)
+        Set-License (Write-License -LicenseNumber $POS11InstObj.LNum1 -ProductNumber $POS11InstObj.PNum)
       }
     }
   }
