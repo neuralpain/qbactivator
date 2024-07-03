@@ -30,6 +30,7 @@ $Script:TARGET_LOCATION = "$pwd"                  # directory where files will b
 $Script:RUN_NEXT_PROCEDURE = $null                # WAS UNUSED, FOUND A USE FOR IT; contains the next step to be run
 $Script:ACTIVATION_ONLY = $false                  # indicate whether or not the script should only activate quickbooks
 $Script:CURRENT_MENU = $null                      # current menu
+$Script:QUICKBOOKS_DESKTOP = $false               # indicate whether or not the user is installing quickbooks desktop products
 
 # IF QUICKBOOKS IS INSTALLED
 [bool]$Script:QUICKBOOKS_IS_INSTALLED = $false    # indicate whether or not quickbooks is installed

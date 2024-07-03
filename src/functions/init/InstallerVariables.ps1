@@ -24,3 +24,8 @@ $CLIENT_MODULE_DATA_FULL_PATH = "$CLIENT_MODULE_DATA_PATH\$CLIENT_MODULE_DATA"
 $CLIENT_MODULE = "Intuit.Spc.Map.EntitlementClient.Common.dll"
 $CLIENT_MODULE_PATH = "$env:SystemRoot\Microsoft.NET\assembly\GAC_MSIL\Intuit.Spc.Map.EntitlementClient.Common\v4.0_8.0.0.0__5dc4fe72edbcacf5"
 $CLIENT_MODULE_FULL_PATH = "$CLIENT_MODULE_PATH\$CLIENT_MODULE"
+
+$QBDT_COMMON_FILES = "$env:ProgramData\COMMON FILES\INTUIT\QUICKBOOKS"
+$QBDT_REGISTRATION = "$QBDT_COMMON_FILES\qbregistration.dat"
+$QBDT_REGISTRATION_BACKUP = "$QBDT_COMMON_FILES\qbregistration.dat.bak"
+$QBDT_REGISTRATION_TEMP = "$QBDT_COMMON_FILES\qbregistration.dat.tmp"
