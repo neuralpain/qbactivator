@@ -1,5 +1,8 @@
 function Invoke-NextProcess {
-  param ([Parameter(Mandatory = $true)]$NextProcess)
+  param (
+    [Parameter(Mandatory = $true, ValuefromPipeline = $true)]
+    [QbaProcess]$NextProcess
+  )
   
   $Script:RUN_NEXT_PROCEDURE = $NextProcess
   
