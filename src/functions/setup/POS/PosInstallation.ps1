@@ -15,7 +15,7 @@ function Start-Installer {
   param ($Installer)
   # clear temporary installation files from previous 
   # installer launch and start a new installation process
-  Remove-Item $intuit_temp -Recurse -Force >$null 2>&1
+  Remove-Item $intuit_temp -Recurse -Force | Out-Null
   Write-WaitingScreen
   
   try { 

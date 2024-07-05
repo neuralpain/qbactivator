@@ -31,7 +31,7 @@ function Get-ClientModule {
 
 function Install-ClientModule {
   Write-Host "Patching client module... "
-  Rename-Item $CLIENT_MODULE_FULL_PATH "${CLIENT_MODULE_FULL_PATH}.bak" >$null 2>&1
+  Rename-Item $CLIENT_MODULE_FULL_PATH "${CLIENT_MODULE_FULL_PATH}.bak" | Out-Null
   # attempt to patch with the local patch file first
   if (Test-Path "$LOCAL_PATCH_FILE" -PathType Leaf) {
     $isValid = Compare-IsValidHash -Hash $PATCH_HASH -File $LOCAL_PATCH_FILE
