@@ -1,20 +1,3 @@
-function Get-TimeToComplete {
-  param ([int]$DownloadSize, [int]$Bandwidth)
-    
-  [double]$time = ($DownloadSize / $Bandwidth)
-  [int]$time = [math]::Round($time)
-  
-  $Script:RAW_DOWNLOAD_TIME = $time
-  
-  if ($time -gt 60) {
-    [int]$time_m = $time / 60
-    [int]$time_s = $time % 60
-    return "${time_m}m${time_s}s"
-  }
-  
-  return "$time seconds"
-}
-
 function Compare-InstallerDownloadSize {  
   # clean up uncompleted donwnload
   if (-not(Compare-IsValidHash -File $Script:SELECTED_QB_OBJECT.Name -Hash $Script:SELECTED_QB_OBJECT.Hash)) {
