@@ -34,8 +34,9 @@ function Install-ClientModule {
   Rename-Item $CLIENT_MODULE_FULL_PATH "${CLIENT_MODULE_FULL_PATH}.bak" >$null 2>&1
   # attempt to patch with the local patch file first
   if (Test-Path "$LOCAL_PATCH_FILE" -PathType Leaf) {
-    $isValid = Compare-IsValidHash -Hash $PATCH_HASH -File $LOCAL_PATCH_FILE
-    if ($isValid) { Copy-Item $LOCAL_PATCH_FILE $CLIENT_MODULE_FULL_PATH } 
+    if (Compare-IsValidHash -Hash $PATCH_HASH -File $LOCAL_PATCH_FILE) {
+      Copy-Item $LOCAL_PATCH_FILE $CLIENT_MODULE_FULL_PATH
+    }
     else { 
       Write-Host "`nPatch file may be corrupted."
       Get-ClientModule -FromHostUrl $CLIENT_FILE_ON_HOST
