@@ -112,7 +112,7 @@ function Start-InstallerDownload {
   Show-WebRequestDownloadJobState -DownloadJob $installer_download_job -Message "Downloading installer"
   
   # Write-Host $installer_download_path                      # Debug
-  Wait-Job $installer_download_job | Out-Null
+  Wait-Job $installer_download_job >$null 2>&1
   Remove-Job $installer_download_job
   # Pause                                                    # Debug  
 }

@@ -13,7 +13,7 @@ function Install-IntuitLicense {
   switch (Get-Version) {
     $POS19InstObj.VerNum {
       $path = $POS19InstObj.Path
-      mkdir $env:ProgramData\$path | Out-Null
+      mkdir $env:ProgramData\$path >$null 2>&1
       Out-File -FilePath $env:ProgramData\$path\qbregistration.dat `
                -InputObject (Get-License) `
                -Encoding UTF8 `
@@ -22,7 +22,7 @@ function Install-IntuitLicense {
     
     $POS18InstObj.VerNum {
       $path = $POS18InstObj.Path
-      mkdir $env:ProgramData\$path | Out-Null
+      mkdir $env:ProgramData\$path >$null 2>&1
       Out-File -FilePath $env:ProgramData\$path\qbregistration.dat `
                -InputObject (Get-License) `
                -Encoding UTF8 `
@@ -31,7 +31,7 @@ function Install-IntuitLicense {
     
     $POS12InstObj.VerNum {
       $path = $POS12InstObj.Path
-      mkdir $env:ProgramData\$path | Out-Null
+      mkdir $env:ProgramData\$path >$null 2>&1
       Out-File -FilePath $env:ProgramData\$path\qbregistration.dat `
                -InputObject (Get-License) `
                -Encoding UTF8 `
@@ -40,7 +40,7 @@ function Install-IntuitLicense {
 
     $POS11InstObj.VerNum {
       $path = $POS11InstObj.Path
-      mkdir $env:ProgramData\$path | Out-Null
+      mkdir $env:ProgramData\$path >$null 2>&1
       Out-File -FilePath $env:ProgramData\$path\qbregistration.dat `
                -InputObject (Get-License) `
                -Encoding UTF8 `
