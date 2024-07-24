@@ -6,11 +6,11 @@
   <a href="https://github.com/neuralpain/qbactivator/releases/latest"><img src="https://img.shields.io/github/v/release/neuralpain/qbactivator?label=Latest%20Release&labelColor=123311&color=3fab05"></a>
   <a href="https://github.com/neuralpain/qbactivator/releases/latest"><img src="https://img.shields.io/github/downloads/neuralpain/qbactivator/total?style=social"></a>
 </p>
-
-Activation script for QuickBooks Point of Sale Software on Windows. — [Download Now!][download]
+<p align="center">Activation script for QuickBooks Point of Sale Software on Windows</p>
+<p align="center"><a href="https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.24.0.zip"><img src="./assets/images/download_btn.svg" height="64px"></a></p>
 
 > [!CAUTION]  
-> **Do not** clone or download *this* repository in an attempt to run `qbactivator` (ref. [#10][issue_10]). Downloading this repository is not necessary to run the script. The source files are not meant to be run individually and `qbactivator` will not run correctly if executed this way. If you want to run the script, [download the latest release][release] package and [read the Wiki][getstarted] to get started using `qbactivator`.
+> **Do not** clone or download this *repository* or the *source code* to run qbactivator. The complete script **is not** contained within the source (ref. [#10][issue_10]). Use the download button **above** to get the latest version of the script or [click this link][release] to view the latest release package and [read the Wiki][getstarted] to get started using qbactivator.
 
 ### Features
 
@@ -35,12 +35,13 @@ Activation script for QuickBooks Point of Sale Software on Windows. — [Downloa
 
 ### A few things before you start
 
-- An internet connection **is not** required for activation or adding users, i.e., you can activate offline; but you can let it have that one free phone call to let Intuit know that it's safe.
-- Manually running the QuickBooks POS installer or entering any keys into the installer **is not required** as the script will handle these tasks. You only need to click on the "Next" and "Finish" buttons.
+- An internet connection **is not** required for activation or adding users, i.e., you are able to activate offline; but you can let it have that one free phone call to let Intuit know that it's safe.
+- QuickBooks POS should be installed before other QuickBooks Desktop products.
+- Manually running the QuickBooks POS installer or entering any keys into the installer **is not required** as the script will handle these tasks. You only need to navigate through the buttons and options.
 - Remember that you **should not** launch QuickBooks Point of Sale after installation. Ensure that you uncheck the "Launch QuickBooks Point Of Sale" option before clicking on "Finish" and proceeding with the activation process.
-- It is recommended to **avoid** installing updates through the application due to some of the features being blocked (ref. [#27][issue_27]), though they are available here if you want to [download them yourself](https://github.com/neuralpain/qbactivator/wiki#optional-updates-for-quickbooks-pos-software-from-intuit).
+- It is recommended to **avoid** installing updates through the application due to some of the features being blocked (ref. [#27][issue_27]), but they are available [here](https://github.com/neuralpain/qbactivator/wiki#optional-updates-for-quickbooks-pos-software-from-intuit) if you want to download them yourself.
 - All versions of QuickBooks Desktop Point of Sale, including v12, v18, and v19, are licensed as `Pro Multistore Level`. The only exception is POS v11, which is licensed as `Pro Level`.
-- [View the instructions][instructions] to run `qbactivator` and activate QuickBooks.
+- [Read the instructions][instructions] to run `qbactivator` and activate QuickBooks.
 - [Read the FAQs](#faqs) for further information and guidance for any concerns you may have.
 
 > [!WARNING]  
@@ -85,6 +86,11 @@ Each release of qbactivator comes with 3 packages:
 All packages perform the same function as they are derived from a single script, merely packaged in different formats. The regular package is ideal for users who either lack internet access at a specific workstation or prefer to activate the software offline. 
 
 On the other hand, the `.min.zip` package and the single `.cmd` file are smaller and more portable. These formats are perfect for users with fast internet connections who can quickly download the files, or for those who need a swift, on-the-go solution.
+
+> [!TIP]  
+> If you encouner an issue where the QuickBooks installer performs a rollback during setup, this may be a driver issue. Download this [Visual C++ redistributable repack](https://github.com/abbodi1406/vcredist/releases/download/v0.82.0/VisualCppRedist_AIO_x86_x64.exe) and run it to install the Microsoft Visual C++ Redistributable packages for 2005-2022.
+>
+>Check for any updates to this repack [here](https://github.com/abbodi1406/vcredist/releases).
 
 ### Available QuickBooks POS Software from Intuit
 
