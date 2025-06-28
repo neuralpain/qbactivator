@@ -3,14 +3,14 @@
     <source srcset="https://user-images.githubusercontent.com/77242216/213914137-51bda12c-6214-44f8-bae4-e9b7e633233b.svg" media="(prefers-color-scheme: light)" height="96px" alt="qbactivator logo light">
     <img src="https://user-images.githubusercontent.com/77242216/213914139-b21538e0-05c1-4194-99bc-620f5d559fc9.svg" height="96px" alt="qbactivator logo dark">
   </picture><br/>
-  <a href="https://github.com/neuralpain/qbactivator/releases/latest"><img src="https://img.shields.io/github/v/release/neuralpain/qbactivator?label=Latest%20Release&labelColor=123311&color=3fab05"></a>
-  <a href="https://github.com/neuralpain/qbactivator/releases/latest"><img src="https://img.shields.io/github/downloads/neuralpain/qbactivator/total?style=social"></a>
+  <a href="https://ko-fi.com/s/529011e010"><img src="https://img.shields.io/github/v/release/neuralpain/qbactivator?label=Latest%20Release&labelColor=123311&color=3fab05"></a>
+  <a href="https://ko-fi.com/s/529011e010"><img src="https://img.shields.io/github/downloads/neuralpain/qbactivator/total?style=social"></a>
 </p>
 <p align="center">Activation script for QuickBooks Point of Sale Software on Windows</p>
-<p align="center"><a href="https://github.com/neuralpain/qbactivator/releases/latest/download/qbactivator-0.24.0.zip"><img src="./assets/images/download_btn.svg" height="64px"></a></p>
+<p align="center"><a href="https://ko-fi.com/s/529011e010"><img src="./assets/images/download_btn.svg" height="64px"></a></p>
 
 > [!CAUTION]  
-> **Do not** clone or download this *repository* or the *source code* to run qbactivator. The complete script **is not** contained within the source (ref. [#10][issue_10]). Use the download button **above** to get the latest version of the script or [click this link][release] to view the latest release package and [read the Wiki][getstarted] to get started using qbactivator.
+> **Do not** clone or download this *repository* or the *source code* to run qbactivator. The compiled script **is not** contained within the source (ref. [#10][issue_10]). Use the download button **above** to get the latest version of the script and [read the Wiki][getstarted] to get started using qbactivator.
 
 ### Features
 
@@ -79,9 +79,9 @@
 
 Each release of qbactivator comes with 3 packages:
 
-- <code>**qbactivator-[version][.zip][download]**</code>: the complete release which contains all the files necessary to activate the QuickBooks POS software **offline**. It also includes the LICENSE and README.
-- <code>**qbactivator-[version][.min.zip][download_min]**</code>: a lightweight release ZIP package (take note of the `.min` in the name) which excludes larger files that can be downloaded online, such as the patch file. It also includes the LICENSE and README.
-- <code>**qbactivator-[version][.cmd][download_cmd]**</code>: just the script file with no other files.
+- <code>**qbactivator-[version].zip**</code>: the complete release which contains all the files necessary to activate the QuickBooks POS software **offline**. It also includes the LICENSE and README.
+- <code>**qbactivator-[version].min.zip**</code>: a lightweight release ZIP package (take note of the `.min` in the name) which excludes larger files that can be downloaded online, such as the patch file. It also includes the LICENSE and README.
+- <code>**qbactivator-[version].cmd**</code>: just the script file with no other files.
 
 All packages perform the same function as they are derived from a single script, merely packaged in different formats. The regular package is ideal for users who either lack internet access at a specific workstation or prefer to activate the software offline. 
 
@@ -122,15 +122,22 @@ License keys are reviewed regularly to keep `qbactivator` functioning as intende
 
 ## License
 
-> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+BSD 2-Clause License
 
-Licensed under [BSD 2-Clause](LICENSE).
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-<p align='center'>
-  <picture>
-    <img src='https://www.websitecounterfree.com/c.php?d=9&id=48433&s=3' alt='qbactivator Visitor Count'>
-  </picture>
-</p>
+See LICENSE for details.
+```
 
 <!-- Links -->
 [wiki]: https://github.com/neuralpain/qbactivator/wiki
