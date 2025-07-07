@@ -7,7 +7,7 @@
   <a href="https://ko-fi.com/s/529011e010"><img src="https://img.shields.io/github/downloads/neuralpain/qbactivator/total?style=social"></a>
 </p>
 <p align="center">Activation script for QuickBooks Point of Sale Software on Windows</p>
-<p align="center"><a href="https://ko-fi.com/s/529011e010"><img src="./assets/images/download_btn.svg" height="64px"></a></p>
+<p align="center"><a href="https://ko-fi.com/s/529011e010"><img src="./assets/images/download_btn.svg" style="height: 64px;"></a></p>
 
 > [!CAUTION]  
 > **Do not** clone or download this *repository* or the *source code* to run qbactivator. The compiled script **is not** contained within the source (ref. [#10][issue_10]). Use the download button **above** to get the latest version of the script and [read the Wiki][getstarted] to get started using qbactivator.
